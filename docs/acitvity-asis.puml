@@ -1,0 +1,63 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+|Slutkunde|
+start
+|Fogwebshop|
+:Udfyld Formular|
+|Mail system|
+:Mail med formular data;
+|Sælger|
+:Modtag formular;
+
+while (Kvalitetskontrol - giver det mening?)
+  |Mail system|
+  :Bed kunden om rettelser;
+  |Slutkunde|
+  :Lav rettelser;
+  |Mail system|
+  :Send rettelser;
+endwhile (Ja)
+
+|Sælger|
+:Indtast data i system A;
+|System A|
+:Generer tegning, stykliste, kostpris, salgspris, tilbud|
+|Sælger|
+:Kvalitetskontrol af tilbud;
+|Mail system|
+:Send tilbud til kunde;
+|Slutkunde|
+:Modtag tilbud;
+if (Accepter tilbud) then (nej)
+  :Send rettelser|
+else (ja)
+endif
+|Sælger|
+:Tilbud accepteret;
+:Indtast data i system B;
+|System B|
+:Generer stykliste;
+:Generer ordrebekræftelse;
+:Generer faktura;
+|Sælger|
+:Kontroller stykliste og ordrebekræftelse;
+|Mail system|
+:Send ordrebekræftelse til kunde;
+|Slutkunde|
+:Modtag ordrebekræftelse;
+:Foretag betaling;
+|System B|
+:Registerer betaling;
+|Sælger|
+:Send Kvittering|
+:Send stykliste;
+|Mail system|
+:Send stykliste til kunde og lager;
+|Lager|
+:Modtag plukliste;
+:Afsend ordren;
+stop
+
+
+@enduml
