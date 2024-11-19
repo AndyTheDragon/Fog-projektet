@@ -1,0 +1,161 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Main
+{
+    + void main(String[] args)
+}
+
+
+package "Entities" {
+interface IMaterials
+{
++ void getMaterials()
+}
+
+class Carport
+{
+- List<IMaterials> materialsList
+}
+
+class Salesman
+{
+- int salesmanID
+- String name
+- String email
+- String password
+- String role
++ getters()
++ setters()
+}
+class Customer
+{
+- int customerID
+- String name
+- String address
+- String zipcode
+- String city
+- String phoneNumber
+- String email
+
+}
+class Order
+{
+- int orderID
+- int customerID
+- int salesmanID
+- int carportID
+- int price
+- boolean isPaid
+- boolean isAssigned
++ boolean isAssigned()
++ boolean isPaid()
++ getters()
++ setters()
+}
+class ConstructionWood
+{
+- String type
+- int typeID
+- int length
+- int width
+- int height
+- int amount
+- String unit
++ constructors()
++ getters()
+}
+class RoofCovering
+{
+- int length
+- int amount
+- String unit
+- String type
+- int typeID
++ constructors()
++ getters()
+
+}
+class NailsScrewsBrackets
+{
+
+}
+}
+package "Controllers" {
+    class OrderController
+    {
+    + addRoutes()
+    + createOrder()
+    + getOrdersByUser()
+    + getAllOrders()
+    + getOrderById()
+    + updateOrder()
+    + deleteOrder()
+    }
+    class AdminController
+    {
+    + addRoutes()
+    + login()
+    + logout()
+    + createUser()
+    + getAllUsers()
+    }
+    class MaterialController
+    {
+    + addRoutes()
+    + createMaterial()
+    + getMaterials()
+    + getAllMaterials()
+    + getMaterialById()
+    + updateMaterialPrice()
+    + updateMaterialStock()
+    + updateMaterial()
+    + deleteMaterial()
+   }
+}
+package "Persistence" {
+    class OrderMapper
+    {
+        + createOrder()
+        + getOrdersByUser()
+        + getAllOrders()
+        + getOrderById()
+        + updateOrder()
+        + deleteOrder()
+    }
+    class MaterialMapper
+    {
+        + createMaterial()
+        + getMaterials()
+        + getAllMaterials()
+        + getMaterialById()
+        + updateMaterialPrice()
+        + updateMaterialStock()
+        + updateMaterial()
+        + deleteMaterial()
+    }
+    class UserMapper
+    {
+        + login()
+        + createUser()
+        + getAllUsers()
+    }
+    }
+
+package "Services" {
+class SendGrid{}
+class WorkDrawing{}
+class CarportSketch{}
+}
+
+ConstructionWood ..|> IMaterials
+RoofCovering ..|> IMaterials
+NailsScrewsBrackets ..|> IMaterials
+
+
+@enduml
+implements ..|>
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
