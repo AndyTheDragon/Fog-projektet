@@ -16,15 +16,26 @@ interface IMaterials
 class Carport
 {
 - List<IMaterials> materialsList
+-int length
+-int width
+-int height
+-boolean hasShed
+-RoofType roofType
++ getNumberOfPosts()
+}
+enum RoofType
+{
+    FLAT
+    SLOPED
 }
 
-class Salesman
+class User
 {
 - int salesmanID
 - String name
 - String email
 - String password
-- String role
+- boolean isAdmin
 + getters()
 + setters()
 }
@@ -74,10 +85,10 @@ class RoofCovering
 - int typeID
 + constructors()
 + getters()
-
 }
 class NailsScrewsBrackets
 {
+
 
 }
 }
@@ -92,7 +103,7 @@ package "Controllers" {
     + updateOrder()
     + deleteOrder()
     }
-    class AdminController
+    class UserController
     {
     + addRoutes()
     + login()
