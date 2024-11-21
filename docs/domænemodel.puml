@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object CarportOrdre
+object Carport
+object Materialeliste
+object Tilbud
+object Plukliste
+object Stykliste
+object Vejledning
+object Ordrebekræftelse
+object Faktura
+object CarportSkitse
+object Arbejdstegning
+object Stolpe
+object Rem
+object Spær
+object Lægte
+object Tagbeklædning
+object Stern
+object Vindskede
+object Beklædning
+object SømSkruerBeslag
+object Sælger
+object Slutkunde
+object Email
+object Tag
+object Skur
+
+
+CarportOrdre *-- Tilbud
+CarportOrdre *--- Materialeliste
+CarportOrdre *-- CarportSkitse
+CarportOrdre *-- Vejledning
+CarportOrdre o-- Ordrebekræftelse
+CarportOrdre o-- Faktura
+Vejledning *-- Stykliste
+Vejledning *-- Arbejdstegning
+Materialeliste <|--- Stykliste
+Materialeliste <|--- Plukliste
+Carport *- Stolpe
+Carport *- Rem
+Carport *- Spær
+Carport o-- Lægte
+Carport *-- Tagbeklædning
+Carport *-- Stern
+Carport o-- Vindskede
+Carport o-- Beklædning
+Carport *-- SømSkruerBeslag
+Carport *--- Tag
+Carport o--- Skur
+Materialeliste *--- Stolpe
+Materialeliste *--- Spær
+Materialeliste *--- Rem
+Materialeliste o--- Lægte
+Materialeliste *--- Tagbeklædning
+Materialeliste *--- Stern
+Materialeliste o--- Vindskede
+Materialeliste o--- Beklædning
+Materialeliste *--- SømSkruerBeslag
+Slutkunde --> Carport
+Tilbud <-- Carport
+CarportOrdre <-- Sælger
+Sælger <--> Email
+Email <--> Slutkunde
+
+
+@enduml
+
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
