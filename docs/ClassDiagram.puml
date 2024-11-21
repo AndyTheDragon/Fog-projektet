@@ -21,7 +21,13 @@ class Carport
 -int height
 -boolean hasShed
 -RoofType roofType
++ constructors()
 + getNumberOfPosts()
++ getNumberOfBeams()
++ getNumberOfRafters()
++ getNumberOfRoofCovering()
++ getNumberOfScrewsBrackets()
++ getNumberOfBargeBoard()
 }
 enum RoofType
 {
@@ -36,6 +42,7 @@ class User
 - String email
 - String password
 - boolean isAdmin
++ constructors()
 + getters()
 + setters()
 }
@@ -48,6 +55,10 @@ class Customer
 - String city
 - String phoneNumber
 - String email
++ constructors()
++ getters()
++ setters()
+
 
 }
 class Order
@@ -61,6 +72,7 @@ class Order
 - boolean isAssigned
 + boolean isAssigned()
 + boolean isPaid()
++ constructors()
 + getters()
 + setters()
 }
@@ -86,8 +98,16 @@ class RoofCovering
 + constructors()
 + getters()
 }
-class NailsScrewsBrackets
+class BoltsScrewsBrackets
 {
+- String type
+- int typeID
+- int length
+- int width
+- int amount
+- String unit
++ constructors()
++ getters()
 
 
 }
@@ -161,7 +181,7 @@ class CarportSketch{}
 
 ConstructionWood ..|> IMaterials
 RoofCovering ..|> IMaterials
-NailsScrewsBrackets ..|> IMaterials
+BoltsScrewsBrackets ..|> IMaterials
 
 
 @enduml
