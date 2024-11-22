@@ -11,7 +11,6 @@ package "Entities" {
 interface IMaterials
 {
 
-+ @override boolean equals()
 + void getMaterials()
 
 }
@@ -31,6 +30,7 @@ class Carport
 - calcBatterns()
 - calcRafters()
 - calcPosts()
+
 }
 enum RoofType
 {
@@ -90,6 +90,7 @@ class ConstructionWood
 - final String unit
 - final String description
 + constructors()
++ @override boolean equals()
 + getters()
 }
 class RoofCovering
