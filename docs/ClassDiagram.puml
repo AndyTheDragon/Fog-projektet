@@ -25,8 +25,8 @@ class Carport
 -boolean hasShed
 -RoofType roofType
 + getListOfMaterials()
-- calcFasciaFront()
-- calcFasciaBack()
+- int[] calcOptimalBoards(int totalLength, ConstructionWood board1, ConstructionWood board2)
+- calcFasciaFrontBack()
 - calcFasciaSides()
 - calcBatterns()
 - calcRafters()
