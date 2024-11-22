@@ -1,0 +1,13 @@
+.navbar-brand svg
+{
+    height: 70px;
+    width: 70px;
+}
+.navbar-brand
+{
+    --bs-navbar-brand-padding-y: 0;
+}
+.navbar
+{
+    --bs-navbar-padding-y: 0;
+}
