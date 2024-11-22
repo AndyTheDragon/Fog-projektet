@@ -13,6 +13,7 @@ interface IMaterials
 
 + @override boolean equals()
 + void getMaterials()
+
 }
 
 class Carport
@@ -23,13 +24,13 @@ class Carport
 -int height
 -boolean hasShed
 -RoofType roofType
-+ constructors()
-+ getNumberOfPosts()
-+ getNumberOfBeams()
-+ getNumberOfRafters()
-+ getNumberOfRoofCovering()
-+ getNumberOfScrewsBrackets()
-+ getNumberOfBargeBoard()
++ getListOfMaterials()
+- calcFasciaFront()
+- calcFasciaBack()
+- calcFasciaSides()
+- calcBatterns()
+- calcRafters()
+- calcPosts()
 }
 enum RoofType
 {
