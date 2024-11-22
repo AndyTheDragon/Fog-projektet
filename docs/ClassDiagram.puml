@@ -10,6 +10,8 @@ class Main
 package "Entities" {
 interface IMaterials
 {
+
++ @override boolean equals()
 + void getMaterials()
 }
 
@@ -78,13 +80,14 @@ class Order
 }
 class ConstructionWood
 {
-- String type
-- int typeID
-- int length
-- int width
-- int height
-- int amount
-- String unit
+- final String type
+- final int fogProductID
+- final int width
+- final int height
+- final int length
+- final int amount
+- final String unit
+- final String description
 + constructors()
 + getters()
 }
@@ -94,14 +97,14 @@ class RoofCovering
 - int amount
 - String unit
 - String type
-- int typeID
+- int fogProductID
 + constructors()
 + getters()
 }
 class BoltsScrewsBrackets
 {
 - String type
-- int typeID
+- int fogProductID
 - int length
 - int width
 - int amount
