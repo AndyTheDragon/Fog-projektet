@@ -161,6 +161,7 @@ package "Persistence" {
     }
     class MaterialMapper
     {
+        + List<ConstructionWood> getConstructionWoodFromFunction(String function)
         + createMaterial()
         + getMaterials()
         + getAllMaterials()
