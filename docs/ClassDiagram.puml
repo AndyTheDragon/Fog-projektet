@@ -1,0 +1,197 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Main
+{
+    + void main(String[] args)
+}
+
+
+package "Entities" {
+interface IMaterials
+{
+
++ void getMaterials()
+
+}
+
+class Carport
+{
+- List<IMaterials> materialsList
+-int length
+-int width
+-int height
+-boolean hasShed
+-RoofType roofType
++ getListOfMaterials()
+- int[] calcOptimalBoards(int totalLength, ConstructionWood board1, ConstructionWood board2)
+- calcFasciaFrontBack()
+- calcFasciaSides()
+- calcBatterns()
+- calcRafters()
+- calcPosts()
+
+}
+enum RoofType
+{
+    FLAT
+    SLOPED
+}
+
+class User
+{
+- int salesmanID
+- String name
+- String email
+- String password
+- boolean isAdmin
++ constructors()
++ getters()
++ setters()
+}
+class Customer
+{
+- int customerID
+- String name
+- String address
+- String zipcode
+- String city
+- String phoneNumber
+- String email
++ constructors()
++ getters()
++ setters()
+
+
+}
+class Order
+{
+- int orderID
+- int customerID
+- int salesmanID
+- int carportID
+- int price
+- boolean isPaid
+- boolean isAssigned
++ boolean isAssigned()
++ boolean isPaid()
++ constructors()
++ getters()
++ setters()
+}
+class ConstructionWood
+{
+- final String type
+- final int fogProductID
+- final int width
+- final int height
+- final int length
+- final int amount
+- final String unit
+- final String description
++ constructors()
++ @override boolean equals()
++ getters()
+}
+class RoofCovering
+{
+- int length
+- int amount
+- String unit
+- String type
+- int fogProductID
++ constructors()
++ getters()
+}
+class BoltsScrewsBrackets
+{
+- String type
+- int fogProductID
+- int length
+- int width
+- int amount
+- String unit
++ constructors()
++ getters()
+
+
+}
+}
+package "Controllers" {
+    class OrderController
+    {
+    + addRoutes()
+    + createOrder()
+    + getOrdersByUser()
+    + getAllOrders()
+    + getOrderById()
+    + updateOrder()
+    + deleteOrder()
+    }
+    class UserController
+    {
+    + addRoutes()
+    + login()
+    + logout()
+    + createUser()
+    + getAllUsers()
+    }
+    class MaterialController
+    {
+    + addRoutes()
+    + createMaterial()
+    + getMaterials()
+    + getAllMaterials()
+    + getMaterialById()
+    + updateMaterialPrice()
+    + updateMaterialStock()
+    + updateMaterial()
+    + deleteMaterial()
+   }
+}
+package "Persistence" {
+    class OrderMapper
+    {
+        + createOrder()
+        + getOrdersByUser()
+        + getAllOrders()
+        + getOrderById()
+        + updateOrder()
+        + deleteOrder()
+    }
+    class MaterialMapper
+    {
+        + createMaterial()
+        + getMaterials()
+        + getAllMaterials()
+        + getMaterialById()
+        + updateMaterialPrice()
+        + updateMaterialStock()
+        + updateMaterial()
+        + deleteMaterial()
+    }
+    class UserMapper
+    {
+        + login()
+        + createUser()
+        + getAllUsers()
+    }
+    }
+
+package "Services" {
+class SendGrid{}
+class WorkDrawing{}
+class CarportSketch{}
+}
+
+ConstructionWood ..|> IMaterials
+RoofCovering ..|> IMaterials
+BoltsScrewsBrackets ..|> IMaterials
+
+
+@enduml
+implements ..|>
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
