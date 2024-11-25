@@ -20,7 +20,7 @@ class CarportTest
     }
 
     @Test
-    void calcOptimalWoodMiddleTest()
+    void calcOptimalBatternMiddleTest()
     {
         //Arrange
         Carport carport = new Carport();
@@ -36,7 +36,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalWoodMinimumTestA()
+    void calcOptimalBatternMinimumTestA()
     {
         //Arrange
         Carport carport = new Carport();
@@ -52,7 +52,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalWoodMinimumTestB()
+    void calcOptimalBatternMinimumTestB()
     {
         //Arrange
         Carport carport = new Carport();
@@ -68,7 +68,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalWoodMaximumTest()
+    void calcOptimalBatternMaximumTest()
     {
         //Arrange
         Carport carport = new Carport();
