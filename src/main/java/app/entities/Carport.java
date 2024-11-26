@@ -2,10 +2,10 @@ package app.entities;
 
 public class Carport
 {
-    public int[] calcOptimalWood(int totalLength, int length1, int length2)
+    public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
-        if (totalLength % length1 == 0 || totalLength % length2 == 0)
+        if (totalLength % highPrioBoard == 0 || totalLength % lowPrioBoard == 0)
         {
             wastePercentage = 1.0;
         }
@@ -22,7 +22,7 @@ public class Carport
             for (int y = 0; y <= maxPieces; y++)
             {
                 // calculate total length of this combination
-                double calculatedLength = x * length2 + y * length1;
+                double calculatedLength = x * lowPrioBoard + y * highPrioBoard;
 
                 // Control if total length is reached
                 if (calculatedLength >= totalLengthInclWaste)
