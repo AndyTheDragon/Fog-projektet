@@ -20,7 +20,7 @@ class CarportTest
     }
 
     @Test
-    void calcOptimalBatternMiddleTest()
+    void calcOptimalBeamMiddleTest()
     {
         //Arrange
         Carport carport = new Carport();
@@ -36,7 +36,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalBatternMinimumTestA()
+    void calcOptimalBeamMinimumTestA()
     {
         //Arrange
         Carport carport = new Carport();
@@ -52,7 +52,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalBatternMinimumTestB()
+    void calcOptimalBeamMinimumTestB()
     {
         //Arrange
         Carport carport = new Carport();
@@ -68,7 +68,7 @@ class CarportTest
 
     }
     @Test
-    void calcOptimalBatternMaximumTest()
+    void calcOptimalBeamMaximumTest()
     {
         //Arrange
         Carport carport = new Carport();
@@ -82,5 +82,46 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
 
+    }
+
+    //Make test mathods for all types of wood below
+
+    @Test
+    void calcOptimalFasciaMiddleTest()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int totalLength = 2*600;
+        int length1 = 360;
+        int length2 = 540;
+        int[] expected = new int[]{2, 1};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    void calcOptimalFasciaMinimumTestA()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+
+    @Test
+    void calcOptimalFasciaMinimumTestB()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+
+    @Test
+    void calcOptimalFasciaMaximumTest()
+    {
+        //Arrange
+        //Act
+        //Assert
     }
 }
