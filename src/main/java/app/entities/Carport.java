@@ -1,4 +1,4 @@
-package app.Entities;
+package app.entities;
 
 public class Carport
 {
