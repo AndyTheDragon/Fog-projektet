@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+skinparam handwritten true
+
+actor Slutkunde
+participant View as V
+participant "OrderController" as C
+participant "OrderMapper" as M
+participant DB
+
+Slutkunde -> V: Se bestillingsformlar
+activate V
+V -> C: get request til /customorder
+C --> V: render bestilling.html
+deactivate V
+
+Slutkunde -> V: Udfyld bestillingsformular
+activate V
+
+V -> C: Post request til /customorder/request
+activate C
+C -> C: Validate form data
+C -> M: createRequest(data)
+activate M
+M --> DB: execute sql
+DB --> M: generated request_id
+M -> C: success/Exception
+deactivate M
+C -> C : sæt message attributten til\n success-message eller error-message
+C -> V: render kvittering.html med message
+deactivate C
+
+
+
+deactivate V
+
+@enduml
