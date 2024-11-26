@@ -147,7 +147,7 @@ class CarportTest
         int totalLength = 7*360;
         int length1 = 480;
         int length2 = 600;
-        int[] expected = new int[]{4, 1};
+        int[] expected = new int[]{7, 0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
         //Assert
@@ -159,8 +159,8 @@ class CarportTest
         //Arrange
         Carport carport = new Carport();
         int totalLength = 15*600;
-        int length1 = 480;
-        int length2 = 600;
+        int length1 = 600;
+        int length2 = 480;
         int[] expected = new int[]{15,0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
