@@ -89,7 +89,7 @@ class CarportTest
     //Make test mathods for all types of wood below
 
     @Test
-    void calcOptimalUnderFasciaMiddleTest()
+    void calcOptimalFasciaMiddleTest()
     {
         //Arrange
         Carport carport = new Carport();
@@ -147,12 +147,12 @@ class CarportTest
     {
         //Arrange
         Carport carport = new Carport();
-        int length = 2*780;
+        int length = 2*870;
         int width = 2*600;
         int totalLength = length + width;
         int length1 = 360;
         int length2 = 540;
-        int[] expected = new int[]{7, 1};
+        int[] expected = new int[]{9, 0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
         //Assert
