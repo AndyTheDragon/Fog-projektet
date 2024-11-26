@@ -75,7 +75,7 @@ class CarportTest
         int totalLength = 2*870;
         int length1 = 480;
         int length2 = 600;
-        int[] expected = new int[]{0, 4};
+        int[] expected = new int[]{4, 0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
 
@@ -83,7 +83,7 @@ class CarportTest
         assertArrayEquals(expected, result);
 
         //In this test spillage of 5% has been added to our totalt length of wood which affects the expected
-        //result to be 4x600cm.
+        //result to be 4x480cm.
     }
 
     //Make test mathods for all types of wood below
