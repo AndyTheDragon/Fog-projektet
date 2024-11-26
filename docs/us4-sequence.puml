@@ -16,13 +16,21 @@ activate V
 V -> C: Get request til /orders/{sælger-id}
 activate C
 C -> C: Kontroller brugerrettigheder
+C -> M: getOrders(unassigned=true)
+activate M
+M -> DB: execute sql
+DB --> M: ordre linjer
+M --> C: List<Order> (eller Exception)
+deactivate M
+
 C -> M: getOrders(sælger-id)
 activate M
 M -> DB: execute sql
 DB --> M: ordre linjer
 M --> C: List<Order> (eller Exception)
 deactivate M
-C -> C: Gem orderList i ctx.attribute
+C -> C: Gem myOrderList i ctx.attribute
+C -> C: Gem unassignedOrderList i ctx.attribute
 C -> C: Gem error-message i ctx.attribute
 C -> V: render ordreoversigt.html med message
 deactivate C
