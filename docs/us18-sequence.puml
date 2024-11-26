@@ -8,6 +8,7 @@ participant View as V
 participant "OrderController" as C
 participant "OrderMapper" as M
 participant DB
+participant "E-mail" as E
 
 Slutkunde -> V: Klikker se tilbud i e-mail
 activate V
@@ -30,8 +31,23 @@ C -> C : sæt message attributten til\n success-message eller error-message
 C -> V: render setilbud.html med message
 deactivate C
 
-
-
 deactivate V
 
+
+Slutkunde -> V: Trykker afvis tilbud
+activate V
+
+V -> C: Post request til /quote/requestchange
+activate C
+C -> C: Validate form data
+C -> E: requestChangeEmail(message)
+activate E
+E -> E: send e-mail to sælger
+E --> C: succes/Exception
+deactivate E
+C -> C : sæt message attributten til\n success-message eller error-message
+C -> V: render setilbud.html med message
+deactivate C
+
+deactivate V
 @enduml
