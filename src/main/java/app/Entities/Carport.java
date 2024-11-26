@@ -10,27 +10,27 @@ public class Carport
             wastePercentage = 1.0;
         }
         double totalLengthInclWaste = totalLength * wastePercentage;
-        int maxPieces = 10;     // Maks antal stykker at overveje
+        int maxPieces = 10;     // Max pieces of each length
 
-        // Variabler til at holde resultatet
+        // Variables to store best result
         int bestX = 0, bestY = 0;
         double bestWaste = Double.MAX_VALUE;
 
-        // Loop for at finde optimale kombinationer
+        // Loop to find best combination
         for (int x = 0; x <= maxPieces; x++)
         {
             for (int y = 0; y <= maxPieces; y++)
             {
-                // Beregn samlet længde
+                // calculate total length of this combination
                 double calculatedLength = x * length2 + y * length1;
 
-                // Tjek om denne kombination opfylder behovet
+                // Control if total length is reached
                 if (calculatedLength >= totalLengthInclWaste)
                 {
-                    // Beregn spild
+                    // Calculate waste
                     double waste = calculatedLength - totalLengthInclWaste;
 
-                    // Opdater bedste resultat, hvis mindre spild findes
+                    // update best result if this is better
                     if (waste < bestWaste)
                     {
                         bestX = x;
