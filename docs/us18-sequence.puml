@@ -12,8 +12,16 @@ participant "E-mail" as E
 
 Slutkunde -> V: Klikker se tilbud i e-mail
 activate V
-V -> C: get request til /quote/{id}
+V -> C: get request til /quote/{order-id}
+activate C
+C -> M: getOrder(order-id)
+activate M
+M --> DB: execute sql
+M -> C: new Order()
+deactivate M
+C -> C: gem Order i ctx.attribute
 C --> V: render setilbud.html
+deactivate C
 deactivate V
 
 Slutkunde -> V: Trykker godkend tilbud
