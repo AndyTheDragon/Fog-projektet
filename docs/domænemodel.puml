@@ -12,12 +12,22 @@ object Ordrebekræftelse
 object Faktura
 object CarportSkitse
 object Arbejdstegning
-object Stolpe
-object Rem
-object Spær
-object Lægte
+object Post {
+Stolpe
+}
+object Beam {
+Rem
+}
+object Joist {
+Spær
+}
+object Rafter {
+Lægte
+}
+object Fascia {
+Stern
+}
 object Tagbeklædning
-object Stern
 object Vindskede
 object Beklædning
 object SømSkruerBeslag
@@ -38,23 +48,23 @@ Vejledning *-- Stykliste
 Vejledning *-- Arbejdstegning
 Materialeliste <|--- Stykliste
 Materialeliste <|--- Plukliste
-Carport *- Stolpe
-Carport *- Rem
-Carport *- Spær
-Carport o-- Lægte
+Carport *- Post
+Carport *- Beam
+Carport *- Joist
+Carport o-- Rafter
 Carport *-- Tagbeklædning
-Carport *-- Stern
+Carport *-- Fascia
 Carport o-- Vindskede
 Carport o-- Beklædning
 Carport *-- SømSkruerBeslag
 Carport *--- Tag
 Carport o--- Skur
-Materialeliste *--- Stolpe
-Materialeliste *--- Spær
-Materialeliste *--- Rem
-Materialeliste o--- Lægte
+Materialeliste *--- Post
+Materialeliste *--- Joist
+Materialeliste *--- Beam
+Materialeliste o--- Rafter
 Materialeliste *--- Tagbeklædning
-Materialeliste *--- Stern
+Materialeliste *--- Fascia
 Materialeliste o--- Vindskede
 Materialeliste o--- Beklædning
 Materialeliste *--- SømSkruerBeslag
