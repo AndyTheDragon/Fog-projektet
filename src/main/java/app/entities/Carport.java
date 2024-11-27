@@ -117,9 +117,9 @@ public class Carport
         return materialsList;
     }
 
-    private List<IMaterials> calcBeam(int length, int width)
+    private List<IMaterials> calcBeam(int length)
     {
-        int totalLength = (length + width)*2;
+        int totalLength = length*2;
         int highPrioBoard = 480;
         int lowPrioBoard = 600;
         int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
