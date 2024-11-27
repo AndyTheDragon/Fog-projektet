@@ -90,11 +90,13 @@ public class Carport
 
     private List<IMaterials> calcJoists(int length)
     {
+        ConstructionWood joistBoard;
         int joistSpacing = 55;
         int amountOfJoists = (length/joistSpacing) + 1;
+        joistBoard = new ConstructionWood(45, 195, 6000, "stk", "Spærtræ ubh.", "Spær, monteres på rem", amountOfJoists, 0);
+        materialsList.add((IMaterials) joistBoard);
 
-
-        return null;
+        return materialsList;
     }
 
     private List<IMaterials> calcBargeBoards()
