@@ -160,6 +160,88 @@ class CarportTest
     }
 
     @Test
+    void calcOptimalFlatBargeBoardMinimumTestA()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int length = 2*240;
+        int width = 240;
+        int totalLength = length + width;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] expected = new int[]{2, 0};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+    @Test
+    void calcOptimalFlatBargeBoardMiddleTest()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int length = 2*780;
+        int width = 600;
+        int totalLength = length + width;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] expected = new int[]{6, 0};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    void calcOptimalRisenBargeBoardMaximumTest()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int length = 2*870;
+        int width = 4*345;
+        int totalLength = length + width;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] expected = new int[]{8, 1};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+    @Test
+    void calcOptimalRisenbargeBoardMinimumTest()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int length = 2*540;
+        int width = 4*209;
+        int totalLength = length + width;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] expected = new int[]{6, 0};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+    @Test
+    void calcOptimalRisenBargeBoardMiddleTest()
+    {
+        //Arrange
+        Carport carport = new Carport();
+        int length = 2*780;
+        int width = 4*219;
+        int totalLength = length + width;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] expected = new int[]{6, 1};
+        //Act
+        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        //Assert
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
     void calcOptimalRafterMinimumTestA()
     {
         //Arrange
