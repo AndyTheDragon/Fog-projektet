@@ -146,11 +146,31 @@ public class Carport
         return null;
     }
 
-    private List<IMaterials> calcPosts()
-    {
-        ConstructionWood post;
-        if(shedLength && shedWidth)
-        return null;
+    private List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) {
+        int basePosts = 4;
+        int extraPostsForShed = 2;
+        int doorPost = 1;
+        int extraPostsForWideShed = 2;
+        int extraPostsForLongCarport = 2;
+        int totalPosts = basePosts;
+
+        // Check if carport has a shed
+        if (shedLength > 0 && shedWidth > 0) {
+            totalPosts += extraPostsForShed + doorPost;
+            if (width > 300) {
+                totalPosts += extraPostsForWideShed;
+            }
+        }
+
+        // Check if carport is longer than 5 meters
+        if (length > 500) {
+            totalPosts += extraPostsForLongCarport;
+        }
+
+        ConstructionWood post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
+        materialsList.add((IMaterials) post);
+
+        return materialsList;
     }
 
     private List<IMaterials> calcJoists(int length)
