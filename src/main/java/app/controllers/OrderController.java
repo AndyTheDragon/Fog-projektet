@@ -9,25 +9,35 @@ import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OrderController
 {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool)
-    { app.get("bestil", ctx -> showOrders(ctx, connectionPool));
+    { app.get("orders", ctx -> showOrders(ctx, connectionPool));
 
     }
 
     private static void showOrders(Context ctx, ConnectionPool connectionPool)
     {
         try {
-            ArrayList<Order> orders = OrderMapper.getOrders(connectionPool);
+            List<Order> unassignedOrders = OrderMapper.getOrders(true);
+            List<Order> assignedOrders = OrderMapper.getOrders(false);
 
-            ctx.attribute("bottoms", orders);
-            ctx.render("bestil.html");
 
-        } catch (DatabaseException e) {
-            ctx.attribute("errorMessage", "Der var et problem ved at hente siden pga. fejl ved at hente data.");
-            ctx.render("errorAlreadyLogin.html");
+            Map<String, Object> orders = new HashMap<>();
+            orders.put("unassignedOrders", unassignedOrders);
+            orders.put("assignedOrders", assignedOrders);
+
+            // Returner ordrerne som JSON
+            ctx.json(orders);
+        } catch (Exception e) {
+
+            ctx.attribute("error", "Der opstod en fejl under hentning af ordrer.");
+            ctx.render("error.html");
+            throw new RuntimeException(e);
         }
     }
 }
