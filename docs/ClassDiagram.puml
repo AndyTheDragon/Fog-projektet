@@ -26,11 +26,14 @@ class Carport
 -RoofType roofType
 + getListOfMaterials()
 - int[] calcOptimalBoards(int totalLength, ConstructionWood board1, ConstructionWood board2)
-- calcFasciaFrontBack()
-- calcFasciaSides()
-- calcBatterns()
-- calcRafters()
-- calcPosts()
+- List<IMaterials> calcFascia()
+- List<IMaterials> calcBeam()
+- List<IMaterials> calcRafters()
+- List<IMaterials> calcPosts()
+- List<IMaterials> calcJoists()
+- List<IMaterials> calcBargeBoards()
+- List<IMaterials> calcBattern()
+- List<IMaterials> calcCladding()
 
 }
 enum RoofType
