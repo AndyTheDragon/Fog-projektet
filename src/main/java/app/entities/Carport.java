@@ -148,6 +148,8 @@ public class Carport
 
     private List<IMaterials> calcPosts()
     {
+        ConstructionWood post;
+        if(shedLength && shedWidth)
         return null;
     }
 
