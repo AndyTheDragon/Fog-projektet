@@ -70,7 +70,27 @@ public class Carport
 
     private List<IMaterials> calcFascia(int length, int width)
     {
-        return null;
+        int totalLength = (length + width)*2;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        ConstructionWood fasciaBoard;
+        if (highPrioAmount > 0)
+        {
+            fasciaBoard = new ConstructionWood(25, 200, 3600, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", highPrioAmount, 0);
+            materialsList.add((IMaterials) fasciaBoard);
+        }
+        if(lowPrioAmount > 0)
+        {
+            fasciaBoard = new ConstructionWood(25, 200, 5400, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", lowPrioAmount, 0);
+            materialsList.add((IMaterials) fasciaBoard);
+        }
+
+        return materialsList;
     }
 
     private List<IMaterials> calcBeam()
