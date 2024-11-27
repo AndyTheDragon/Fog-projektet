@@ -8,19 +8,21 @@ public class Carport
     int length;
     int width;
     int height;
-    boolean hasShed;
+    int shedLength;
+    int shedWidth;
     RoofType roofType;
 
     public Carport()
     {
     }
 
-    public Carport(int length, int width, int height, boolean hasShed, RoofType roofType)
+    public Carport(int length, int width, int height, int shedLength, int shedWidth, RoofType roofType)
     {
         this.length = length;
         this.width = width;
         this.height = height;
-        this.hasShed = hasShed;
+        this.shedLength = shedLength;
+        this.shedWidth = shedWidth;
         this.roofType = roofType;
     }
 
@@ -101,8 +103,50 @@ public class Carport
         return null;
     }
 
-    private List<IMaterials> calcCladding()
+    private List<IMaterials> calcCladding(int shedLength, int shedWidth)
     {
-        return null;
+        ConstructionWood claddingBoard;
+        double totalShedLength = (shedLength + shedWidth)*2;
+        double claddingBoardAmount = totalShedLength / 15;
+        int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
+        claddingBoard = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
+        materialsList.add((IMaterials) claddingBoard);
+
+        return materialsList;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getLength()
+    {
+        return length;
+    }
+
+    public List<IMaterials> getMaterialsList()
+    {
+        return materialsList;
+    }
+
+    public RoofType getRoofType()
+    {
+        return roofType;
+    }
+
+    public int getShedLength()
+    {
+        return shedLength;
+    }
+
+    public int getShedWidth()
+    {
+        return shedWidth;
+    }
+
+    public int getWidth()
+    {
+        return width;
     }
 }
