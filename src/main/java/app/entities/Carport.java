@@ -1,7 +1,29 @@
 package app.entities;
 
+import java.util.List;
+
 public class Carport
 {
+    List<IMaterials> materialsList;
+    int length;
+    int width;
+    int height;
+    boolean hasShed;
+    RoofType roofType;
+
+    public Carport()
+    {
+    }
+
+    public Carport(int length, int width, int height, boolean hasShed, RoofType roofType)
+    {
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.hasShed = hasShed;
+        this.roofType = roofType;
+    }
+
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -42,5 +64,45 @@ public class Carport
 
         }
         return new int[]{bestY, bestX};
+    }
+
+    private List<IMaterials> calcFascia(int length, int width)
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcBeam()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcRafters()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcPosts()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcJoists()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcBargeBoards()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcBattern()
+    {
+        return null;
+    }
+
+    private List<IMaterials> calcCladding()
+    {
+        return null;
     }
 }
