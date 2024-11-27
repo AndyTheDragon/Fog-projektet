@@ -86,8 +86,12 @@ public class Carport
         return null;
     }
 
-    private List<IMaterials> calcJoists()
+    private List<IMaterials> calcJoists(int length)
     {
+        int joistSpacing = 55;
+        int amountOfJoists = (length/joistSpacing) + 1;
+
+
         return null;
     }
 
