@@ -93,9 +93,28 @@ public class Carport
         return materialsList;
     }
 
-    private List<IMaterials> calcBeam()
+    private List<IMaterials> calcBeam(int length, int width)
     {
-        return null;
+        int totalLength = (length + width)*2;
+        int highPrioBoard = 480;
+        int lowPrioBoard = 600;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        ConstructionWood beam;
+        if (highPrioAmount > 0)
+        {
+            beam = new ConstructionWood(45, 195, 4800, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper (skur del, deles)", highPrioAmount, 0);
+            materialsList.add((IMaterials) beam);
+        }
+        if(lowPrioAmount > 0)
+        {
+            beam = new ConstructionWood(45, 195, 6000, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper", lowPrioAmount, 0);
+            materialsList.add((IMaterials) beam);
+        }
+        return materialsList;
     }
 
     private List<IMaterials> calcRafters()
