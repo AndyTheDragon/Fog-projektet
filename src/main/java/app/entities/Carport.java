@@ -162,9 +162,28 @@ public class Carport
         return materialsList;
     }
 
-    private List<IMaterials> calcBargeBoards()
+    private List<IMaterials> calcBargeBoards(int length, int width)
     {
-        return null;
+        int totalLength = (length + width)*2+10;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        ConstructionWood bargeBoard;
+        if (highPrioAmount > 0)
+        {
+            bargeBoard = new ConstructionWood(19, 100, 3600, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", highPrioAmount, 0);
+            materialsList.add((IMaterials) bargeBoard);
+        }
+        if(lowPrioAmount > 0)
+        {
+            bargeBoard = new ConstructionWood(19, 100, 5400, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", lowPrioAmount, 0);
+            materialsList.add((IMaterials) bargeBoard);
+        }
+        return materialsList;
     }
 
     private List<IMaterials> calcBattern()
