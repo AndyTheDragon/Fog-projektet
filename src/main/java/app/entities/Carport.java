@@ -164,7 +164,7 @@ public class Carport
 
     private List<IMaterials> calcBargeBoards(int length, int width)
     {
-        int totalLength = (length + width)*2+10;
+        int totalLength = (length + width)*2+20;
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
