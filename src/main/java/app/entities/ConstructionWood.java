@@ -11,7 +11,7 @@ public class ConstructionWood
     final String unit;
     final String description;
 
-    public ConstructionWood(int width, int height, int length, String unit, String type, String description, int amount, int fogProductID)
+    public ConstructionWood(int height, int width,  int length, String unit, String type, String description, int amount, int fogProductID)
     {
         this.width = width;
         this.height = height;
