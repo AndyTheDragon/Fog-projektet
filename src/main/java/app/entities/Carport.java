@@ -68,7 +68,7 @@ public class Carport
         return new int[]{bestY, bestX};
     }
 
-    private List<IMaterials> calcFascia(int length, int width)
+    private List<IMaterials> calcUnderFascia(int length, int width)
     {
         int totalLength = (length + width)*2;
         int highPrioBoard = 360;
