@@ -1,5 +1,6 @@
 package app.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Carport
@@ -24,6 +25,7 @@ public class Carport
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
         this.roofType = roofType;
+        calculateMaterials();
     }
 
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
@@ -70,6 +72,7 @@ public class Carport
 
     private List<IMaterials> calcUnderFascia(int length, int width)
     {
+        List <IMaterials> fasciaList = new ArrayList<>();
         int totalLength = (length + width)*2;
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
@@ -82,18 +85,19 @@ public class Carport
         if (highPrioAmount > 0)
         {
             underFascia = new ConstructionWood(25, 200, 3600, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", highPrioAmount, 0);
-            materialsList.add((IMaterials) underFascia);
+            fasciaList.add((IMaterials) underFascia);
         }
         if(lowPrioAmount > 0)
         {
             underFascia = new ConstructionWood(25, 200, 5400, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", lowPrioAmount, 0);
-            materialsList.add((IMaterials) underFascia);
+            fasciaList.add((IMaterials) underFascia);
         }
 
-        return materialsList;
+        return fasciaList;
     }
     private List<IMaterials> calcOverFascia(int length, int width)
     {
+        List <IMaterials> fasciaList = new ArrayList<>();
         int totalLength = (length + width)*2+5;
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
@@ -106,19 +110,20 @@ public class Carport
         if (highPrioAmount > 0)
         {
             overFascia = new ConstructionWood(25, 125, 3600, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", highPrioAmount, 0);
-            materialsList.add((IMaterials) overFascia);
+            fasciaList.add((IMaterials) overFascia);
         }
         if(lowPrioAmount > 0)
         {
             overFascia = new ConstructionWood(25, 125, 5400, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", lowPrioAmount, 0);
-            materialsList.add((IMaterials) overFascia);
+            fasciaList.add((IMaterials) overFascia);
         }
 
-        return materialsList;
+        return fasciaList;
     }
 
     private List<IMaterials> calcBeam(int length)
     {
+        List <IMaterials> beamList = new ArrayList<>();
         int totalLength = length*2;
         int highPrioBoard = 480;
         int lowPrioBoard = 600;
@@ -131,14 +136,14 @@ public class Carport
         if (highPrioAmount > 0)
         {
             beam = new ConstructionWood(45, 195, 4800, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper (skur del, deles)", highPrioAmount, 0);
-            materialsList.add((IMaterials) beam);
+            beamList.add((IMaterials) beam);
         }
         if(lowPrioAmount > 0)
         {
             beam = new ConstructionWood(45, 195, 6000, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper", lowPrioAmount, 0);
-            materialsList.add((IMaterials) beam);
+            beamList.add((IMaterials) beam);
         }
-        return materialsList;
+        return beamList;
     }
 
     private List<IMaterials> calcRafters()
@@ -146,7 +151,9 @@ public class Carport
         return null;
     }
 
-    private List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) {
+    private List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth)
+    {
+        List <IMaterials> postList = new ArrayList<>();
         int basePosts = 4;
         int extraPostsForShed = 2;
         int doorPost = 1;
@@ -168,24 +175,26 @@ public class Carport
         }
 
         ConstructionWood post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
-        materialsList.add((IMaterials) post);
+        postList.add((IMaterials) post);
 
-        return materialsList;
+        return postList;
     }
 
     private List<IMaterials> calcJoists(int length)
     {
+        List <IMaterials> joistList = new ArrayList<>();
         ConstructionWood joistBoard;
         int joistSpacing = 55;
         int amountOfJoists = (length/joistSpacing) + 1;
         joistBoard = new ConstructionWood(45, 195, 6000, "stk", "Spærtræ ubh.", "Spær, monteres på rem", amountOfJoists, 0);
-        materialsList.add((IMaterials) joistBoard);
+        joistList.add((IMaterials) joistBoard);
 
-        return materialsList;
+        return joistList;
     }
 
     private List<IMaterials> calcBargeBoards(int length, int width)
     {
+        List <IMaterials> bargeBoardList = new ArrayList<>();
         int totalLength = (length + width)*2+20;
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
@@ -198,14 +207,14 @@ public class Carport
         if (highPrioAmount > 0)
         {
             bargeBoard = new ConstructionWood(19, 100, 3600, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", highPrioAmount, 0);
-            materialsList.add((IMaterials) bargeBoard);
+            bargeBoardList.add((IMaterials) bargeBoard);
         }
         if(lowPrioAmount > 0)
         {
             bargeBoard = new ConstructionWood(19, 100, 5400, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", lowPrioAmount, 0);
-            materialsList.add((IMaterials) bargeBoard);
+            bargeBoardList.add((IMaterials) bargeBoard);
         }
-        return materialsList;
+        return bargeBoardList;
     }
 
     private List<IMaterials> calcBattern()
@@ -215,14 +224,27 @@ public class Carport
 
     private List<IMaterials> calcCladding(int shedLength, int shedWidth)
     {
+        List <IMaterials> claddingList = new ArrayList<>();
         ConstructionWood cladding;
         double totalShedLength = (shedLength + shedWidth)*2;
         double claddingBoardAmount = totalShedLength / 15;
         int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
         cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
-        materialsList.add((IMaterials) cladding);
+        claddingList.add((IMaterials) cladding);
 
-        return materialsList;
+        return claddingList;
+    }
+
+    public void calculateMaterials() {
+        materialsList = new ArrayList<>();
+
+        materialsList.addAll(calcUnderFascia(length, width));
+        materialsList.addAll(calcOverFascia(length, width));
+        materialsList.addAll(calcBeam(length));
+        materialsList.addAll(calcPosts(length, width, shedLength, shedWidth));
+        materialsList.addAll(calcJoists(length));
+        materialsList.addAll(calcBargeBoards(length, width));
+        materialsList.addAll(calcCladding(shedLength, shedWidth));
     }
 
     public int getHeight()
