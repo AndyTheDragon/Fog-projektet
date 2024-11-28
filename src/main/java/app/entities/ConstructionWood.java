@@ -1,6 +1,6 @@
 package app.entities;
 
-public class ConstructionWood
+public class ConstructionWood implements IMaterials
 {
     final String type;
     final int fogProductID;
@@ -21,5 +21,15 @@ public class ConstructionWood
         this.description = description;
         this.amount = amount;
         this.fogProductID = fogProductID;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ConstructionWood{" +
+                "amount=" + amount +
+                ", length=" + length +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -17,14 +17,12 @@ public class Carport
     {
     }
 
-    public Carport(int length, int width, int height, int shedLength, int shedWidth, RoofType roofType)
+    public Carport(int length, int width, int shedLength, int shedWidth)
     {
         this.length = length;
         this.width = width;
-        this.height = height;
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
-        this.roofType = roofType;
         calculateMaterials();
     }
 
@@ -227,7 +225,7 @@ public class Carport
         List <IMaterials> claddingList = new ArrayList<>();
         ConstructionWood cladding;
         double totalShedLength = (shedLength + shedWidth)*2;
-        double claddingBoardAmount = totalShedLength / 15;
+        double claddingBoardAmount = totalShedLength / 7.4;
         int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
         cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
         claddingList.add((IMaterials) cladding);
