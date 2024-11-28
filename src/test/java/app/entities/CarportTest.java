@@ -268,5 +268,67 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
+    @Test
+    void calcOptimalFlatRoofMinimumTest()
+    {
+        // Arrange
+        int carportWidth = 240;
+        int carportLength = 240;
+        int plateWidth = 109;
+        int shortPlateLength = 360;
+        int longPlateLength = 600;
+        int overlap = 20;
+
+        int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
+
+        int totalLength = carportLength + overlap;
+
+        int expectedPlatesForWidth = 3;
+        int expectedShortPlatesForLength = 1;
+        int expectedLongPlatesForLength = 0;
+
+        // Act
+        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        int shortPlatesForLength = result[0] ;
+        int longPlatesForLength = result[1];
+
+
+
+        // Assert
+        assertEquals(expectedPlatesForWidth, platesForWidth);
+        assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
+        assertEquals(expectedLongPlatesForLength, longPlatesForLength);
+    }
+    @Test
+    void calcOptimalFlatRoofMaxTest()
+    {
+        // Arrange
+        int carportWidth = 600;
+        int carportLength = 780;
+        int plateWidth = 109;
+        int shortPlateLength = 360;
+        int longPlateLength = 600;
+        int overlap = 20;
+
+        int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
+
+        int totalLength = carportLength + overlap;
+
+        int expectedPlatesForWidth = 6;
+        int expectedShortPlatesForLength = 1;
+        int expectedLongPlatesForLength = 1;
+
+        // Act
+        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        int shortPlatesForLength = result[0] ;
+        int longPlatesForLength = result[1];
+
+
+
+        // Assert
+        assertEquals(expectedPlatesForWidth, platesForWidth);
+        assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
+        assertEquals(expectedLongPlatesForLength, longPlatesForLength);
+    }
 
 }
