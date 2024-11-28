@@ -8,23 +8,72 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
+<div class="container mt-5">
+    <h1 class="text-center">Ordreoversigt</h1>
 
+    <!-- Ikke-tildelte ordrer -->
+    <h2>Ikke-tildelte Ordrer</h2>
+    <div id="unassignedOrders" class="row" style="width: 18rem;">
+        <button type="submit">Tildel til selv </button>
+    </div> <!-- Dynamisk indhold her -->
 
-<div class="unassigned-card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">Ordrer detaljer</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Tildel til selv</a>
-    </div>
+    <!-- Tildelte ordrer -->
+    <h2>Tildelte Ordrer</h2>
+    <div id="assignedOrders" class="row">
+
+    </div> <!-- Dynamisk indhold her -->
 </div>
 
-<div class="assigned-card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">Ordrer detaljer</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Se informationer</a>
-    </div>
-</div>
+<!-- Bootstrap JS og Fetch API -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Din egen JS til at hente ordrer og oprette cards -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hent ordrer fra serveren via Fetch API
+        fetch('/orders')
+            .then(response => response.json())
+            .then(data => {
+                // Generer cards for ikke-tildelte ordrer
+                const unassignedContainer = document.getElementById('unassignedOrders');
+                data.unassignedOrders.forEach(order => {
+                    const card = createCard(order);
+                    unassignedContainer.appendChild(card);
+                });
+
+                // Generer cards for tildelte ordrer
+                const assignedContainer = document.getElementById('assignedOrders');
+                data.assignedOrders.forEach(order => {
+                    const card = createCard(order);
+                    assignedContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Fejl ved hentning af ordrer:', error);
+            });
+
+        // Funktion til at skabe et card for hver ordre
+        function createCard(order) {
+            const card = document.createElement('div');
+            card.classList.add('col-md-4');
+            card.classList.add('mb-4');
+
+            card.innerHTML = `
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ordre ID: ${order.id}</h5>
+                            <p class="card-text"><strong>Kunde:</strong> ${order.customer}</p>
+                            <p class="card-text"><strong>Total:</strong> ${order.total} DKK</p>
+                            <p class="card-text"><strong>Status:</strong> ${order.status}</p>
+                        </div>
+                    </div>
+                `;
+            return card;
+        }
+    });
+</script>
 
 </body>
 </html>
