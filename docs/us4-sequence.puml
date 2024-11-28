@@ -10,7 +10,7 @@ participant "OrderMapper" as M
 participant DB
 
 
-Sælger -> V: Se tildelte ordrer
+Sælger -> V: Se unassigned ordrer
 activate V
 
 V -> C: Get request til /orders/{sælger-id}
