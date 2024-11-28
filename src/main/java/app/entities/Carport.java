@@ -241,11 +241,9 @@ public class Carport
         materialsList.addAll(calcUnderFascia(length, width));
         materialsList.addAll(calcOverFascia(length, width));
         materialsList.addAll(calcBeam(length));
-        materialsList.addAll(calcRafters());
         materialsList.addAll(calcPosts(length, width, shedLength, shedWidth));
         materialsList.addAll(calcJoists(length));
         materialsList.addAll(calcBargeBoards(length, width));
-        materialsList.addAll(calcBattern());
         materialsList.addAll(calcCladding(shedLength, shedWidth));
     }
 
