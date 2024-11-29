@@ -8,7 +8,7 @@ public class WorkDrawing
     private final int carportHeight;
     private final int shedWidth;
     private final int shedLength;
-    private boolean hasShed;
+    private final boolean hasShed;
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
     private final static int fasciaThickness = 50;
 

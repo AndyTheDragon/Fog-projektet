@@ -2,10 +2,11 @@ package app.services;
 
 public class DrawSVG
 {
-    private static final String SVG_TEMPLATE = "<svg version=\"1.1\"\n" +
-            "     x=\"%d\" y=\"%d\"\n" +
-            "     viewBox=\"%s\"  width=\"%s\" \n" +
-            "     preserveAspectRatio=\"xMinYMin\">";
+    private static final String SVG_TEMPLATE = """
+            <svg version="1.1"
+                 x="%d" y="%d"
+                 viewBox="%s"  width="%s"\s
+                 preserveAspectRatio="xMinYMin">""";
 
     private static final String SVG_ARROW_DEFS = "<defs>\n" +
             "        <marker id=\"beginArrow\" markerWidth=\"12\" markerHeight=\"12\" refX=\"0\" refY=\"6\" orient=\"auto\">\n" +
