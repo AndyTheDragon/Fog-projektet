@@ -19,6 +19,7 @@ public class DrawSVG
             </defs>""";
 
     private static final String SVG_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" style=\"%s\" />";
+    private static final String SVG_SLANTED_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" transform=\"rotate(%f %d %d)\" style=\"%s\" />";
     private static final String SVG_LINE_TEMPLATE = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s\" />";
     private static final String SVG_TEXT_TEMPLATE = "<text style=\"text-anchor: middle;\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>";
 
@@ -34,6 +35,11 @@ public class DrawSVG
     public void addRectangle(int x, int y, int height, int width, String style)
     {
         svg.append(String.format(SVG_RECT_TEMPLATE, x, y, height, width, style ));
+    }
+
+    public void addSlantedRect(int x, int y, int height, int width, double angle, int rotationX, int rotationY, String style)
+    {
+        svg.append(String.format(SVG_SLANTED_RECT_TEMPLATE, x, y, height, width, angle, rotationX, rotationY, style ));
     }
 
 
