@@ -190,6 +190,27 @@ public class Carport
 
         return joistList;
     }
+    public int getNumberOfJoists()
+    {
+        int joistThickness = 45; //obs mm
+        int minimumSpacing = 45;
+        int maximumSpacing = 60;
+        int maxGaps = Math.floorDiv(length, minimumSpacing);
+        int minGaps = Math.ceilDiv(length, maximumSpacing);
+        double error = 1;
+        int gaps = 0;
+        for (int i= minGaps; i <= maxGaps; i++)
+        {
+            double currentGap = (double)length/i;
+            double currentError = Math.ceil(currentGap)-currentGap;
+            if (currentError <= error)
+            {
+                error = currentError;
+                gaps = i;
+            }
+        }
+        return gaps;
+    }
 
     private List<IMaterials> calcBargeBoards(int length, int width)
     {
@@ -278,7 +299,7 @@ public class Carport
         materialsList.addAll(calcCladding(shedLength, shedWidth));
         materialsList.addAll(calcRoof(length, width));
 
-        System.out.println(materialsList);
+        //System.out.println(materialsList);
     }
 
     public int getHeight()
