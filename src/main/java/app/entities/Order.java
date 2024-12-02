@@ -1,33 +1,45 @@
 package app.entities;
 
-public class Order
-{   private int id;
-    private String status;
-    private String customer;
-    private double total;
+
+public class Order {
+    private int orderId;
+    private int customerId;
+    private Integer salesId; // Nullable, derfor Integer
+
+    public Order(int orderId, int customerId, Integer salesId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.salesId = salesId;
+    }
 
 
-    public Order(int id, String status, String customer, double total)
+    public int getOrderId()
     {
-        this.id = id;
-        this.status = status;
-        this.customer = customer;
-        this.total = total;
+        return orderId;
     }
 
-    public int getId() {
-        return id;
+    public void setOrderId(int orderId)
+    {
+        this.orderId = orderId;
     }
 
-    public String getStatus() {
-        return status;
+    public int getCustomerId()
+    {
+        return customerId;
     }
 
-    public String getCustomer() {
-        return customer;
+    public void setCustomerId(int customerId)
+    {
+        this.customerId = customerId;
     }
 
-    public double getTotal() {
-        return total;
+    public Integer getSalesId()
+    {
+        return salesId;
+    }
+
+    public void setSalesId(Integer salesId)
+    {
+        this.salesId = salesId;
     }
 }
