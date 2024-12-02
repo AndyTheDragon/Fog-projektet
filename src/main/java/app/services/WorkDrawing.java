@@ -13,7 +13,7 @@ public class WorkDrawing
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
     private final static int fasciaThickness = 50;
 
-    public WorkDrawing(int carportWidth, int carportLength, int carportHeight, int numberOfJoists)
+    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int numberOfJoists)
     {
         this.carportWidth = carportWidth *10;
         this.carportLength = carportLength *10;
@@ -29,7 +29,7 @@ public class WorkDrawing
         addFascia();
     }
 
-    public WorkDrawing(int carportWidth, int carportLength, int carportHeight, int shedWidth, int shedLength, int numberOfJoists)
+    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int shedLength, int shedWidth, int numberOfJoists)
     {
         this.carportWidth = carportWidth * 10;
         this.carportLength = carportLength * 10;
