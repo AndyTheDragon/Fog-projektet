@@ -27,6 +27,12 @@ public class Carport
         calculateMaterials();
     }
 
+    public boolean hasShed()
+    {
+        if (shedLength > 0 && shedWidth > 0) return true;
+        else return false;
+    }
+
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
