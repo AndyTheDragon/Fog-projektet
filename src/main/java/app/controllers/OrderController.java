@@ -1,6 +1,9 @@
 package app.controllers;
 
+import app.entities.Order;
+import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -11,7 +14,7 @@ public class OrderController
     public static void addRoutes(Javalin app, ConnectionPool dbConnection)
     {
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
-        app.get("/order/{id}", ctx -> showOrderDetails(ctx,dbConnection));
+        app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -33,6 +36,31 @@ public class OrderController
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        int orderId = 0;
+        Order order = null;
+        if (ctx.sessionAttribute("user") == null)
+        {
+            ctx.attribute("message", "You need to login first");
+        }
+        else
+        {
+            try
+            {
+                orderId = Integer.parseInt(ctx.pathParam("orderId"));
+                order = OrderMapper.getOrder(orderId);
+            }
+            catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid order id");
+            }
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+            ctx.attribute("order", order);
+        }
+        ctx.render("ordredetaljer.html");
+
 
     }
 
