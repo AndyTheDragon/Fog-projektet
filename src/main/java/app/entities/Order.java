@@ -1,46 +1,49 @@
 package app.entities;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Order
 {
     private int orderID;
-    private int customerID;
-    private int salesID;
+    private Customer customer;
+    private User salesPerson;
     private int carportWidth;
     private int carportLength;
     private boolean carportShed;
     private int shedWidth;
     private int shedLength;
-    private String carportRoof;
+    private RoofType carportRoof;
     private boolean isPaid;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Carport carport;
 
-    public Order(int orderID, int customerID, int salesID, int carportWidth, int carportLength, boolean carportShed, int shedWidth, int shedLength, String carportRoof, boolean isPaid, Timestamp createdAt, Timestamp updatedAt)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
     {
         this.orderID = orderID;
-        this.customerID = customerID;
-        this.salesID = salesID;
+        this.customer = customer;
+        this.salesPerson = salesPerson;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
-        this.carportShed = carportShed;
+        this.carportShed = (shedWidth>0&&shedLength>0);
         this.shedWidth = shedWidth;
         this.shedLength = shedLength;
         this.carportRoof = carportRoof;
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
     }
 
-    public int getCustomerID()
+    public Customer getCustomer()
     {
-        return customerID;
+        return customer;
     }
 
-    public int getSalesID()
+    public User getSalesPerson()
     {
-        return salesID;
+        return salesPerson;
     }
 
     public int getCarportWidth()
@@ -68,7 +71,7 @@ public class Order
         return shedLength;
     }
 
-    public String getCarportRoof()
+    public RoofType getCarportRoof()
     {
         return carportRoof;
     }
@@ -78,12 +81,12 @@ public class Order
         return isPaid;
     }
 
-    public Timestamp getCreatedAt()
+    public LocalDateTime getCreatedAt()
     {
         return createdAt;
     }
 
-    public Timestamp getUpdatedAt()
+    public LocalDateTime getUpdatedAt()
     {
         return updatedAt;
     }
