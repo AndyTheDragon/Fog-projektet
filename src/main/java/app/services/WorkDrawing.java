@@ -87,7 +87,7 @@ public class WorkDrawing
     private void addJoists()
     {
 
-        int joistSpacing = carportLength/numberOfJoists;
+        int joistSpacing = carportLength/numberOfJoists-45-(2*45/numberOfJoists);
         int sum = 0;
         while (sum < carportLength-2*fasciaThickness)
         {
