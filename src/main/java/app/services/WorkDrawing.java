@@ -32,8 +32,8 @@ public class WorkDrawing
         addBeams();
         addJoists();
         addPosts();
-        addFascia();
         addCladding();
+        addFascia();
     }
     public WorkDrawing(Carport carport, int drawingWidth)
     {
@@ -46,15 +46,15 @@ public class WorkDrawing
         this.numberOfJoists = carport.getNumberOfJoists();
         this.extraPostsForLongCarport = carport.extraPostsForLongCarport();
         this.topViewDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + drawingWidth);
-        this.sideViewDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportHeight +100), ""+ drawingWidth);
+        this.sideViewDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportHeight + 400), ""+ drawingWidth);
         addBeams();
         addJoists();
         addPosts();
-        addFascia();
         if (this.hasShed)
         {
             addCladding();
         }
+        addFascia();
     }
 
     private void addBeams()
@@ -71,6 +71,7 @@ public class WorkDrawing
         //Front posts
         topViewDrawing.addRectangle(postXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
         topViewDrawing.addRectangle(postXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+        sideViewDrawing.addRectangle(postXoffset,fasciaThickness+350-96/2,2080,97, STYLE);
         int middlepostXoffset = 3300;
         if (!hasShed)
         {
@@ -81,6 +82,7 @@ public class WorkDrawing
             // Middle posts
             topViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
             topViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+            sideViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350,2050,97, STYLE);
         }
         if (hasShed)
         {
@@ -95,7 +97,10 @@ public class WorkDrawing
         //Back posts
         topViewDrawing.addRectangle(carportLength -300-97,fasciaThickness+350-96/2,97, 97, STYLE);
         topViewDrawing.addRectangle(carportLength -300-97,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
-
+        if(!hasShed)
+        {
+            sideViewDrawing.addRectangle(carportLength - 300 - 97, fasciaThickness + 350, 2020, 97, STYLE);
+        }
 
 
     }
@@ -122,6 +127,8 @@ public class WorkDrawing
         topViewDrawing.addRectangle(fasciaThickness,0, 25, carportLength-fasciaThickness, STYLE);
         topViewDrawing.addRectangle(fasciaThickness,carportWidth-fasciaThickness, fasciaThickness/2, carportLength-fasciaThickness, STYLE);
         topViewDrawing.addRectangle(fasciaThickness,carportWidth-fasciaThickness/2, fasciaThickness/2, carportLength-fasciaThickness, STYLE);
+        sideViewDrawing.addSlantedRect(fasciaThickness,250,200, carportLength-2*fasciaThickness, 0.735, fasciaThickness+carportLength/2, 0, STYLE);
+        //sideViewDrawing.addSlantedRect(fasciaThickness,125,200, carportLength-2*fasciaThickness, 0.735, fasciaThickness+carportLength/2, 0, STYLE);
         //back
         topViewDrawing.addRectangle(carportLength-fasciaThickness, fasciaThickness, carportWidth-2*fasciaThickness, fasciaThickness/2, STYLE);
         topViewDrawing.addRectangle(carportLength-fasciaThickness/2, fasciaThickness, carportWidth-2*fasciaThickness, fasciaThickness/2, STYLE);
@@ -150,6 +157,8 @@ public class WorkDrawing
             topViewDrawing.addRectangle(carportLength -300-shedLength+75+sum,fasciaThickness+350-96/2-16-16,16, 100, STYLE);
             topViewDrawing.addRectangle(carportLength -300-shedLength+sum,carportWidth-350+97,16, 100, STYLE);
             topViewDrawing.addRectangle(carportLength -300-shedLength+75+sum,carportWidth-350+97+16,16, 100, STYLE);
+            sideViewDrawing.addRectangle(carportLength -300-shedLength+sum,fasciaThickness+350,2000, 100, STYLE);
+            sideViewDrawing.addRectangle(carportLength -300-shedLength+75+sum,fasciaThickness+350-8,2000, 100, STYLE);
 
             sum += 150;
         }
