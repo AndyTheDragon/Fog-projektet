@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+skinparam handwritten true
+
+actor Sælger as S
+participant View as V
+participant "OrderController" as C
+participant "OrderMapper" as M
+participant DB
+
+
+S -> V: Trykker "Ret tilbud"
+activate V
+
+V -> C: POST request til /orders{order-id}/updateOrder
+activate C
+C -> C: Kontroller order er assigned til sælger
+C -> M: updateOrder(orderID, salesmanID)
+activate M
+M -> DB: Execute SQL
+DB --> M:Carport order (med sælgerID)
+M --> C: List<Order> (eller Exception)
+deactivate M
+
+C -> C: gem myOrderList i ctx.attribute
+C -> C: gem Error-message i ctx.attribute
+C -> V: render order.html med message
+deactivate C
+V -> S : Opdateret ordre
+
+deactivate V
+
+@enduml

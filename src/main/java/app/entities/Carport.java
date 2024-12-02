@@ -17,11 +17,10 @@ public class Carport
     {
     }
 
-    public Carport(int length, int width, int height, int shedLength, int shedWidth, RoofType roofType)
+    public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType)
     {
         this.length = length;
         this.width = width;
-        this.height = height;
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
         this.roofType = roofType;
@@ -227,12 +226,44 @@ public class Carport
         List <IMaterials> claddingList = new ArrayList<>();
         ConstructionWood cladding;
         double totalShedLength = (shedLength + shedWidth)*2;
-        double claddingBoardAmount = totalShedLength / 15;
+        double claddingBoardAmount = totalShedLength / 7.4;
         int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
         cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
         claddingList.add((IMaterials) cladding);
 
         return claddingList;
+    }
+
+    private List<IMaterials> calcRoof(int length, int width)
+    {
+        List<IMaterials>roofList = new ArrayList<>();
+
+        int carportWidth = width;
+        int carportLength = length;
+        int plateWidth = 109;
+        int shortPlateLength = 360;
+        int longPlateLength = 600;
+        int overlap = 20;
+
+        int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
+        int totalLength = carportLength + overlap;
+        int [] optimalRoof = calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        int shortPlatesForLength = optimalRoof[0];
+        int longPlatesForLength = optimalRoof[1];
+
+        RoofCovering roofCovering;
+        if(shortPlatesForLength > 0)
+        {
+            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofList.add((IMaterials) roofCovering);
+        }
+        if(longPlatesForLength > 0)
+        {
+            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofList.add((IMaterials) roofCovering);
+        }
+
+        return roofList;
     }
 
     public void calculateMaterials() {
@@ -245,6 +276,9 @@ public class Carport
         materialsList.addAll(calcJoists(length));
         materialsList.addAll(calcBargeBoards(length, width));
         materialsList.addAll(calcCladding(shedLength, shedWidth));
+        materialsList.addAll(calcRoof(length, width));
+
+        System.out.println(materialsList);
     }
 
     public int getHeight()
@@ -265,6 +299,11 @@ public class Carport
     public RoofType getRoofType()
     {
         return roofType;
+    }
+
+    public void setRoofType(RoofType roofType)
+    {
+        this.roofType = roofType;
     }
 
     public int getShedLength()

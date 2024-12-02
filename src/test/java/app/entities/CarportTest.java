@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarportTest
 {
+    Carport carport = new Carport();
 
     @BeforeEach
     void setUp()
@@ -23,7 +24,6 @@ class CarportTest
     void calcOptimalBeamMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 2*780;
         int length1 = 480;
         int length2 = 600;
@@ -39,7 +39,6 @@ class CarportTest
     void calcOptimalBeamMinimumTestA()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 2*480;
         int length1 = 480;
         int length2 = 600;
@@ -55,7 +54,6 @@ class CarportTest
     void calcOptimalBeamMinimumTestB()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 2*240;
         int length1 = 480;
         int length2 = 600;
@@ -71,7 +69,6 @@ class CarportTest
     void calcOptimalBeamMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 2*870;
         int length1 = 480;
         int length2 = 600;
@@ -92,7 +89,6 @@ class CarportTest
     void calcOptimalFasciaMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*780;
         int width = 2*600;
         int totalLength = length + width;
@@ -109,7 +105,6 @@ class CarportTest
     void calcOptimalFasciaMinimumTestA()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*480;
         int width = 2*360;
         int totalLength = length + width;
@@ -126,7 +121,6 @@ class CarportTest
     void calcOptimalFasciaMinimumTestB()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*540;
         int width = 2*360;
         int totalLength = length + width;
@@ -146,7 +140,6 @@ class CarportTest
     void calcOptimalFasciaMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*870;
         int width = 2*600;
         int totalLength = length + width;
@@ -163,7 +156,6 @@ class CarportTest
     void calcOptimalFlatBargeBoardMinimumTestA()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*240;
         int width = 240;
         int totalLength = length + width;
@@ -179,13 +171,12 @@ class CarportTest
     void calcOptimalFlatBargeBoardMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*780;
-        int width = 600;
+        int width = 2*600;
         int totalLength = length + width;
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
-        int[] expected = new int[]{6, 0};
+        int[] expected = new int[]{7, 1};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
@@ -196,7 +187,6 @@ class CarportTest
     void calcOptimalRisenBargeBoardMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*870;
         int width = 4*345;
         int totalLength = length + width;
@@ -212,7 +202,6 @@ class CarportTest
     void calcOptimalRisenbargeBoardMinimumTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*540;
         int width = 4*209;
         int totalLength = length + width;
@@ -228,7 +217,6 @@ class CarportTest
     void calcOptimalRisenBargeBoardMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int length = 2*780;
         int width = 4*219;
         int totalLength = length + width;
@@ -245,7 +233,6 @@ class CarportTest
     void calcOptimalRafterMinimumTestA()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 5*240;
         int length1 = 480;
         int length2 = 600;
@@ -259,7 +246,6 @@ class CarportTest
     void calcOptimalRafterMinimumTestB()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 7*360;
         int length1 = 480;
         int length2 = 600;
@@ -273,7 +259,6 @@ class CarportTest
     void calcOptimalRafterMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport();
         int totalLength = 15*600;
         int length1 = 600;
         int length2 = 480;
@@ -282,6 +267,68 @@ class CarportTest
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
+    }
+    @Test
+    void calcOptimalFlatRoofMinimumTest()
+    {
+        // Arrange
+        int carportWidth = 240;
+        int carportLength = 240;
+        int plateWidth = 109;
+        int shortPlateLength = 360;
+        int longPlateLength = 600;
+        int overlap = 20;
+
+        int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
+
+        int totalLength = carportLength + overlap;
+
+        int expectedPlatesForWidth = 3;
+        int expectedShortPlatesForLength = 1;
+        int expectedLongPlatesForLength = 0;
+
+        // Act
+        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        int shortPlatesForLength = result[0] ;
+        int longPlatesForLength = result[1];
+
+
+
+        // Assert
+        assertEquals(expectedPlatesForWidth, platesForWidth);
+        assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
+        assertEquals(expectedLongPlatesForLength, longPlatesForLength);
+    }
+    @Test
+    void calcOptimalFlatRoofMaxTest()
+    {
+        // Arrange
+        int carportWidth = 600;
+        int carportLength = 780;
+        int plateWidth = 109;
+        int shortPlateLength = 360;
+        int longPlateLength = 600;
+        int overlap = 20;
+
+        int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
+
+        int totalLength = carportLength + overlap;
+
+        int expectedPlatesForWidth = 6;
+        int expectedShortPlatesForLength = 1;
+        int expectedLongPlatesForLength = 1;
+
+        // Act
+        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        int shortPlatesForLength = result[0] ;
+        int longPlatesForLength = result[1];
+
+
+
+        // Assert
+        assertEquals(expectedPlatesForWidth, platesForWidth);
+        assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
+        assertEquals(expectedLongPlatesForLength, longPlatesForLength);
     }
 
 }
