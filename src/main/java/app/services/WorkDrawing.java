@@ -1,5 +1,7 @@
 package app.services;
 
+import app.entities.Carport;
+
 public class WorkDrawing
 {
     private final DrawSVG svgDrawing;
@@ -10,10 +12,11 @@ public class WorkDrawing
     private final int shedLength;
     private final boolean hasShed;
     private final int numberOfJoists;
+    private final boolean extraPostsForLongCarport;
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
     private final static int fasciaThickness = 50;
 
-    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int numberOfJoists)
+    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int numberOfJoists, boolean extraPostsForLongCarport)
     {
         this.carportWidth = carportWidth *10;
         this.carportLength = carportLength *10;
@@ -22,6 +25,7 @@ public class WorkDrawing
         this.shedLength = 0;
         this.hasShed = false;
         this.numberOfJoists = numberOfJoists;
+        this.extraPostsForLongCarport = extraPostsForLongCarport;
         this.svgDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportWidth +100), ""+ carportLength);
         addBeams();
         addJoists();
@@ -29,7 +33,7 @@ public class WorkDrawing
         addFascia();
     }
 
-    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int shedLength, int shedWidth, int numberOfJoists)
+    public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int shedLength, int shedWidth, int numberOfJoists, boolean extraPostsForLongCarport)
     {
         this.carportWidth = carportWidth * 10;
         this.carportLength = carportLength * 10;
@@ -38,12 +42,33 @@ public class WorkDrawing
         this.shedLength = shedLength*10;
         this.hasShed = true;
         this.numberOfJoists = numberOfJoists;
+        this.extraPostsForLongCarport = extraPostsForLongCarport;
         this.svgDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + carportLength);
         addBeams();
         addJoists();
         addPosts();
         addFascia();
         addCladding();
+    }
+    public WorkDrawing(Carport carport)
+    {
+        this.carportWidth = carport.getWidth() * 10;
+        this.carportLength = carport.getLength() * 10;
+        this.carportHeight = 230 * 10;
+        this.shedWidth = carport.getShedWidth()*10;
+        this.shedLength = carport.getShedLength()*10;
+        this.hasShed = carport.hasShed();
+        this.numberOfJoists = carport.getNumberOfJoists();
+        this.extraPostsForLongCarport = carport.extraPostsForLongCarport();
+        this.svgDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + carportLength);
+        addBeams();
+        addJoists();
+        addPosts();
+        addFascia();
+        if (hasShed)
+        {
+            addCladding();
+        }
     }
 
     private void addBeams()
@@ -64,9 +89,12 @@ public class WorkDrawing
         {
             middlepostXoffset = Math.max((carportLength-postXoffset-300)/2,3300);
         }
-        // Middle posts
-        svgDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
-        svgDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+        if (extraPostsForLongCarport)
+        {
+            // Middle posts
+            svgDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
+            svgDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+        }
         if (hasShed)
         {
             //Shed posts
