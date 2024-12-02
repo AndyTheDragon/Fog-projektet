@@ -38,13 +38,13 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-       /* WorkDrawing drawing = new WorkDrawing(600, 780, 230, 530,210);
+        WorkDrawing drawing = new WorkDrawing(600, 780, 230, 530,210, 14);
         ctx.attribute("drawing", drawing.toString());
-        WorkDrawing noShed = new WorkDrawing(300, 480, 230);
+        WorkDrawing noShed = new WorkDrawing(300, 480, 230, 10);
         ctx.attribute("noshed", noShed.toString());
 
         ctx.render("drawing.html");
-        */
+
     }
 
 }
