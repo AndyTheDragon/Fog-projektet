@@ -1,5 +1,7 @@
 package app.controllers;
 
+import app.entities.Carport;
+import app.entities.RoofType;
 import app.persistence.ConnectionPool;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
@@ -38,9 +40,11 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        WorkDrawing drawing = new WorkDrawing(600, 780, 230, 530,210, 14);
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT);
+        WorkDrawing drawing = new WorkDrawing(carport.getLength(), carport.getWidth(), 230, carport.getShedLength(), carport.getShedWidth(), carport.getNumberOfJoists());
         ctx.attribute("drawing", drawing.toString());
-        WorkDrawing noShed = new WorkDrawing(300, 480, 230, 10);
+        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT);
+        WorkDrawing noShed = new WorkDrawing(carport2.getLength(), carport2.getWidth(), 230, carport2.getNumberOfJoists());
         ctx.attribute("noshed", noShed.toString());
 
         ctx.render("drawing.html");
