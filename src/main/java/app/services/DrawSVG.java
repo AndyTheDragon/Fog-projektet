@@ -1,5 +1,7 @@
 package app.services;
 
+import java.util.Locale;
+
 public class DrawSVG
 {
     private static final String SVG_TEMPLATE = """
@@ -27,9 +29,10 @@ public class DrawSVG
 
     public DrawSVG(int x, int y, String viewBox, String width)
     {
-
+        Locale.setDefault(Locale.ENGLISH);
         svg.append(String.format(SVG_TEMPLATE, x, y, viewBox, width));
         svg.append(SVG_ARROW_DEFS);
+
     }
 
     public void addRectangle(int x, int y, int height, int width, String style)
