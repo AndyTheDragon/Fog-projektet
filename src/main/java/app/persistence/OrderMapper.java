@@ -1,27 +1,52 @@
 package app.persistence;
 
 import app.entities.Order;
+import app.exceptions.DatabaseException;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderMapper
 {
 
 
-    public static List<Order> getOrders(boolean unassigned)
-    {   List<Order> orders = new ArrayList<>();
+    public static Map<String, ArrayList<Order>> getOrders(ConnectionPool connectionPool) throws DatabaseException
+    {
+        ArrayList<Order> allorders = new ArrayList<>();
+        ArrayList<Order> unassignedOrders = new ArrayList<>();
 
-        // Dummy data for unassigned orders
-        if (unassigned) {
-            orders.add(new Order(1001, "Unassigned", "John Doe", 250.0));
-            orders.add(new Order(1002, "Unassigned", "Jane Smith", 300.0));
-        } else {
-            // Dummy data for assigned orders
-            orders.add(new Order(2001, "Assigned to Sarah", "Alice Brown", 450.0));
-            orders.add(new Order(2002, "Assigned to Alex", "Bob Green", 600.0));
+        String sql = "SELECT * from carport_order";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                int customerId = rs.getInt("customer_id");
+                Integer salesId = (Integer) rs.getObject("sales_id");
+
+                Order order = new Order(orderId, customerId, salesId);
+
+                if (salesId == null) {
+                    unassignedOrders.add(order);
+                } else {
+                    allorders.add(order);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return orders;
+        Map<String, ArrayList<Order>> result = new HashMap<>();
+        result.put("assigned", allorders);
+        result.put("unassigned", unassignedOrders);
+
+        return result;
     }
 }
