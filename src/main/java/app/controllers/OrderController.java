@@ -23,21 +23,18 @@ public class OrderController
     private static void showOrders(Context ctx, ConnectionPool connectionPool)
     {
         try {
-            List<Order> unassignedOrders = OrderMapper.getOrders(true);
-            List<Order> assignedOrders = OrderMapper.getOrders(false);
+            Map<String, ArrayList<Order>> orders = OrderMapper.getOrders(connectionPool);
 
+            ArrayList<Order> assigned = orders.get("assigned");
+            ArrayList<Order> unassigned = orders.get("unassigned");
 
-            Map<String, Object> orders = new HashMap<>();
-            orders.put("unassignedOrders", unassignedOrders);
-            orders.put("assignedOrders", assignedOrders);
+            ctx.attribute("assigned", assigned);
+            ctx.attribute("unassigned", unassigned);
 
-            // Returner ordrerne som JSON
-            ctx.json(orders);
+            ctx.render("ordreoversigt.html");
         } catch (Exception e) {
-
-            ctx.attribute("error", "Der opstod en fejl under hentning af ordrer.");
-            ctx.render("error.html");
-            throw new RuntimeException(e);
+            ctx.attribute("errorMessage", "Fejl ved hentning af ordrer: " + e.getMessage());
+            ctx.render("ordreoversigt.html");
         }
     }
 }
