@@ -50,7 +50,7 @@ public class WorkDrawing
         addFascia();
         addCladding();
     }
-    public WorkDrawing(Carport carport)
+    public WorkDrawing(Carport carport, int drawingWidth)
     {
         this.carportWidth = carport.getWidth() * 10;
         this.carportLength = carport.getLength() * 10;
@@ -60,12 +60,12 @@ public class WorkDrawing
         this.hasShed = carport.hasShed();
         this.numberOfJoists = carport.getNumberOfJoists();
         this.extraPostsForLongCarport = carport.extraPostsForLongCarport();
-        this.svgDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + carportLength);
+        this.svgDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + drawingWidth);
         addBeams();
         addJoists();
         addPosts();
         addFascia();
-        if (hasShed)
+        if (this.hasShed)
         {
             addCladding();
         }
