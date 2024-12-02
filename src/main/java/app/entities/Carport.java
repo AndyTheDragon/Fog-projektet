@@ -169,7 +169,7 @@ public class Carport
         }
 
         // Check if carport is longer than 5 meters
-        if (length > 500) {
+        if (extraPostsForLongCarport()) {
             totalPosts += extraPostsForLongCarport;
         }
 
@@ -177,6 +177,13 @@ public class Carport
         postList.add((IMaterials) post);
 
         return postList;
+    }
+    public boolean extraPostsForLongCarport()
+    {
+        if (length-130-shedLength > 350) {
+            return true;
+        }
+        return false;
     }
 
     private List<IMaterials> calcJoists(int length)
