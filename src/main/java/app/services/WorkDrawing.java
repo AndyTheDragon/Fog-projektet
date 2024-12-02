@@ -9,10 +9,11 @@ public class WorkDrawing
     private final int shedWidth;
     private final int shedLength;
     private final boolean hasShed;
+    private final int numberOfJoists;
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
     private final static int fasciaThickness = 50;
 
-    public WorkDrawing(int carportWidth, int carportLength, int carportHeight)
+    public WorkDrawing(int carportWidth, int carportLength, int carportHeight, int numberOfJoists)
     {
         this.carportWidth = carportWidth *10;
         this.carportLength = carportLength *10;
@@ -20,6 +21,7 @@ public class WorkDrawing
         this.shedWidth = 0;
         this.shedLength = 0;
         this.hasShed = false;
+        this.numberOfJoists = numberOfJoists;
         this.svgDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportWidth +100), ""+ carportLength);
         addBeams();
         addJoists();
@@ -27,7 +29,7 @@ public class WorkDrawing
         addFascia();
     }
 
-    public WorkDrawing(int carportWidth, int carportLength, int carportHeight, int shedWidth, int shedLength)
+    public WorkDrawing(int carportWidth, int carportLength, int carportHeight, int shedWidth, int shedLength, int numberOfJoists)
     {
         this.carportWidth = carportWidth * 10;
         this.carportLength = carportLength * 10;
@@ -35,6 +37,7 @@ public class WorkDrawing
         this.shedWidth = shedWidth*10;
         this.shedLength = shedLength*10;
         this.hasShed = true;
+        this.numberOfJoists = numberOfJoists;
         this.svgDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + carportLength);
         addBeams();
         addJoists();
@@ -84,12 +87,12 @@ public class WorkDrawing
     private void addJoists()
     {
 
-        int joistSpacing = 500;
+        int joistSpacing = carportLength/numberOfJoists;
         int sum = 0;
         while (sum < carportLength-2*fasciaThickness)
         {
             svgDrawing.addRectangle(fasciaThickness+sum,fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
-            sum += joistSpacing + 50;
+            sum += joistSpacing + 45;
         }
         svgDrawing.addRectangle(carportLength-fasciaThickness-45,fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
 
