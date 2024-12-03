@@ -82,9 +82,6 @@ class CarportTest
         //In this test spillage of 5% has been added to our totalt length of wood which affects the expected
         //result to be 4x480cm.
     }
-
-    //Make test mathods for all types of wood below
-
     @Test
     void calcOptimalFasciaMiddleTest()
     {
@@ -100,7 +97,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFasciaMinimumTestA()
     {
@@ -116,7 +112,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFasciaMinimumTestB()
     {
@@ -135,7 +130,6 @@ class CarportTest
         //In this test the length1 and length2 are switched around, which changes the prio of the boards.
         //This is because we would like to fint the 540cm boards first to avoid spill %.
     }
-
     @Test
     void calcOptimalFasciaMaximumTest()
     {
@@ -151,7 +145,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFlatBargeBoardMinimumTestA()
     {
@@ -182,7 +175,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalRisenBargeBoardMaximumTest()
     {
@@ -228,7 +220,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalRafterMinimumTestA()
     {
@@ -330,5 +321,22 @@ class CarportTest
         assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
         assertEquals(expectedLongPlatesForLength, longPlatesForLength);
     }
+    @Test
+    void calcJoistBracketsTest()
+    {
+        Carport carportA = new Carport(780, 600,0,0,RoofType.FLAT);
+        //Arrange
+        int expectedJoistAmount = 15;
+        int expectedBracketAmount = expectedJoistAmount *2;
+        //Act
+        int actualJoistAmount = carportA.getNumberOfJoists();
+        int actualBracketAmount = actualJoistAmount * 2;
+
+        //Assert
+        assertEquals(expectedJoistAmount, actualJoistAmount);
+        assertEquals(expectedBracketAmount, actualBracketAmount);
+
+    }
+
 
 }
