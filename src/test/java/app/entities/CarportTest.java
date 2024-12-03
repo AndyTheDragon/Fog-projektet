@@ -42,7 +42,7 @@ class CarportTest
         int totalLength = 2*480;
         int length1 = 480;
         int length2 = 600;
-        int[] expected = new int[]{2, 0};
+        int[] expected = new int[]{2,0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
 
@@ -336,6 +336,31 @@ class CarportTest
         assertEquals(expectedJoistAmount, actualJoistAmount);
         assertEquals(expectedBracketAmount, actualBracketAmount);
 
+    }
+    @Test
+    void calcBeamBoltsTest()
+    {
+        Carport carportB = new Carport (780,600,210,530,RoofType.FLAT);
+        // Arrange
+        int totalBolts = 0;
+        int boltsPerPost = 2;
+        int extraBoltsPerSeam = 4;
+        int postAmount = carportB.getNumberOfPosts(carportB.length, carportB.width, carportB.shedLength, carportB.shedWidth)-1;
+        if(carportB.shedWidth > 300){
+            postAmount -= 2;
+        }
+
+        int expectedBoltAmount = 20;
+
+        // Act
+        totalBolts += boltsPerPost*postAmount;
+        if (carportB.length > 600){
+            totalBolts += extraBoltsPerSeam;
+        }
+        int actualBoltsAmount = totalBolts;
+
+        // Assert
+        assertEquals(expectedBoltAmount,actualBoltsAmount);
     }
 
 
