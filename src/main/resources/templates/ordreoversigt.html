@@ -8,22 +8,32 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
+<h3>Assigned orders</h3>
 <div class="assigned card" style="width: 18rem;">
-    <h2>Tildelte Ordrer</h2>
-    <div class="card-body" th:each="order : ${assigned}">
-        <h5 class="card-title">Ordre ID: <span th:text="${order.orderId}"></span></h5>
-        <p class="card-text"><strong>Kunde ID:</strong> <span th:text="${order.customerId}"></span></p>
-        <p class="card-text"><strong>Sælger ID:</strong> <span th:text="${order.salesId}"></span></p>
+    <ul class="list-group" th:each="order : ${assigned}">
+        <p class="card-text">Here you will find an overview for this order.</p>
+        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${order.orderId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${order.customerId}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${order.salesId}"></span></li>
+    </ul>
+    <div class="card-body">
+        <button class="assign" type="submit">Assign to self </button>
+        <button class="view" type="submit">View information </button>
     </div>
 </div>
 
+<h3>Unassigned orders</h3>
 <div class="unassigned card" style="width: 18rem;">
-    <h2>Ikke tildelte Ordrer</h2>
-    <div class="card-body" th:each="orders : ${unassigned}">
-        <h5 class="card-title">Ordre ID: <span th:text="${orders.orderId}"></span></h5>
-        <p class="card-text"><strong>Kunde ID:</strong> <span th:text="${orders.customerId}"></span></p>
-        <p class="card-text"><strong>Sælger ID:</strong> <span th:text="${orders.salesId}"></span></p>
+    <ul class="list-group" th:each="orders : ${unassigned}">
+        <p class="card-text">Here you will find an overview for this order.</p>
+        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orders.orderId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orders.customerId}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orders.salesId}"></span></li>
+    </ul>
+    <div class="card-body">
+        <button class="view" type="submit">View information</button>
     </div>
 </div>
+
 </body>
 </html>
