@@ -190,6 +190,27 @@ public class Carport
 
         return joistList;
     }
+    public int getNumberOfJoists()
+    {
+        int joistThickness = 45; //obs mm
+        int minimumSpacing = 45;
+        int maximumSpacing = 60;
+        int maxGaps = Math.floorDiv(length, minimumSpacing);
+        int minGaps = Math.ceilDiv(length, maximumSpacing);
+        double error = 1;
+        int gaps = 0;
+        for (int i= minGaps; i <= maxGaps; i++)
+        {
+            double currentGap = (double)length/i;
+            double currentError = Math.ceil(currentGap)-currentGap;
+            if (currentError <= error)
+            {
+                error = currentError;
+                gaps = i;
+            }
+        }
+        return gaps;
+    }
 
     private List<IMaterials> calcBargeBoards(int length, int width)
     {
@@ -266,6 +287,26 @@ public class Carport
         return roofList;
     }
 
+    private List<IMaterials> calcJoistBrackets(int length)
+    {
+        List<IMaterials> joistBracketList = new ArrayList<>();
+        BoltsScrewsBrackets rightJoistBracket;
+        BoltsScrewsBrackets leftJoistBracket;
+
+        int joistAmount = getNumberOfJoists();
+        int rightBracketAmount = joistAmount;
+        int leftBracketAmount = joistAmount;
+
+        rightJoistBracket = new BoltsScrewsBrackets(rightBracketAmount, "Til montering af spær på rem", 0, "stk", "universalbeslag højre", 0);
+        leftJoistBracket = new BoltsScrewsBrackets(leftBracketAmount, "Til montering af spær på rem", 0, "stk", "universalbeslag venstre", 0);
+
+        joistBracketList.add((IMaterials) rightJoistBracket);
+        joistBracketList.add((IMaterials) leftJoistBracket);
+
+        return joistBracketList;
+
+    }
+
     public void calculateMaterials() {
         materialsList = new ArrayList<>();
 
@@ -277,8 +318,8 @@ public class Carport
         materialsList.addAll(calcBargeBoards(length, width));
         materialsList.addAll(calcCladding(shedLength, shedWidth));
         materialsList.addAll(calcRoof(length, width));
+        materialsList.addAll(calcJoistBrackets(length));
 
-        System.out.println(materialsList);
     }
 
     public int getHeight()
