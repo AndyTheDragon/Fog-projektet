@@ -71,14 +71,21 @@ class Customer
 class Order
 {
 - int orderID
-- int customerID
-- int salesmanID
-- int carportID
+- Customer customer
+- User salesPerson
 - int price
-- boolean isPaid
-- boolean isAssigned
+- int carportWidth;
+- int carportLength;
+- int shedWidth;
+- int shedLength;
+- RoofType carportRoof;
+- boolean isPaid;
+- LocalDateTime createdAt;
+- LocalDateTime updatedAt;
+- Carport carport;
 + boolean isAssigned()
 + boolean isPaid()
++ boolean hasShed()
 + constructors()
 + getters()
 + setters()
