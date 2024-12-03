@@ -297,8 +297,8 @@ public class Carport
         int rightBracketAmount = joistAmount;
         int leftBracketAmount = joistAmount;
 
-        rightJoistBracket = new BoltsScrewsBrackets(rightBracketAmount, "Til montering af spær på rem", 0, "stk", "universalbeslag højre", 0);
-        leftJoistBracket = new BoltsScrewsBrackets(leftBracketAmount, "Til montering af spær på rem", 0, "stk", "universalbeslag venstre", 0);
+        rightJoistBracket = new BoltsScrewsBrackets(0,0,"universalbeslag højre", rightBracketAmount,"stk","Til montering af spær på rem", 0);
+        leftJoistBracket = new BoltsScrewsBrackets(0,0,"universalbeslag højre", leftBracketAmount,"stk","Til montering af spær på rem", 0);
 
         joistBracketList.add((IMaterials) rightJoistBracket);
         joistBracketList.add((IMaterials) leftJoistBracket);

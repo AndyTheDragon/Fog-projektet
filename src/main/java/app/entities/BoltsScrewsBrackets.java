@@ -10,7 +10,17 @@ public class BoltsScrewsBrackets
     private String description;
     private int fogProductID;
 
-    public BoltsScrewsBrackets(int amount, String description, int length, String type, String unit, int width)
+    public BoltsScrewsBrackets(int width, int length,String type, int amount,  String unit, String description, int fogProductID)
+    {
+        this.amount = amount;
+        this.description = description;
+        this.length = length;
+        this.type = type;
+        this.unit = unit;
+        this.width = width;
+        this.fogProductID = fogProductID;
+
+    }
     {
         this.amount = amount;
         this.description = description;
