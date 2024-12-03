@@ -1,6 +1,6 @@
 package app.entities;
 
-public class BoltsScrewsBrackets
+public class BoltsScrewsBrackets implements IMaterials
 {
     private int length;
     private int width;
