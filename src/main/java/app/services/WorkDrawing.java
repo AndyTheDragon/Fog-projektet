@@ -125,7 +125,7 @@ public class WorkDrawing
             sum += joistSpacing + 45;
         }
         topViewDrawing.addRectangle(carportLength-fasciaThickness-45, fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
-        sideViewDrawing.addRectangle(carportLength-fasciaThickness-55, 250,195, 45, STYLE_DASHED);
+        sideViewDrawing.addRectangle(carportLength-fasciaThickness-55, 270,195, 45, STYLE_DASHED);
 
     }
 
