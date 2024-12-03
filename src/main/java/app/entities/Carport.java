@@ -26,7 +26,14 @@ public class Carport
         this.roofType = roofType;
         calculateMaterials();
     }
-
+    public boolean hasShed()
+    {
+        if (shedLength == 0 || shedWidth == 0)
+        {
+            return false;
+        }
+        else return true;
+    }
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -153,6 +160,15 @@ public class Carport
     private List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth)
     {
         List <IMaterials> postList = new ArrayList<>();
+        int totalPosts = getNumberOfPosts(length, width, shedLength, shedWidth);
+
+        ConstructionWood post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
+        postList.add((IMaterials) post);
+
+        return postList;
+    }
+    public int getNumberOfPosts(int length, int width, int shedLength, int shedWidth)
+    {
         int basePosts = 4;
         int extraPostsForShed = 2;
         int doorPost = 1;
@@ -172,11 +188,7 @@ public class Carport
         if (length > 500) {
             totalPosts += extraPostsForLongCarport;
         }
-
-        ConstructionWood post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
-        postList.add((IMaterials) post);
-
-        return postList;
+        return totalPosts;
     }
 
     private List<IMaterials> calcJoists(int length)
@@ -307,6 +319,24 @@ public class Carport
 
     }
 
+    private List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth)
+    {
+        List <IMaterials> beamBoltList = new ArrayList<>();
+        BoltsScrewsBrackets beamBolt;
+        int totalBolts = 0;
+        int boltPerPost = 2;
+        int extraBoltPerSeam = 4;
+        totalBolts += boltPerPost *getNumberOfPosts(length, width, shedLength, shedWidth);
+        if (length > 600)
+        {
+            totalBolts += extraBoltPerSeam;
+        }
+        beamBolt = new BoltsScrewsBrackets(10,120,"bræddebolt",totalBolts,"stk","til montering af rem på stolper",0);
+        beamBoltList.add((IMaterials)beamBolt);
+
+        return null;
+    }
+
     public void calculateMaterials() {
         materialsList = new ArrayList<>();
 
@@ -316,9 +346,13 @@ public class Carport
         materialsList.addAll(calcPosts(length, width, shedLength, shedWidth));
         materialsList.addAll(calcJoists(length));
         materialsList.addAll(calcBargeBoards(length, width));
-        materialsList.addAll(calcCladding(shedLength, shedWidth));
         materialsList.addAll(calcRoof(length, width));
         materialsList.addAll(calcJoistBrackets(length));
+        materialsList.addAll(calcBeamBolts(length, width, shedLength, shedWidth));
+        if (hasShed())
+        {
+            materialsList.addAll(calcCladding(shedLength, shedWidth));
+        }
 
     }
 
