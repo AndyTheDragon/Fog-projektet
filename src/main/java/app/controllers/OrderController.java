@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.Order;
+import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
@@ -20,21 +21,24 @@ public class OrderController
 
     }
 
-    private static void showOrders(Context ctx, ConnectionPool connectionPool)
-    {
-        try {
-            Map<String, ArrayList<Order>> orders = OrderMapper.getOrders(connectionPool);
+    private static void showOrders(Context ctx, ConnectionPool connectionPool) {
+        User currentUser = ctx.sessionAttribute("currentMember");
+        if (currentUser != null) {
+            try {
+                Map<String, ArrayList<Order>> orders = OrderMapper.getOrders(connectionPool);
 
-            ArrayList<Order> assigned = orders.get("assigned");
-            ArrayList<Order> unassigned = orders.get("unassigned");
+                ArrayList<Order> assigned = orders.get("assigned");
+                ArrayList<Order> unassigned = orders.get("unassigned");
 
-            ctx.attribute("assigned", assigned);
-            ctx.attribute("unassigned", unassigned);
+                ctx.attribute("assigned", assigned);
+                ctx.attribute("unassigned", unassigned);
 
-            ctx.render("ordreoversigt.html");
-        } catch (Exception e) {
-            ctx.attribute("errorMessage", "Fejl ved hentning af ordrer: " + e.getMessage());
-            ctx.render("ordreoversigt.html");
+                ctx.render("ordreoversigt.html");
+
+            } catch (DatabaseException e) {
+                ctx.attribute("Message", "Fejl ved hentning af ordrer: " + e.getMessage());
+                ctx.render("ordreoversigt.html");
+            }
         }
     }
 }

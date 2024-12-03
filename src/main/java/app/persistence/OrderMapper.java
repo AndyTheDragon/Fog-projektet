@@ -6,6 +6,7 @@ import app.exceptions.DatabaseException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,8 @@ public class OrderMapper
                     allorders.add(order);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+                throw new DatabaseException("Message"+ e.getMessage());
         }
 
         Map<String, ArrayList<Order>> result = new HashMap<>();
