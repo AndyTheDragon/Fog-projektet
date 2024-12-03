@@ -22,7 +22,7 @@ public class OrderController
     }
 
     private static void showOrders(Context ctx, ConnectionPool connectionPool) {
-        User currentUser = ctx.sessionAttribute("currentMember");
+        User currentUser = ctx.sessionAttribute("currentUser");
         if (currentUser != null) {
             try {
                 Map<String, ArrayList<Order>> orders = OrderMapper.getOrders(connectionPool);
