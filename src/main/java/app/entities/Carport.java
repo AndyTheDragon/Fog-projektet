@@ -335,6 +335,11 @@ public class Carport
         return materialsList;
     }
 
+    public List<IMaterials> getBoltsScrewsBracketsList()
+    {
+        return boltsScrewsBracketsList;
+    }
+
     public RoofType getRoofType()
     {
         return roofType;
