@@ -19,15 +19,6 @@ public class BoltsScrewsBrackets implements IMaterials
         this.unit = unit;
         this.width = width;
         this.fogProductID = fogProductID;
-
-    }
-    {
-        this.amount = amount;
-        this.description = description;
-        this.length = length;
-        this.type = type;
-        this.unit = unit;
-        this.width = width;
     }
 
     @Override
@@ -36,9 +27,7 @@ public class BoltsScrewsBrackets implements IMaterials
         return "BoltsScrewsBrackets{" +
                 "amount=" + amount +
                 ", description='" + description + '\'' +
-                ", length=" + length +
                 ", type='" + type + '\'' +
-                ", width=" + width +
                 ", unit='" + unit + '\'' +
                 '}';
     }
