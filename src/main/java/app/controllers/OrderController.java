@@ -1,36 +1,17 @@
 package app.controllers;
 
-import app.entities.Order;
-import app.entities.User;
-import app.persistence.OrderMapper;
-import app.entities.Carport;
-import app.entities.RoofType;
+import app.entities.*;
 import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
 import app.exceptions.DatabaseException;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
-
-
-
-import app.entities.Order;
-import app.persistence.ConnectionPool;
-import io.javalin.Javalin;
-import io.javalin.http.Context;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import app.persistence.OrderMapper;
-
-import static app.Main.connectionPool;
-import static app.persistence.OrderMapper.saveOrderToDatabase;
-
-public static app.persistence.OrderMapper.parseIntFormParam;
 
 public class OrderController {
     public static void addRoutes(Javalin app, ConnectionPool dbConnection)
@@ -53,15 +34,12 @@ public class OrderController {
         } else {
             ctx.attribute("order", currentOrder);
         }
-        ctx.render("/templates/bestilling.html");
+        ctx.render("bestilling.html");
     }
 
     public static void createOrder(Context ctx, ConnectionPool dbConnection) {
         try {
-            if (currentOrder == null){
-                currentOrder = OrderMapper.createOrder(currentUser, dbConnection);
-                ctx.sessionAttribute("currentOrder", currentOrder);
-            }
+
             int customerID = Integer.parseInt(ctx.formParam("customerID"));
             int salesID = Integer.parseInt(ctx.formParam("salesID"));
             int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
@@ -71,34 +49,34 @@ public class OrderController {
             int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
             int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
 
-            String carportRoof = ctx.formParam("carportRoof");
-            boolean isPaid = Boolean.parseBoolean(ctx.formParam("isPaid"));
-            Timestamp now = new Timestamp(System.currentTimeMillis());
+            RoofType carportRoof = ctx.formParam("carportRoof").equals("flat") ? RoofType.FLAT : RoofType.FLAT;
+            boolean isPaid = false;
 
-            Order order = new Order(0, customerID, salesID, carportWidth, carportLength, carportHeight, carportShed,
-                    shedWidth, shedLength, carportRoof, isPaid, now, now);
+            Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
 
-            saveOrderToDatabase(order, dbConnection);
+            OrderMapper.saveOrderToDatabase(order, dbConnection);
             ctx.status(201).result("Ordren blev oprettet med succes.");
         } catch (IllegalArgumentException e) {
             ctx.status(400).result("Fejl i input: " + e.getMessage());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (DatabaseException e) {
             ctx.status(500).result("Databasefejl: Kunne ikke oprette ordren.");
         }
     }
 
     private static void doLogin(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        //US-3
     }
 
     private static void showLogin(@NotNull Context ctx)
     {
-        
+        //US-3
     }
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        //US-5
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)

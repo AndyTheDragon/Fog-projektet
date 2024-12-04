@@ -89,4 +89,8 @@ public class OrderMapper
                 LocalDateTime.now(),
                 LocalDateTime.now());
     }
+
+    public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
+    {
+    }
 }
