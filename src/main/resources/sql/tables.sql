@@ -29,6 +29,7 @@ CREATE TABLE carport_order (
        shed_width INT NULL,
        shed_length INT NULL,
        carport_roof VARCHAR NOT NULL,
+       is_paid BOOLEAN DEFAULT false,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,

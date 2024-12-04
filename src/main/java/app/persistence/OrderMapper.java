@@ -37,8 +37,27 @@ public class OrderMapper
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
                 Integer salesId = (Integer) rs.getObject("sales_id");
+                int carportWidth = rs.getInt("carport_width");
+                int carportLength = rs.getInt("carport_length");
+                int carportHeight = rs.getInt("carport_height");
+                int shedWidth = rs.getInt("shed_width");
+                int shedLength = rs.getInt("shed_length");
+                RoofType roofType = (RoofType) rs.getObject("carport_roof");
+                boolean isPaid = rs.getBoolean("is_paid");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-                Order order = new Order(orderId, customerId, salesId);
+                Order order = new Order(orderId,
+                        new Customer(),
+                        new User(),
+                        carportWidth,
+                        carportLength,
+                        shedWidth,
+                        shedLength,
+                        roofType,
+                        isPaid,
+                        createdAt,
+                        updatedAt);
 
                 if (salesId == null) {
                     unassignedOrders.add(order);
@@ -47,7 +66,7 @@ public class OrderMapper
                 }
             }
         } catch (SQLException e) {
-                throw new DatabaseException("Message"+ e.getMessage());
+                throw new DatabaseException("Message "+ e.getMessage());
         }
 
         Map<String, ArrayList<Order>> result = new HashMap<>();
