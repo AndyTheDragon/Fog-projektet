@@ -7,6 +7,10 @@ actor Sælger
 participant View as V
 participant "OrderController" as C
 participant "OrderMapper" as M
+participant entity.User as User
+participant entity.Customer as Customer
+participant entity.Carport as Carport
+participant entity.Order as Order
 participant DB
 
 
@@ -20,7 +24,13 @@ C -> M: getOrder(order-id)
 activate M
 M -> DB: execute sql
 DB --> M: ordre data
-M --> C: new Order() (eller Exception)
+M -> User : new User()
+M -> Customer: new Customer()
+M -> Order: new Order(user, customer, data)
+Order -> Carport: new Carport()
+activate Order
+Order --> C: order objekt (eller Exception)
+deactivate Order
 deactivate M
 C -> C: Gem order i ctx.attribute
 C -> C: Gem error-message i ctx.attribute

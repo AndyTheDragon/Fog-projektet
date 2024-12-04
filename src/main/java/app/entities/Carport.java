@@ -26,14 +26,13 @@ public class Carport
         this.roofType = roofType;
         calculateMaterials();
     }
+
     public boolean hasShed()
     {
-        if (shedLength == 0 || shedWidth == 0)
-        {
-            return false;
-        }
-        else return true;
+        if (shedLength > 0 && shedWidth > 0) return true;
+        else return false;
     }
+
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -185,10 +184,17 @@ public class Carport
         }
 
         // Check if carport is longer than 5 meters
-        if (length > 500) {
+        if (extraPostsForLongCarport()) {
             totalPosts += extraPostsForLongCarport;
         }
         return totalPosts;
+    }
+    public boolean extraPostsForLongCarport()
+    {
+        if (length-130-shedLength > 350) {
+            return true;
+        }
+        return false;
     }
 
     private List<IMaterials> calcJoists(int length)
@@ -398,6 +404,7 @@ public class Carport
             materialsList.addAll(calcCladding(shedLength, shedWidth));
         }
 
+        //System.out.println(materialsList);
     }
 
     public int getHeight()

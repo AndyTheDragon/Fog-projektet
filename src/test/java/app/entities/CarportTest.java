@@ -21,6 +21,23 @@ class CarportTest
     }
 
     @Test
+    void getNumberOfJoistsTest()
+    {
+        // Arrange
+        Carport carportA = new Carport(780,600,210,530, RoofType.FLAT);
+        int expectedA = 15;
+        Carport carportB = new Carport(480,300,0,0, RoofType.FLAT);
+        int expectedB = 10;
+        // Act
+        int actualA = carportA.getNumberOfJoists();
+        int actualB = carportB.getNumberOfJoists();
+
+        // Assert
+        assertEquals(expectedA, actualA);
+        assertEquals(expectedB, actualB);
+
+    }
+    @Test
     void calcOptimalBeamMiddleTest()
     {
         //Arrange

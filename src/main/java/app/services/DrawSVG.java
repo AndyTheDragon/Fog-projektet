@@ -1,22 +1,27 @@
 package app.services;
 
+import java.util.Locale;
+
 public class DrawSVG
 {
-    private static final String SVG_TEMPLATE = "<svg version=\"1.1\"\n" +
-            "     x=\"%d\" y=\"%d\"\n" +
-            "     viewBox=\"%s\"  width=\"%s\" \n" +
-            "     preserveAspectRatio=\"xMinYMin\">";
+    private static final String SVG_TEMPLATE = """
+            <svg version="1.1"
+                 x="%d" y="%d"
+                 viewBox="%s"  width="%s"\s
+                 preserveAspectRatio="xMinYMin">""";
 
-    private static final String SVG_ARROW_DEFS = "<defs>\n" +
-            "        <marker id=\"beginArrow\" markerWidth=\"12\" markerHeight=\"12\" refX=\"0\" refY=\"6\" orient=\"auto\">\n" +
-            "            <path d=\"M0,6 L12,0 L12,12 L0,6\" style=\"fill: #000000;\" />\n" +
-            "        </marker>\n" +
-            "        <marker id=\"endArrow\" markerWidth=\"12\" markerHeight=\"12\" refX=\"12\" refY=\"6\" orient=\"auto\">\n" +
-            "            <path d=\"M0,0 L12,6 L0,12 L0,0 \" style=\"fill: #000000;\" />\n" +
-            "        </marker>\n" +
-            "    </defs>";
+    private static final String SVG_ARROW_DEFS = """
+            <defs>
+                <marker id="beginArrow" markerWidth="12" markerHeight="12" refX="0" refY="6" orient="auto">
+                    <path d="M0,6 L12,0 L12,12 L0,6" style="fill: #000000;" />
+                </marker>
+                <marker id="endArrow" markerWidth="12" markerHeight="12" refX="12" refY="6" orient="auto">
+                    <path d="M0,0 L12,6 L0,12 L0,0 " style="fill: #000000;" />
+                </marker>
+            </defs>""";
 
     private static final String SVG_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" style=\"%s\" />";
+    private static final String SVG_SLANTED_RECT_TEMPLATE = "<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" transform=\"rotate(%f %d %d)\" style=\"%s\" />";
     private static final String SVG_LINE_TEMPLATE = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s\" />";
     private static final String SVG_TEXT_TEMPLATE = "<text style=\"text-anchor: middle;\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>";
 
@@ -24,14 +29,20 @@ public class DrawSVG
 
     public DrawSVG(int x, int y, String viewBox, String width)
     {
-
+        Locale.setDefault(Locale.ENGLISH);
         svg.append(String.format(SVG_TEMPLATE, x, y, viewBox, width));
         svg.append(SVG_ARROW_DEFS);
+
     }
 
     public void addRectangle(int x, int y, int height, int width, String style)
     {
         svg.append(String.format(SVG_RECT_TEMPLATE, x, y, height, width, style ));
+    }
+
+    public void addSlantedRect(int x, int y, int height, int width, double angle, int rotationX, int rotationY, String style)
+    {
+        svg.append(String.format(SVG_SLANTED_RECT_TEMPLATE, x, y, height, width, angle, rotationX, rotationY, style ));
     }
 
 
