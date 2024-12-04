@@ -27,6 +27,12 @@ public class Carport
         calculateMaterials();
     }
 
+    public boolean hasShed()
+    {
+        if (shedLength > 0 && shedWidth > 0) return true;
+        else return false;
+    }
+
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -169,7 +175,7 @@ public class Carport
         }
 
         // Check if carport is longer than 5 meters
-        if (length > 500) {
+        if (extraPostsForLongCarport()) {
             totalPosts += extraPostsForLongCarport;
         }
 
@@ -177,6 +183,13 @@ public class Carport
         postList.add((IMaterials) post);
 
         return postList;
+    }
+    public boolean extraPostsForLongCarport()
+    {
+        if (length-130-shedLength > 350) {
+            return true;
+        }
+        return false;
     }
 
     private List<IMaterials> calcJoists(int length)
@@ -189,6 +202,27 @@ public class Carport
         joistList.add((IMaterials) joistBoard);
 
         return joistList;
+    }
+    public int getNumberOfJoists()
+    {
+        int joistThickness = 45; //obs mm
+        int minimumSpacing = 45;
+        int maximumSpacing = 60;
+        int maxGaps = Math.floorDiv(length, minimumSpacing);
+        int minGaps = Math.ceilDiv(length, maximumSpacing);
+        double error = 1;
+        int gaps = 0;
+        for (int i= minGaps; i <= maxGaps; i++)
+        {
+            double currentGap = (double)length/i;
+            double currentError = Math.ceil(currentGap)-currentGap;
+            if (currentError <= error)
+            {
+                error = currentError;
+                gaps = i;
+            }
+        }
+        return gaps;
     }
 
     private List<IMaterials> calcBargeBoards(int length, int width)
@@ -278,7 +312,7 @@ public class Carport
         materialsList.addAll(calcCladding(shedLength, shedWidth));
         materialsList.addAll(calcRoof(length, width));
 
-        System.out.println(materialsList);
+        //System.out.println(materialsList);
     }
 
     public int getHeight()

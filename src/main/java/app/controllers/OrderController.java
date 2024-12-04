@@ -3,6 +3,8 @@ package app.controllers;
 import app.entities.Order;
 import app.entities.User;
 import app.persistence.OrderMapper;
+import app.entities.Carport;
+import app.entities.RoofType;
 import app.persistence.ConnectionPool;
 import app.exceptions.DatabaseException;
 import app.services.WorkDrawing;
@@ -47,13 +49,15 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-       /* WorkDrawing drawing = new WorkDrawing(600, 780, 230, 530,210);
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT);
+        WorkDrawing drawing = new WorkDrawing(carport.getLength(), carport.getWidth(), 230, carport.getShedLength(), carport.getShedWidth(), carport.getNumberOfJoists(), carport.extraPostsForLongCarport());
         ctx.attribute("drawing", drawing.toString());
-        WorkDrawing noShed = new WorkDrawing(300, 480, 230);
+        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT);
+        WorkDrawing noShed = new WorkDrawing(carport2, 480);
         ctx.attribute("noshed", noShed.toString());
 
         ctx.render("drawing.html");
-        */
+
     }
 
     private static void showOrders(Context ctx, ConnectionPool connectionPool)
