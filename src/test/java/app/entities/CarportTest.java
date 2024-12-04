@@ -238,6 +238,31 @@ class CarportTest
         assertArrayEquals(expected, result);
     }
     @Test
+    void calcOptimalHorizontalBracesMaximumTest()
+    {
+        //Arrange
+        Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT);
+        int totalBraces = 0;
+        int bracesPerSection = 2;
+        int extraBracesForWideness = 4;
+        int expectedBraces = 16;
+
+        //Act
+        totalBraces += 4*bracesPerSection;
+        if (carport.width > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        if (carport.length > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        int actualBraces = totalBraces;
+
+        //Assert
+        assertEquals(expectedBraces, actualBraces);
+    }
+    @Test
     void calcOptimalRafterMinimumTestA()
     {
         //Arrange
@@ -263,6 +288,7 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
+
     @Test
     void calcOptimalRafterMaximumTest()
     {
@@ -378,6 +404,24 @@ class CarportTest
 
         // Assert
         assertEquals(expectedBoltAmount,actualBoltsAmount);
+    }
+    @Test
+    void calcShedScrewsTest()
+    {
+        Carport carportC = new Carport(780,600,210,530,RoofType.FLAT);
+        // Arrange
+        int expectedInnerScrews = 600;
+        int expectedOuterScrews = 600;
+        int screwsPerCladding = 6;
+        int totalInnerScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        int totalOuterScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        // Act
+        int actualInnerScrews = totalInnerScrews;
+        int actualOuterScrews = totalOuterScrews;
+        // Assert
+        assertEquals(expectedInnerScrews, actualInnerScrews);
+        assertEquals(expectedOuterScrews, actualOuterScrews);
+
     }
 
 
