@@ -28,7 +28,7 @@ public class Carport
         this.shedWidth = shedWidth;
         this.roofType = roofType;
         calculateMaterials();
-        this.workDrawing = new WorkDrawing(this, 800);
+        this.workDrawing = new WorkDrawing(this, 640);
     }
 
     public boolean hasShed()
