@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class OrderController
 {
-    public static void addRoutes(Javalin app, ConnectionPool connectionPool)
-    { app.get("orders", ctx -> showOrders(ctx, connectionPool));
-
+    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
+        app.get("ordreoversigt", ctx -> showOrders(ctx, connectionPool));
+        //app.get("/view/{id}", ctx -> viewOrder(ctx, connectionPool));
     }
 
     private static void showOrders(Context ctx, ConnectionPool connectionPool) {

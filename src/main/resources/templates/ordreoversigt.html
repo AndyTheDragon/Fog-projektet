@@ -9,29 +9,37 @@
 </head>
 <body>
 <h3>Assigned orders</h3>
-<div class="assigned card" style="width: 18rem;">
-    <ul class="list-group" th:each="order : ${assigned}">
+<div class="assigned card">
+    <div class="card-body" th:each="ordera : ${assigned}" style="width: 18rem; height: 15rem;">
+    <ul class="list-group">
         <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${order.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${order.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${order.salesId}"></span></li>
+        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${ordera.orderId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${ordera.customerId}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${ordera.salesId}"></span></li>
     </ul>
-    <div class="card-body">
-        <button class="assign" type="submit">Assign to self </button>
-        <button class="view" type="submit">View information </button>
+    <button class="assign" type="submit">Assign to self </button>
+    <div class="view-information">
+        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
+            <button class="view-btn" type="button">View details</button>
+        </a>
     </div>
+</div>
 </div>
 
 <h3>Unassigned orders</h3>
-<div class="unassigned card" style="width: 18rem;">
-    <ul class="list-group" th:each="orders : ${unassigned}">
+    <div class="unassigned card">
+        <div class="card-body" th:each="orderu : ${unassigned}" style="width: 18rem; height: 15rem;">
+    <ul class="list-group">
         <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orders.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orders.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orders.salesId}"></span></li>
+        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orderu.orderId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orderu.customerId}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesId}"></span></li>
     </ul>
-    <div class="card-body">
-        <button class="view" type="submit">View information</button>
+    <div class="view-information">
+        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
+            <button class="view-btn" type="button">View details</button>
+            </a>
+        </div>
     </div>
 </div>
 
