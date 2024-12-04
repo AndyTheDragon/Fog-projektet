@@ -66,7 +66,7 @@ public class OrderMapper
                 }
             }
         } catch (SQLException e) {
-                throw new DatabaseException("Message"+ e.getMessage());
+                throw new DatabaseException("Message "+ e.getMessage());
         }
 
         Map<String, ArrayList<Order>> result = new HashMap<>();
