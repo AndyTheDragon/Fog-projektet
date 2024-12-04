@@ -21,7 +21,7 @@ public class OrderController
     public static void addRoutes(Javalin app, ConnectionPool dbConnection)
     {
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
-        app.get("/order/{id}", ctx -> showOrderDetails(ctx,dbConnection));
+        app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -35,7 +35,7 @@ public class OrderController
 
     private static void showLogin(@NotNull Context ctx)
     {
-
+        
     }
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
@@ -44,6 +44,31 @@ public class OrderController
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        int orderId = 0;
+        Order order = null;
+        if (ctx.sessionAttribute("user") == null)
+        {
+            ctx.attribute("message", "You need to login first");
+        }
+        else
+        {
+            try
+            {
+                orderId = Integer.parseInt(ctx.pathParam("orderId"));
+                order = OrderMapper.getOrder(orderId);
+            }
+            catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid order id");
+            }
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+            ctx.attribute("order", order);
+        }
+        ctx.render("ordredetaljer.html");
+
 
     }
 

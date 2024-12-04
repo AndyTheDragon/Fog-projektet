@@ -1,45 +1,102 @@
 package app.entities;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-public class Order {
-    private int orderId;
-    private int customerId;
-    private Integer salesId; // Nullable, derfor Integer
+public class Order
+{
+    private int orderID;
+    private Customer customer;
+    private User salesPerson;
+    private int carportWidth;
+    private int carportLength;
+    private boolean carportShed;
+    private int shedWidth;
+    private int shedLength;
+    private RoofType carportRoof;
+    private boolean isPaid;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Carport carport;
 
-    public Order(int orderId, int customerId, Integer salesId) {
-        this.orderId = orderId;
-        this.customerId = customerId;
-        this.salesId = salesId;
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    {
+        this.orderID = orderID;
+        this.customer = customer;
+        this.salesPerson = salesPerson;
+        this.carportWidth = carportWidth;
+        this.carportLength = carportLength;
+        this.carportShed = (shedWidth>0&&shedLength>0);
+        this.shedWidth = shedWidth;
+        this.shedLength = shedLength;
+        this.carportRoof = carportRoof;
+        this.isPaid = isPaid;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
     }
 
-
-    public int getOrderId()
+    public Customer getCustomer()
     {
-        return orderId;
+        return customer;
     }
 
-    public void setOrderId(int orderId)
+    public User getSalesPerson()
     {
-        this.orderId = orderId;
+        return salesPerson;
     }
 
-    public int getCustomerId()
+    public int getCarportWidth()
     {
-        return customerId;
+        return carportWidth;
     }
 
-    public void setCustomerId(int customerId)
+    public int getCarportLength()
     {
-        this.customerId = customerId;
+        return carportLength;
     }
 
-    public Integer getSalesId()
+    public boolean isCarportShed()
     {
-        return salesId;
+        return carportShed;
     }
 
-    public void setSalesId(Integer salesId)
+    public int getShedWidth()
     {
-        this.salesId = salesId;
+        return shedWidth;
+    }
+
+    public int getShedLength()
+    {
+        return shedLength;
+    }
+
+    public RoofType getCarportRoof()
+    {
+        return carportRoof;
+    }
+
+    public boolean isPaid()
+    {
+        return isPaid;
+    }
+
+    public LocalDateTime getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt()
+    {
+        return updatedAt;
+    }
+
+    public int getOrderID()
+    {
+        return orderID;
     }
 }
+
+
+
+

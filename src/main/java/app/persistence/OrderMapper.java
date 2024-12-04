@@ -1,16 +1,22 @@
 package app.persistence;
 
+import app.entities.Customer;
 import app.entities.Order;
+import app.entities.RoofType;
+import app.entities.User;
 import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class OrderMapper
 {
@@ -49,5 +55,19 @@ public class OrderMapper
         result.put("unassigned", unassignedOrders);
 
         return result;
+    }
+    public static Order getOrder(int orderId) throws DatabaseException
+    {
+        return new Order(1,
+                new Customer(),
+                new User(),
+                600,
+                780,
+                530,
+                210,
+                RoofType.FLAT,
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now());
     }
 }
