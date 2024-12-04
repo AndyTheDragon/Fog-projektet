@@ -252,6 +252,7 @@ public class Carport
             bargeBoard = new ConstructionWood(19, 100, 5400, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", lowPrioAmount, 0);
             bargeBoardList.add((IMaterials) bargeBoard);
         }
+
         return bargeBoardList;
     }
 
@@ -313,7 +314,8 @@ public class Carport
         int roofArea = length * width;
 
         int totalScrews = roofArea * screwsPerSqrMeter;
-        roofScrews = new BoltsScrewsBrackets(4,50,"tagplade skruer", totalScrews,"stk","Til montering af tagplader", 0);
+        int screwPacks = (int) Math.ceil( totalScrews/200);
+        roofScrews = new BoltsScrewsBrackets(4,50,"plastmo bundskruer, 200 stk", screwPacks,"pakkke","Til montering af tagplader", 0);
         roofScrewList.add((IMaterials) roofScrews);
 
         return roofScrewList;
@@ -338,6 +340,19 @@ public class Carport
         return joistBracketList;
     }
 
+    private List<IMaterials> calcFasciaBargeScrews()
+    {
+        List<IMaterials> fasciaBargeScrewList = new ArrayList<>();
+        BoltsScrewsBrackets fasciaBargeScrews;
+        int totalLength = ((length*6)+(width*4));
+        int totalScrews = totalLength/70;
+        int screwPacks = (int) Math.ceil( totalScrews/200);
+
+        fasciaBargeScrews = new BoltsScrewsBrackets((int) 4.5,50,"skruer 200stk", screwPacks,"pakke","Til montering af stern & vandbrædt", 0);
+        fasciaBargeScrewList.add((IMaterials) fasciaBargeScrews);
+        return fasciaBargeScrewList;
+    }
+
     private List<IMaterials> calcJoistBracketScrews()
     {
         List<IMaterials> bracketScrewList = new ArrayList<>();
@@ -346,8 +361,9 @@ public class Carport
         int joistAmount = getNumberOfJoists();
         int screwsPerJoist =  25;
         int totalScrews = joistAmount * screwsPerJoist;
+        int screwPacks = (int) Math.ceil( totalScrews/200);
 
-        bracketScrews = new BoltsScrewsBrackets(4,50,"beslagskruer", totalScrews,"stk","Til montering af beslag på spær", 0);
+        bracketScrews = new BoltsScrewsBrackets(4,50,"beslagskruer, 250stk", screwPacks,"pakke","Til montering af beslag på spær", 0);
         bracketScrewList.add((IMaterials) bracketScrews);
 
         return bracketScrewList;
@@ -357,11 +373,20 @@ public class Carport
     {
         List<IMaterials> metalStrapList = new ArrayList<>();
         BoltsScrewsBrackets perfMetalStrap;
-
-        int totalStraps = 0;
-
-
-        return null;
+        double crossLength = Math.sqrt(length^2+width^2);
+        if (crossLength < 500)
+        {
+            int totalStraps = 1;
+            perfMetalStrap = new BoltsScrewsBrackets(10,120,"perforeret stålbånd",totalStraps,"rulle","Til vindkryds på spær",0);
+            metalStrapList.add((IMaterials)perfMetalStrap);
+        }
+        if(crossLength > 500 )
+        {
+            int totalStraps = 2;
+            perfMetalStrap = new BoltsScrewsBrackets(10,120,"perforeret stålbånd",totalStraps,"rulle","Til vindkryds på spær",0);
+            metalStrapList.add((IMaterials)perfMetalStrap);
+        }
+        return metalStrapList;
     }
 
     private List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth)
@@ -385,6 +410,16 @@ public class Carport
         return null;
     }
 
+    private List<IMaterials> calcCladdingScrews()
+    {
+        List<IMaterials> claddingScrewList = new ArrayList<>();
+        BoltsScrewsBrackets claddingScrews;
+
+
+
+        return claddingScrewList;
+    }
+
     public void calculateMaterials() {
         materialsList = new ArrayList<>();
 
@@ -396,9 +431,11 @@ public class Carport
         materialsList.addAll(calcBargeBoards(length, width));
         materialsList.addAll(calcRoof(length, width));
         materialsList.addAll(calcRoofScrews());
+        materialsList.addAll(calcMetalStrap());
         materialsList.addAll(calcJoistBrackets());
         materialsList.addAll(calcBeamBolts(length, width, shedLength, shedWidth));
         materialsList.addAll(calcJoistBracketScrews());
+        materialsList.addAll(calcFasciaBargeScrews());
         if (hasShed())
         {
             materialsList.addAll(calcCladding(shedLength, shedWidth));
