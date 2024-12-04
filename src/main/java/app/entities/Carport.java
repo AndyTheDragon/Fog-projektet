@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.services.WorkDrawing;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Carport
     int shedLength;
     int shedWidth;
     RoofType roofType;
+    WorkDrawing workDrawing;
 
     public Carport()
     {
@@ -25,6 +28,7 @@ public class Carport
         this.shedWidth = shedWidth;
         this.roofType = roofType;
         calculateMaterials();
+        this.workDrawing = new WorkDrawing(this, 800);
     }
 
     public boolean hasShed()
@@ -353,5 +357,10 @@ public class Carport
     public int getWidth()
     {
         return width;
+    }
+
+    public WorkDrawing getWorkDrawing()
+    {
+        return workDrawing;
     }
 }
