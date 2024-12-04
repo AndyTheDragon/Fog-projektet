@@ -8,6 +8,7 @@ import java.util.List;
 public class Carport
 {
     List<IMaterials> materialsList;
+    List<IMaterials> boltsScrewsBracketsList;
     int length;
     int width;
     int height;
@@ -27,6 +28,8 @@ public class Carport
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
         this.roofType = roofType;
+        this.materialsList = new ArrayList<>();
+        this.boltsScrewsBracketsList = new ArrayList<>();
         calculateMaterials();
         this.workDrawing = new WorkDrawing(this, 640);
     }
@@ -292,12 +295,12 @@ public class Carport
         RoofCovering roofCovering;
         if(shortPlatesForLength > 0)
         {
-            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "Plastmo Ecolite blåtonet", "stk", "Tagplader monteres på spær", 0);
             roofList.add((IMaterials) roofCovering);
         }
         if(longPlatesForLength > 0)
         {
-            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "Plastmo Ecolite blåtonet", "stk", "Tagplader monteres på spær", 0);
             roofList.add((IMaterials) roofCovering);
         }
 
@@ -305,8 +308,6 @@ public class Carport
     }
 
     public void calculateMaterials() {
-        materialsList = new ArrayList<>();
-
         materialsList.addAll(calcUnderFascia(length, width));
         materialsList.addAll(calcOverFascia(length, width));
         materialsList.addAll(calcBeam(length));
