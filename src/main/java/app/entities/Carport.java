@@ -6,6 +6,7 @@ import java.util.List;
 public class Carport
 {
     List<IMaterials> materialsList;
+    List<IMaterials> boltsScrewsBracketsList;
     int length;
     int width;
     int height;
@@ -25,6 +26,7 @@ public class Carport
         this.shedWidth = shedWidth;
         this.roofType = roofType;
         calculateMaterials();
+        calculateBoltsScrewsBrackets();
     }
 
     public boolean hasShed()
@@ -261,17 +263,56 @@ public class Carport
         return null;
     }
 
-    private List<IMaterials> calcCladding(int shedLength, int shedWidth)
+    private List<IMaterials> calcCladding()
     {
         List <IMaterials> claddingList = new ArrayList<>();
         ConstructionWood cladding;
-        double totalShedLength = (shedLength + shedWidth)*2;
-        double claddingBoardAmount = totalShedLength / 7.4;
-        int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
+
+        int claddingBoardRounded = getNumberOfCladdingBoards();
         cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
         claddingList.add((IMaterials) cladding);
 
         return claddingList;
+    }
+
+    public int getNumberOfCladdingBoards()
+    {
+        double totalShedLength = (shedLength + shedWidth)*2;
+        double claddingBoardAmount = totalShedLength / 7.4;
+        int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
+
+        return claddingBoardRounded;
+    }
+
+    private List<IMaterials> calcHorizontalBraces()
+    {
+        List<IMaterials> horizontalBraceList = new ArrayList<>();
+        ConstructionWood horizontalBrace;
+
+        int totalBraces = getNumberOfHorizontalBraces();
+
+        horizontalBrace = new ConstructionWood(45, 95,3000, "stk", "reglar ubh.", "løsholter til skur.", totalBraces, 0);
+        horizontalBraceList.add((IMaterials) horizontalBrace);
+
+        return horizontalBraceList;
+    }
+
+    public int getNumberOfHorizontalBraces()
+    {
+        int totalBraces = 0;
+        int bracesPerSection = 2;
+        int extraBracesForWideness = 4;
+
+        totalBraces += 4*bracesPerSection;
+        if (shedWidth > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        if (shedLength > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        return totalBraces;
     }
 
     private List<IMaterials> calcRoof(int length, int width)
@@ -389,7 +430,7 @@ public class Carport
         return metalStrapList;
     }
 
-    private List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth)
+    private List<IMaterials> calcBeamBolts()
     {
         List <IMaterials> beamBoltList = new ArrayList<>();
         BoltsScrewsBrackets beamBolt;
@@ -397,7 +438,7 @@ public class Carport
         int totalBolts = 0;
         int boltPerPost = 2;
         int extraBoltPerSeam = 4;
-        totalBolts += boltPerPost *getNumberOfPosts(length, width, shedLength, shedWidth);
+        totalBolts += boltPerPost * getNumberOfPosts(length, width, shedLength, shedWidth);
         if (length > 600)
         {
             totalBolts += extraBoltPerSeam;
@@ -407,20 +448,75 @@ public class Carport
         beamBoltList.add((IMaterials)boltDisc);
         beamBoltList.add((IMaterials)beamBolt);
 
-        return null;
+        return beamBoltList;
     }
 
     private List<IMaterials> calcCladdingScrews()
     {
         List<IMaterials> claddingScrewList = new ArrayList<>();
-        BoltsScrewsBrackets claddingScrews;
+        BoltsScrewsBrackets innerCladdingScrews;
+        BoltsScrewsBrackets outerCladdingScrews;
 
+        int screwsPerCladding = 6;
+        int totalInnerScrews = screwsPerCladding * (getNumberOfCladdingBoards() / 2);
+        int totalOuterScrews = screwsPerCladding * (getNumberOfCladdingBoards() / 2);
 
+        int innerScrewsPacks = (int) Math.ceil( totalInnerScrews/300);
+        int outerScrewsPacks = (int) Math.ceil( totalOuterScrews/400);
+
+        innerCladdingScrews = new BoltsScrewsBrackets((int)4.5,50,"skruer 300stk", innerScrewsPacks,"pakke","Til montering af inderste beklædning", 0);
+        outerCladdingScrews = new BoltsScrewsBrackets((int)4.5,70,"skruer 400stk", outerScrewsPacks,"pakke","Til montering af  yderste beklædning", 0);
+
+        claddingScrewList.add((IMaterials) innerCladdingScrews);
+        claddingScrewList.add((IMaterials) outerCladdingScrews);
 
         return claddingScrewList;
     }
 
-    public void calculateMaterials() {
+    private List<IMaterials> doorHandleBrackets()
+    {
+        List<IMaterials> doorHandleBracketList = new ArrayList<>();
+        BoltsScrewsBrackets doorHandle;
+        BoltsScrewsBrackets doorBracket;
+
+        doorHandle = new BoltsScrewsBrackets(50,75,"stalddørsgreb", 1,"sæt","Til lås på dør i skur", 0);
+        doorBracket = new BoltsScrewsBrackets(390,0,"t hængsel", 2,"stk","Til skurdør", 0);
+
+        doorHandleBracketList.add((IMaterials) doorHandle);
+        doorHandleBracketList.add((IMaterials) doorBracket);
+
+        return doorHandleBracketList;
+    }
+
+    private List<IMaterials> calcHorizontalBracesBrackets()
+    {
+        List<IMaterials> horizontalBraceBracketList = new ArrayList<>();
+        BoltsScrewsBrackets horizontalBraceBracket;
+        int totalBraceBrackets = 2*getNumberOfHorizontalBraces();
+
+        horizontalBraceBracket = new BoltsScrewsBrackets(35,0,"vinkelbeslag 35", totalBraceBrackets,"pakke","Til montering af løsholter", 0);
+        horizontalBraceBracketList.add((IMaterials) horizontalBraceBracket);
+
+        return horizontalBraceBracketList;
+    }
+
+    private List<IMaterials> calcShedScrews()
+    {
+        List<IMaterials> shedScrewList = new ArrayList<>();
+        BoltsScrewsBrackets shedInnerScrews;
+        BoltsScrewsBrackets shedOuterScrews;
+
+        int baseCladdingScrews = 4*getNumberOfCladdingBoards();
+        int screwsPerBracePerCladding = 4;
+        int totalInnerScrews = (baseCladdingScrews + screwsPerBracePerCladding*getNumberOfHorizontalBraces()) / 2;
+        int totalOuterScrews = (baseCladdingScrews + screwsPerBracePerCladding*getNumberOfHorizontalBraces()) / 2;
+
+
+        return shedScrewList;
+    }
+
+    public void calculateMaterials()
+    {
         materialsList = new ArrayList<>();
 
         materialsList.addAll(calcUnderFascia(length, width));
@@ -430,18 +526,34 @@ public class Carport
         materialsList.addAll(calcJoists(length));
         materialsList.addAll(calcBargeBoards(length, width));
         materialsList.addAll(calcRoof(length, width));
-        materialsList.addAll(calcRoofScrews());
-        materialsList.addAll(calcMetalStrap());
-        materialsList.addAll(calcJoistBrackets());
-        materialsList.addAll(calcBeamBolts(length, width, shedLength, shedWidth));
-        materialsList.addAll(calcJoistBracketScrews());
-        materialsList.addAll(calcFasciaBargeScrews());
+
         if (hasShed())
         {
-            materialsList.addAll(calcCladding(shedLength, shedWidth));
+            materialsList.addAll(calcCladding());
+            materialsList.addAll(calcHorizontalBraces());
         }
 
         //System.out.println(materialsList);
+    }
+
+    public void calculateBoltsScrewsBrackets()
+    {
+        boltsScrewsBracketsList = new ArrayList<>();
+
+        materialsList.addAll(calcRoofScrews());
+        materialsList.addAll(calcJoistBrackets());
+        materialsList.addAll(calcJoistBracketScrews());
+        materialsList.addAll(calcFasciaBargeScrews());
+        materialsList.addAll(calcMetalStrap());
+        materialsList.addAll(calcBeamBolts());
+
+        if (hasShed())
+        {
+            materialsList.addAll(calcCladdingScrews());
+            materialsList.addAll(calcHorizontalBracesBrackets());
+            materialsList.addAll(calcShedScrews());
+            materialsList.addAll(doorHandleBrackets());
+        }
     }
 
     public int getHeight()
