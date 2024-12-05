@@ -47,7 +47,7 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        ctx.sessionAttribute("user", "Morten");
+        //ctx.sessionAttribute("user", "Morten");
         if (ctx.sessionAttribute("user") == null)
         {
             ctx.attribute("h1message", "Tilbuds oversigt");
