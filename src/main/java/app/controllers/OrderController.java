@@ -46,28 +46,37 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        ctx.sessionAttribute("user", "Morten");
+        //ctx.sessionAttribute("user", "Morten");
         if (ctx.sessionAttribute("user") == null)
         {
-            ctx.attribute("message", "You need to login first");
+            ctx.attribute("h1message", "Tilbuds oversigt");
+            ctx.attribute("information", "Dimensioner");
+            ctx.attribute("pmessage", "Herunder ses dimensionerne på den ønskede carport:");
+            ctx.attribute("persinfo", "Dine kontaktoplysninger");
+            ctx.attribute("persinfomessage", "Herunder ses dine kontaktoplysninger:");
         }
         else
         {
-            try
-            {
-                orderId = Integer.parseInt(ctx.pathParam("orderId"));
-                order = OrderMapper.getOrder(orderId);
-            }
-            catch (NumberFormatException e)
-            {
-                ctx.attribute("message", "Invalid order id");
-            }
-            catch (DatabaseException e)
-            {
-                ctx.attribute("message", "Database error. " + e.getMessage());
-            }
-            ctx.attribute("order", order);
+            ctx.attribute("h1message", "Ordredetaljer");
+            ctx.attribute("information", "Kundens ønsker");
+            ctx.attribute("pmessage", "Kunden har sendt følgende informationer ind via hjemmesiden:");
+            ctx.attribute("persinfo", "Kundens kontaktoplysninger");
+            ctx.attribute("persinfomessage", "Kunden har sendt følgende informationer ind via hjemmesiden:");
         }
+        try
+        {
+            orderId = Integer.parseInt(ctx.pathParam("orderId"));
+            order = OrderMapper.getOrder(orderId);
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error. " + e.getMessage());
+        }
+        ctx.attribute("order", order);
         ctx.render("ordredetaljer.html");
 
 
