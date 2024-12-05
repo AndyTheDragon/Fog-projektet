@@ -110,6 +110,7 @@ public class OrderController
         ctx.render("kvittering.html");
 
         //Skal lige have hjælp til det sidste med denne her metode så den ikke både render "kvittering" indenfor og udenfor if statementet
+        //Tænker den skal render en message som siger "Tilbud accepteret"
 
     }
 
