@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.services.WorkDrawing;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Carport
     int shedLength;
     int shedWidth;
     RoofType roofType;
+    WorkDrawing workDrawing;
 
     public Carport()
     {
@@ -25,8 +28,11 @@ public class Carport
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
         this.roofType = roofType;
+        this.materialsList = new ArrayList<>();
+        this.boltsScrewsBracketsList = new ArrayList<>();
         calculateMaterials();
         calculateBoltsScrewsBrackets();
+        this.workDrawing = new WorkDrawing(this, 640);
     }
 
     public boolean hasShed()
@@ -254,7 +260,6 @@ public class Carport
             bargeBoard = new ConstructionWood(19, 100, 5400, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", lowPrioAmount, 0);
             bargeBoardList.add(bargeBoard);
         }
-
         return bargeBoardList;
     }
 
@@ -555,6 +560,11 @@ public class Carport
         return materialsList;
     }
 
+    public List<IMaterials> getBoltsScrewsBracketsList()
+    {
+        return boltsScrewsBracketsList;
+    }
+
     public RoofType getRoofType()
     {
         return roofType;
@@ -578,5 +588,10 @@ public class Carport
     public int getWidth()
     {
         return width;
+    }
+
+    public WorkDrawing getWorkDrawing()
+    {
+        return workDrawing;
     }
 }
