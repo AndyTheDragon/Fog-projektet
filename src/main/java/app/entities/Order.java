@@ -1,13 +1,12 @@
 package app.entities;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Order
 {
     private int orderID;
     private Customer customer;
-    private User salesPerson;
+    private int salesID;
     private int carportWidth;
     private int carportLength;
     private boolean carportShed;
@@ -19,11 +18,11 @@ public class Order
     private LocalDateTime updatedAt;
     private Carport carport;
 
-    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    public Order(int orderID, Customer customer, int salesID, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
     {
         this.orderID = orderID;
         this.customer = customer;
-        this.salesPerson = salesPerson;
+        this.salesID = salesID;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
         this.carportShed = (shedWidth>0&&shedLength>0);
@@ -41,9 +40,9 @@ public class Order
         return customer;
     }
 
-    public User getSalesPerson()
+    public int getSalesID()
     {
-        return salesPerson;
+        return salesID;
     }
 
     public int getCarportWidth()
@@ -99,6 +98,11 @@ public class Order
     public Carport getCarport()
     {
         return carport;
+    }
+
+    public void setSalesID(int salesID)
+    {
+        this.salesID = salesID;
     }
 }
 

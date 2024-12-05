@@ -36,7 +36,7 @@ public class OrderMapper
             while (rs.next()) {
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
-                Integer salesId = (Integer) rs.getObject("sales_id");
+                int salesId =  rs.getInt("sales_id");
                 int carportWidth = rs.getInt("carport_width");
                 int carportLength = rs.getInt("carport_length");
                 int carportHeight = rs.getInt("carport_height");
@@ -49,7 +49,7 @@ public class OrderMapper
 
                 Order order = new Order(orderId,
                         new Customer(),
-                        new User(),
+                        salesId,
                         carportWidth,
                         carportLength,
                         shedWidth,
@@ -59,7 +59,7 @@ public class OrderMapper
                         createdAt,
                         updatedAt);
 
-                if (salesId == null) {
+                if (salesId == 0) {
                     unassignedOrders.add(order);
                 } else {
                     allorders.add(order);
@@ -79,7 +79,7 @@ public class OrderMapper
     {
         return new Order(1,
                 new Customer(),
-                new User(),
+                0,
                 600,
                 780,
                 530,

@@ -52,7 +52,7 @@ public class OrderController {
             RoofType carportRoof = ctx.formParam("carportRoof").equals("flat") ? RoofType.FLAT : RoofType.FLAT;
             boolean isPaid = false;
 
-            Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
+            Order order = new Order(0, new Customer(), salesID, carportWidth, carportLength,
                     shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
@@ -76,7 +76,31 @@ public class OrderController {
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
-        //US-5
+        Order order = null;
+        User currentUser = ctx.sessionAttribute("currentUser");
+        int salesId = currentUser.getUserID();
+
+        if (order.getSalesID() == 0)
+        {
+            ctx.attribute("message", "Order already assigned");
+
+        } else
+        {
+            try
+            {
+                salesId = Integer.parseInt(ctx.formParam("salesId"));
+                order = OrderMapper.getOrder(Integer.parseInt(ctx.formParam("orderId")));
+                order.setSalesID(salesId);
+                OrderMapper.saveOrderToDatabase(order, dbConnection);
+                ctx.attribute("message", "Order assigned to salesperson");
+            } catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid salesperson id");
+            } catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+        }
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
