@@ -21,6 +21,31 @@ public class RoofCovering implements IMaterials
         this.fogProductID = fogProductID;
     }
 
+    public int getAmount()
+    {
+        return amount;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public int getLength()
+    {
+        return length;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public String getUnit()
+    {
+        return unit;
+    }
+
     @Override
     public String toString()
     {
