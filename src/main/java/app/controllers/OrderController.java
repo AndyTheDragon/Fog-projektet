@@ -24,6 +24,7 @@ public class OrderController
         app.get("/orders", ctx -> showOrders(ctx, dbConnection));
         app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
         app.post("/order/accept", ctx -> acceptOrder(ctx,dbConnection));
+        app.post("/order/requestchange", ctx -> requestChange(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -46,14 +47,14 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        //ctx.sessionAttribute("user", "Morten");
+        ctx.sessionAttribute("user", "Morten");
         if (ctx.sessionAttribute("user") == null)
         {
             ctx.attribute("h1message", "Tilbuds oversigt");
             ctx.attribute("information", "Dimensioner");
             ctx.attribute("pmessage", "Herunder ses dimensionerne på den ønskede carport:");
             ctx.attribute("persinfo", "Dine kontaktoplysninger");
-            ctx.attribute("persinfomessage", "Herunder ses dine kontaktoplysninger:");
+            ctx.attribute("persinfomessage", "Kontroller venligst disse er korrekte:");
         }
         else
         {
@@ -108,6 +109,12 @@ public class OrderController
         ctx.attribute("message", "Du har ikke adgang til denne side");
         ctx.render("kvittering.html");
 
+        //Skal lige have hjælp til det sidste med denne her metode så den ikke både render "kvittering" indenfor og udenfor if statementet
+
+    }
+
+    private static void requestChange(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
