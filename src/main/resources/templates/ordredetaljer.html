@@ -116,6 +116,8 @@
     <div class="card m-3">
         Pris
     </div>
+
+    <form method="post">
     <div class="card m-3">
         <div class="row gx-3" th:if="${#ctx.session.user!=null}">
             <div class="col"><a href="/assign" th:href="@{/assign/${order.orderID}}" class="ms-auto btn btn-lg btn-primary">Tildel</a></div>
@@ -123,10 +125,16 @@
             <div class="col"><a href="/draw" th:href="@{/draw}" class="me-auto btn btn-lg btn-warning">Ret tilbud</a></div>
         </div>
         <div class="row gx-3" th:if="${#ctx.session.user==null}">
-            <div class="col"><a href="/login" th:href="@{/login}" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</a></div>
-            <div class="col"><a href="/login" th:href="@{/login}" class="btn btn-lg btn-danger">Afvis Tilbud</a></div>
+            <div class="col">
+                <button type="submit" formaction="/order/{orderId}/accept" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</button>
+                <a href="/login" th:href="@{/login}" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</a>
+            </div>
+            <div class="col">
+                <a href="/login" th:href="@{/login}" class="btn btn-lg btn-danger">Afvis Tilbud</a>
+            </div>
         </div>
     </div>
+    </form>
 </div>
 <footer class="footer text-faded p-3 pt-5">
     Oplysninger, CVR.

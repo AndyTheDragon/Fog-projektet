@@ -99,7 +99,7 @@ public class OrderController
         {
             ctx.attribute("message", "Database error. " + e.getMessage());
         }
-        //showReceipt(ctx, dbConnection);
+
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
