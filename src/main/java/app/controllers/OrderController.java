@@ -23,6 +23,7 @@ public class OrderController
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
         app.get("/orders", ctx -> showOrders(ctx, dbConnection));
         app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
+        app.post("/order/{orderId}/accept", ctx -> acceptOrder(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -35,7 +36,6 @@ public class OrderController
 
     private static void showLogin(@NotNull Context ctx)
     {
-        
     }
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
@@ -80,6 +80,26 @@ public class OrderController
         ctx.render("ordredetaljer.html");
 
 
+    }
+
+    private static void acceptOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
+        int orderId = 0;
+        try
+        {
+            orderId = Integer.parseInt(ctx.pathParam("orderId"));
+            OrderMapper.acceptOrder(orderId);
+            ctx.attribute("message", "Order accepted");
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error. " + e.getMessage());
+        }
+        //showReceipt(ctx, dbConnection);
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
