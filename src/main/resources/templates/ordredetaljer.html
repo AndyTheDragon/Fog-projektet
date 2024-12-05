@@ -29,12 +29,13 @@
     </div>
 </nav>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
-    <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}"></h1>
+    <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
     <div class="card m-3">
-        <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}"></h5>
+        <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
         <div class="card-body">
-            <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}"></p>
+            <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
+            <p class="card-text" th:text="@{order}">s</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
@@ -52,9 +53,9 @@
     </div>
 
     <div class="card m-3">
-        <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}"></h5>
+        <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
         <div class="card-body">
-            <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"></p>
+            <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"> Personal information message</p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Navn: <span th:text="${order.customer.name}">Jens Jensen</span></li>
