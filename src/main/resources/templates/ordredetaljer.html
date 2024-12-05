@@ -29,12 +29,12 @@
     </div>
 </nav>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
-    <h1>Ordredetaljer</h1>
+    <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}"></h1>
+
     <div class="card m-3">
-        <h5 class="card-header">Kundens ønsker</h5>
+        <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}"></h5>
         <div class="card-body">
-            <p class="card-text">Kunden har sendt følgende informationer ind via hjemmesiden:</p>
-            <p class="card-text" th:text="@{order}">s</p>
+            <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}"></p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
@@ -52,9 +52,9 @@
     </div>
 
     <div class="card m-3">
-        <h5 class="card-header">Kundens kontaktoplysninger</h5>
+        <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}"></h5>
         <div class="card-body">
-            <p class="card-text">Kunden har sendt følgende informationer ind via hjemmesiden:</p>
+            <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"></p>
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Navn: <span th:text="${order.customer.name}">Jens Jensen</span></li>
@@ -73,7 +73,7 @@
             <p class="card-text">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
         </div>
     </div>
-    <div class="card m-3">
+    <div class="card m-3" th:if="${#ctx.session.user!=null}">
         <div class="card-body">
             <table class="table table-borderless table-striped">
                 <thead>
@@ -117,14 +117,16 @@
         Pris
     </div>
     <div class="card m-3">
-        <div class="row gx-3">
+        <div class="row gx-3" th:if="${#ctx.session.user!=null}">
             <div class="col"><a href="/assign" th:href="@{/assign/${order.orderID}}" class="ms-auto btn btn-lg btn-primary">Tildel</a></div>
             <div class="col"><a href="/draw" th:href="@{/draw}" class="btn btn-lg btn-success">Send tilbud</a></div>
             <div class="col"><a href="/draw" th:href="@{/draw}" class="me-auto btn btn-lg btn-warning">Ret tilbud</a></div>
         </div>
+        <div class="row gx-3" th:if="${#ctx.session.user==null}">
+            <div class="col"><a href="/login" th:href="@{/login}" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</a></div>
+            <div class="col"><a href="/login" th:href="@{/login}" class="btn btn-lg btn-danger">Afvis Tilbud</a></div>
+        </div>
     </div>
-
-
 </div>
 <footer class="footer text-faded p-3 pt-5">
     Oplysninger, CVR.
