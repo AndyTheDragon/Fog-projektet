@@ -1,17 +1,21 @@
 package app.entities;
 
+import app.services.WorkDrawing;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Carport
 {
     List<IMaterials> materialsList;
+    List<IMaterials> boltsScrewsBracketsList;
     int length;
     int width;
     int height;
     int shedLength;
     int shedWidth;
     RoofType roofType;
+    WorkDrawing workDrawing;
 
     public Carport()
     {
@@ -24,7 +28,10 @@ public class Carport
         this.shedLength = shedLength;
         this.shedWidth = shedWidth;
         this.roofType = roofType;
+        this.materialsList = new ArrayList<>();
+        this.boltsScrewsBracketsList = new ArrayList<>();
         calculateMaterials();
+        this.workDrawing = new WorkDrawing(this, 640);
     }
 
     public boolean hasShed()
@@ -288,12 +295,12 @@ public class Carport
         RoofCovering roofCovering;
         if(shortPlatesForLength > 0)
         {
-            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "Plastmo Ecolite blåtonet", "stk", "Tagplader monteres på spær", 0);
             roofList.add((IMaterials) roofCovering);
         }
         if(longPlatesForLength > 0)
         {
-            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
+            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "Plastmo Ecolite blåtonet", "stk", "Tagplader monteres på spær", 0);
             roofList.add((IMaterials) roofCovering);
         }
 
@@ -301,8 +308,6 @@ public class Carport
     }
 
     public void calculateMaterials() {
-        materialsList = new ArrayList<>();
-
         materialsList.addAll(calcUnderFascia(length, width));
         materialsList.addAll(calcOverFascia(length, width));
         materialsList.addAll(calcBeam(length));
@@ -330,6 +335,11 @@ public class Carport
         return materialsList;
     }
 
+    public List<IMaterials> getBoltsScrewsBracketsList()
+    {
+        return boltsScrewsBracketsList;
+    }
+
     public RoofType getRoofType()
     {
         return roofType;
@@ -353,5 +363,10 @@ public class Carport
     public int getWidth()
     {
         return width;
+    }
+
+    public WorkDrawing getWorkDrawing()
+    {
+        return workDrawing;
     }
 }

@@ -95,6 +95,11 @@ public class Order
     {
         return orderID;
     }
+
+    public Carport getCarport()
+    {
+        return carport;
+    }
 }
 
 

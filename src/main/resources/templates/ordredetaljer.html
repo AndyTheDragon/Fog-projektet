@@ -34,19 +34,20 @@
         <h5 class="card-header">Kundens ønsker</h5>
         <div class="card-body">
             <p class="card-text">Kunden har sendt følgende informationer ind via hjemmesiden:</p>
+            <p class="card-text" th:text="@{order}">s</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Carport længde: <span th:text="${order.getCarportLength()}">360</span> cm</li>
-            <li class="list-group-item">Carport bredde: <span th:text="${order.getCarportWidth()}">300</span> cm</li>
-            <li class="list-group-item">Skur længde: <span th:text="${order.getShedLength()}">100</span> cm</li>
-            <li class="list-group-item">Skur bredde: <span th:text="${order.getShedLength()}">240</span> cm</li>
+            <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
+            <li class="list-group-item">Carport bredde: <span th:text="${order.carportWidth}">300</span> cm</li>
+            <li class="list-group-item">Skur længde: <span th:text="${order.shedLength}">100</span> cm</li>
+            <li class="list-group-item">Skur bredde: <span th:text="${order.shedWidth}">240</span> cm</li>
             <li class="list-group-item">Skur beklædning: <span>forskudt</span></li>
-            <li class="list-group-item">Tag type: <span th:text="${order.getCarportRoof()}">Fladt</span> </li>
+            <li class="list-group-item">Tag type: <span th:text="${order.carportRoof}">Fladt</span> </li>
             <li class="list-group-item">Tag beklædning: <span>Trapez</span> </li>
         </ul>
     </div>
 
-    <div>
+    <div class="m-3" th:utext="${order.carport.workdrawing}">
         SVG Skitse
     </div>
 
@@ -56,25 +57,71 @@
             <p class="card-text">Kunden har sendt følgende informationer ind via hjemmesiden:</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Navn: <span th:text="${order.getCustomer().getName()}">Jens Jensen</span></li>
-            <li class="list-group-item">E-mail: <span th:text="${order.getCustomer().getEmail()}">jens@jensen.dk</span></li>
-            <li class="list-group-item">Tlf: <span th:text="${order.getCustomer().getPhone()}">22332244</span></li>
-            <li class="list-group-item">Adresse: <span th:text="${order.getCustomer().getAddress()}">Vejnavn 21</span></li>
-            <li class="list-group-item">Postnr.: <span th:text="${order.getCustomer().getZipcode()}">2800</span> </li>
-            <li class="list-group-item">By: <span th:text="${order.getCustomer().getCity()}">Lyngby</span> </li>
+            <li class="list-group-item">Navn: <span th:text="${order.customer.name}">Jens Jensen</span></li>
+            <li class="list-group-item">E-mail: <span th:text="${order.customer.email}">jens@jensen.dk</span></li>
+            <li class="list-group-item">Tlf: <span th:text="${order.customer.phoneNumber}">22332244</span></li>
+            <li class="list-group-item">Adresse: <span th:text="${order.customer.address}">Vejnavn 21</span></li>
+            <li class="list-group-item">Postnr.: <span th:text="${order.customer.zipcode}">2800</span> </li>
+            <li class="list-group-item">By: <span th:text="${order.customer.city}">Lyngby</span> </li>
         </ul>
     </div>
-    <div>
-        Status in system
+    <div class="card m-3">
+        <div class="card-body">
+            <p class="card-text" th:text="${order}"></p>
+            <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
+            <p class="card-text">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
+            <p class="card-text">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
+        </div>
     </div>
-    <div>
-        Stykliste
+    <div class="card m-3">
+        <div class="card-body">
+            <table class="table table-borderless table-striped">
+                <thead>
+                <tr>
+                    <th>Materiale navn</th>
+                    <th>Længde</th>
+                    <th>Antal</th>
+                    <th>Enhed</th>
+                    <th>Beskrivelse</th>
+                </tr>
+                <tr>
+                    <th colspan="5">Træ og tagplader</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${order.carport.materialsList}">
+                    <td th:text="${material.type}"></td>
+                    <td th:text="${material.length}"></td>
+                    <td th:text="${material.amount}"></td>
+                    <td th:text="${material.unit}"></td>
+                    <td th:text="${material.description}"></td>
+                </tr>
+                <tr>
+                    <th colspan="5">Skruer og beslag</th>
+                </tr>
+                <tr th:each="material : ${order.carport.boltsScrewsBracketsList}">
+                    <td th:text="${material.type}"></td>
+                    <td th:text="${material.length}"></td>
+                    <td th:text="${material.amount}"></td>
+                    <td th:text="${material.unit}"></td>
+                    <td th:text="${material.description}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+            <p class="card-text" th:text="${order.carport.materialsList}"></p>
+
+        </div>
     </div>
-    <div>
+    <div class="card m-3">
         Pris
     </div>
-    <div>
-        Knapper
+    <div class="card m-3">
+        <div class="row gx-3">
+            <div class="col"><a href="/assign" th:href="@{/assign/${order.orderID}}" class="ms-auto btn btn-lg btn-primary">Tildel</a></div>
+            <div class="col"><a href="/draw" th:href="@{/draw}" class="btn btn-lg btn-success">Send tilbud</a></div>
+            <div class="col"><a href="/draw" th:href="@{/draw}" class="me-auto btn btn-lg btn-warning">Ret tilbud</a></div>
+        </div>
     </div>
 
 
