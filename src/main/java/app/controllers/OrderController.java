@@ -23,7 +23,7 @@ public class OrderController
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
         app.get("/orders", ctx -> showOrders(ctx, dbConnection));
         app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
-        app.post("/order/{orderId}/accept", ctx -> acceptOrder(ctx,dbConnection));
+        app.post("/order/accept", ctx -> acceptOrder(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -85,20 +85,28 @@ public class OrderController
     private static void acceptOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
         int orderId = 0;
-        try
+        Order order = null;
+        if (ctx.sessionAttribute("user") == null)
         {
-            orderId = Integer.parseInt(ctx.pathParam("orderId"));
-            OrderMapper.acceptOrder(orderId);
-            ctx.attribute("message", "Order accepted");
+            try
+            {
+                orderId = Integer.parseInt(ctx.formParam("orderId"));
+                order = OrderMapper.acceptOrder(orderId);
+                ctx.attribute("message", "Tilbuddet er accepteret");
+            }
+            catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid order id");
+            }
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+            ctx.attribute("order", order);
+            ctx.render("kvittering.html");
         }
-        catch (NumberFormatException e)
-        {
-            ctx.attribute("message", "Invalid order id");
-        }
-        catch (DatabaseException e)
-        {
-            ctx.attribute("message", "Database error. " + e.getMessage());
-        }
+        ctx.attribute("message", "Du har ikke adgang til denne side");
+        ctx.render("kvittering.html");
 
     }
 
