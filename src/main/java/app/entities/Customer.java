@@ -2,13 +2,13 @@ package app.entities;
 
 public class Customer
 {
-    int customerID;
-    String name;
-    String address;
-    String zipcode;
-    String city;
-    String phoneNumber;
-    String email;
+    private int customerID;
+    private String name;
+    private String address;
+    private String zipcode;
+    private String city;
+    private String phoneNumber;
+    private String email;
 
     public Customer(String name, String address, String zipcode, String city, String phoneNumber, String email)
     {
@@ -18,6 +18,17 @@ public class Customer
         this.city = city;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    public Customer(String phoneNumber, String email, String city, String address, String zipcode, String name, int customerID)
+    {
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.city = city;
+        this.address = address;
+        this.zipcode = zipcode;
+        this.name = name;
+        this.customerID = customerID;
     }
 
     public Customer()
