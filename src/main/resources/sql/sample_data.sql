@@ -68,9 +68,11 @@ insert into carport_material_function (material_id, function_id) VALUES
 
 
 
-
-
-
-
-insert into customer (customer_name, address, zipcode, city, phone_number, email) VALUES  ('Lars', 'Tegnevej 8', '4400', 'Kalundborg', '22332244', 'kunde@wyrmlings.dk');
 insert into account (user_name, email, user_password) VALUES ('Morten', 'mortens@fog.dk', 'fog2024$1');
+insert into customer (customer_name, address, zipcode, city, phone_number, email) VALUES  ('Lars', 'Tegnevej 8', '4400', 'Kalundborg', '22332244', 'kunde@wyrmlings.dk');
+
+
+insert into carport_order (customer_id, sales_id, carport_width, carport_length, carport_height, carport_shed, shed_width, shed_length, carport_roof)
+VALUES (1, null, 600, 780, 230, true, 530, 210, 'flat'),
+       (1, null, 300, 480, 230, true, 230, 110, 'flat'),
+       (1, null, 300, 540, 230, false, 0, 0, 'flat');
