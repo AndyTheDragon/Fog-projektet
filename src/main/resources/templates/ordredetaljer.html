@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
-Adde<header th:replace="~{fragments :: navbar}"></header>
+<header th:replace="~{fragments :: navbar}"></header>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
     <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
@@ -104,13 +104,11 @@ Adde<header th:replace="~{fragments :: navbar}"></header>
     <div class="card m-3">
         Pris
     </div>
-
-
     <div class="card m-3">
         <div class="row gx-3" th:if="${#ctx.session.user!=null}">
             <div class="col d-flex justify-content-start">
-                <form action="/assign" method="get">
-                    <input type="hidden" name="orderID" th:value="${order.orderID}">
+                <form th:action="@{/order/assign}" method="post">
+                    <input type="hidden" name="orderId" th:value="${order.orderID}">
                     <button type="submit" class="ms-auto btn btn-lg btn-primary">Tildel</button>
                 </form>
             </div>

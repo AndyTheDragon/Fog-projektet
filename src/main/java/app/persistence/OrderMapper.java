@@ -110,6 +110,22 @@ public class OrderMapper
                 LocalDateTime.now());
     }
 
+    public static void asssignOrder(int orderId, int salesId, ConnectionPool connectionPool) throws DatabaseException
+    {
+        String sql = "UPDATE carport_order SET sales_id = ? WHERE order_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, salesId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
+    }
+
     public static Order acceptOrder(int orderId) throws DatabaseException
     {
         return new Order(1,
