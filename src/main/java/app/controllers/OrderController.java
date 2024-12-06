@@ -77,23 +77,29 @@ public class OrderController {
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
         User currentUser = ctx.sessionAttribute("currentUser");
-        int salesId = currentUser.getUserID();
 
         try
         {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
             Order order = OrderMapper.getOrder(orderId);
-            if (order.getSalesID() != 0)
+            if (order.getSalesPerson() != null)
             {
                 ctx.attribute("message", "Ordren er allerede tildelt");
             }
             else
             {
-                order.setSalesID(salesId);
-                OrderMapper.asssignOrder(orderId, salesId, dbConnection);
-                ctx.attribute("message", "Ordren blev tildelt");
+                int salesId = (currentUser == null ? 0 : currentUser.getUserID());
+                if (salesId > 0)
+                {
+                    OrderMapper.asssignOrder(orderId, salesId, dbConnection);
+                    ctx.attribute("message", "Ordren blev tildelt");
+                    ctx.redirect("/order/"+orderId);
+                }
+                else
+                {
+                    ctx.attribute("message", "Du skal være logget ind for at tildel ordre");
+                }
             }
-            ctx.render("ordredetaljer.html");
         }
         catch (NumberFormatException e)
         {
@@ -103,6 +109,8 @@ public class OrderController {
         {
             ctx.attribute("message", "Databasefejl: " + e.getMessage());
         }
+        showOrders(ctx, dbConnection);
+
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
