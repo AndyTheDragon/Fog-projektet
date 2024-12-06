@@ -45,7 +45,7 @@ public class Order
         return salesPerson;
     }
 
-    public int getSalesID()
+    public int getSalesID(int salesId)
     {
         return salesPerson.getUserID();
     }
@@ -105,10 +105,6 @@ public class Order
         return carport;
     }
 
-    public void setSalesID(int salesID)
-    {
-        this.salesPerson = salesPerson.setSalesID();
-    }
 }
 
 
