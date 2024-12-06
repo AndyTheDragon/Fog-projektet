@@ -76,30 +76,31 @@ public class OrderController {
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
-        Order order = null;
         User currentUser = ctx.sessionAttribute("currentUser");
         int salesId = currentUser.getUserID();
 
-        if (order.getSalesID() == 0)
+        try
         {
-            ctx.attribute("message", "Order already assigned");
-
-        } else
-        {
-            try
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+            Order order = OrderMapper.getOrder(orderId);
+            if (order.getSalesID() != 0)
             {
-                salesId = Integer.parseInt(ctx.formParam("salesId"));
-                order = OrderMapper.getOrder(Integer.parseInt(ctx.formParam("orderId")));
-                order.setSalesID(salesId);
-                OrderMapper.saveOrderToDatabase(order, dbConnection);
-                ctx.attribute("message", "Order assigned to salesperson");
-            } catch (NumberFormatException e)
-            {
-                ctx.attribute("message", "Invalid salesperson id");
-            } catch (DatabaseException e)
-            {
-                ctx.attribute("message", "Database error. " + e.getMessage());
+                ctx.attribute("message", "Ordren er allerede tildelt");
             }
+            else
+            {
+                order.setSalesID(salesId);
+                OrderMapper.asssignOrder(orderId, salesId, dbConnection);
+                ctx.attribute("message", "Ordren blev tildelt");
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Ugyldigt ordre id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Databasefejl: " + e.getMessage());
         }
     }
 
