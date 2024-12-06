@@ -118,7 +118,11 @@
     </div>
     <div class="card m-3">
         <div class="row gx-3">
-            <div class="col"><a href="/order/assign" th:href="@{/assign/${order.orderID}}" class="ms-auto btn btn-lg btn-primary">Tildel</a></div>
+            <div class="col">
+                <form action="/order/assign" method="post">
+                    <input type="hidden" name="orderId" th:value="${order.orderID}">
+                    <button type="submit" class="ms-auto btn btn-lg btn-primary">Tildel</button>
+                </form>
             <div class="col"><a href="/draw" th:href="@{/draw}" class="btn btn-lg btn-success">Send tilbud</a></div>
             <div class="col"><a href="/draw" th:href="@{/draw}" class="me-auto btn btn-lg btn-warning">Ret tilbud</a></div>
         </div>
