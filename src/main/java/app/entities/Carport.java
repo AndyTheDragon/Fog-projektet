@@ -359,8 +359,8 @@ public class Carport
         int screwsPerSqrMeter = 12;
         int roofArea = length * width;
 
-        int totalScrews = roofArea * screwsPerSqrMeter;
-        int screwPacks = (int) Math.ceil( totalScrews/200);
+        int totalScrews = (roofArea * screwsPerSqrMeter)/10000;
+        int screwPacks = (int) Math.ceilDiv( totalScrews,200);
         roofScrews = new BoltsScrewsBrackets(4,50,"plastmo bundskruer, 200 stk", screwPacks,"pakkke","Til montering af tagplader", 0);
         roofScrewList.add(roofScrews);
 
@@ -392,7 +392,7 @@ public class Carport
         IMaterials fasciaBargeScrews;
         int totalLength = ((length*6)+(width*4));
         int totalScrews = totalLength/70;
-        int screwPacks = (int) Math.ceil( totalScrews/200);
+        int screwPacks = (int) Math.ceilDiv( totalScrews,200);
 
         fasciaBargeScrews = new BoltsScrewsBrackets((int) 4.5,50,"skruer 200stk", screwPacks,"pakke","Til montering af stern & vandbrædt", 0);
         fasciaBargeScrewList.add(fasciaBargeScrews);
