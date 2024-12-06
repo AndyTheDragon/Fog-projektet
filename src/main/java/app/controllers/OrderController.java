@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderController {
     public static void addRoutes(Javalin app, ConnectionPool dbConnection)
@@ -39,21 +40,33 @@ public class OrderController {
 
     public static void createOrder(Context ctx, ConnectionPool dbConnection) {
         try {
+            /*
+            System.out.println("name " + ctx.formParam("name"));
+            System.out.println("address " + ctx.formParam("address"));
+            System.out.println("zipcode " + ctx.formParam("zipcode"));
+            System.out.println("city " + ctx.formParam("city"));
+            System.out.println("phoneNumber " + ctx.formParam("phoneNumber"));
+            System.out.println("email " + ctx.formParam("email"));
+            System.out.println("carport roof " + ctx.formParam("carportRoof"));
+            System.out.println("carport bredde " + ctx.formParam("carportWidth"));
+            System.out.println("carport længe " + ctx.formParam("carportLength"));
+            System.out.println("shed " + ctx.formParam("shedWidth"));
+            System.out.println("shed " + ctx.formParam("shedLength"));
+             */
 
-            int customerID = Integer.parseInt(ctx.formParam("customerID"));
-            int salesID = Integer.parseInt(ctx.formParam("salesID"));
-            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
-            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
-            int carportHeight = Integer.parseInt(ctx.formParam("carportHeight"));
-            boolean carportShed = Boolean.parseBoolean(ctx.formParam("carportShed"));
-            int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
-            int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+            int carportWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportWidth")));
+            int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
+            int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
+            int shedLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedLength")));
 
             RoofType carportRoof = ctx.formParam("carportRoof").equals("flat") ? RoofType.FLAT : RoofType.FLAT;
             boolean isPaid = false;
 
-            Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
+            Customer customer = new Customer(ctx.formParam("name"), ctx.formParam("address"), ctx.formParam("zipcode"), ctx.formParam("city"), ctx.formParam("phoneNumber"), ctx.formParam("email"));
+
+            Order order = new Order(0, customer, new User(), carportWidth, carportLength,
                     shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
+            OrderMapper.createOrder(order, dbConnection);
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
             ctx.status(201).result("Ordren blev oprettet med succes.");
@@ -62,6 +75,8 @@ public class OrderController {
         } catch (DatabaseException e) {
             ctx.status(500).result("Databasefejl: Kunne ikke oprette ordren.");
         }
+        OrderController.showOrderPage(ctx);
+
     }
 
     private static void doLogin(@NotNull Context ctx, ConnectionPool dbConnection)
