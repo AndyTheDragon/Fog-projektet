@@ -110,6 +110,21 @@ public class OrderMapper
                 LocalDateTime.now());
     }
 
+    public static Order acceptOrder(int orderId) throws DatabaseException
+    {
+        return new Order(1,
+                new Customer(),
+                new User(),
+                600,
+                780,
+                530,
+                210,
+                RoofType.FLAT,
+                true,
+                LocalDateTime.now(),
+                LocalDateTime.now());
+    }
+
     public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
     {
     }

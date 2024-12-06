@@ -13,12 +13,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class OrderController {
+public class OrderController
+{
     public static void addRoutes(Javalin app, ConnectionPool dbConnection)
     {
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
         app.get("/orders", ctx -> showOrders(ctx, dbConnection));
         app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
+        app.post("/order/accept", ctx -> acceptOrder(ctx,dbConnection));
+        app.post("/order/requestchange", ctx -> requestChange(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         //app.get("/login", ctx -> showLogin(ctx));
         //app.post("/login", ctx -> doLogin(ctx,dbConnection));
@@ -27,7 +30,8 @@ public class OrderController {
 
     }
 
-    public static void showOrderPage(Context ctx) {
+    public static void showOrderPage(Context ctx)
+    {
         Order currentOrder = ctx.sessionAttribute("currentOrder");
         if (currentOrder == null) {
             ctx.attribute("message", "Du har ikke nogen ordre i gang");
@@ -37,7 +41,8 @@ public class OrderController {
         ctx.render("bestilling.html");
     }
 
-    public static void createOrder(Context ctx, ConnectionPool dbConnection) {
+    public static void createOrder(Context ctx, ConnectionPool dbConnection)
+    {
         try {
 
             int customerID = Integer.parseInt(ctx.formParam("customerID"));
@@ -83,17 +88,53 @@ public class OrderController {
     {
         int orderId = 0;
         Order order = null;
-        ctx.sessionAttribute("user", "Morten");
+        //ctx.sessionAttribute("user", "Morten");
         if (ctx.sessionAttribute("user") == null)
         {
-            ctx.attribute("message", "You need to login first");
+            ctx.attribute("h1message", "Tilbuds oversigt");
+            ctx.attribute("information", "Dimensioner");
+            ctx.attribute("pmessage", "Herunder ses dimensionerne på den ønskede carport:");
+            ctx.attribute("persinfo", "Dine kontaktoplysninger");
+            ctx.attribute("persinfomessage", "Kontroller venligst disse er korrekte:");
         }
         else
         {
+            ctx.attribute("h1message", "Ordredetaljer");
+            ctx.attribute("information", "Kundens ønsker");
+            ctx.attribute("pmessage", "Kunden har sendt følgende informationer ind via hjemmesiden:");
+            ctx.attribute("persinfo", "Kundens kontaktoplysninger");
+            ctx.attribute("persinfomessage", "Kunden har sendt følgende informationer ind via hjemmesiden:");
+        }
+        try
+        {
+            orderId = Integer.parseInt(ctx.pathParam("orderId"));
+            order = OrderMapper.getOrder(orderId);
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error. " + e.getMessage());
+        }
+        ctx.attribute("order", order);
+        ctx.render("ordredetaljer.html");
+
+
+    }
+
+    private static void acceptOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
+        int orderId = 0;
+        Order order = null;
+        if (ctx.sessionAttribute("user") == null)
+        {
             try
             {
-                orderId = Integer.parseInt(ctx.pathParam("orderId"));
-                order = OrderMapper.getOrder(orderId);
+                orderId = Integer.parseInt(ctx.formParam("orderId"));
+                order = OrderMapper.acceptOrder(orderId);
+                ctx.attribute("message", "Tilbuddet er accepteret");
             }
             catch (NumberFormatException e)
             {
@@ -104,10 +145,18 @@ public class OrderController {
                 ctx.attribute("message", "Database error. " + e.getMessage());
             }
             ctx.attribute("order", order);
+            ctx.render("kvittering.html");
         }
-        ctx.render("ordredetaljer.html");
+        ctx.attribute("message", "Du har ikke adgang til denne side");
+        ctx.render("kvittering.html");
 
+        //Skal lige have hjælp til det sidste med denne her metode så den ikke både render "kvittering" indenfor og udenfor if statementet
+        //Tænker den skal render en message som siger "Tilbud accepteret"
 
+    }
+
+    private static void requestChange(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
