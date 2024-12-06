@@ -8,18 +8,20 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
+<header th:replace="~{fragments :: navbar}"></header>
+
 <h3>Assigned orders</h3>
 <div class="assigned card">
     <div class="card-body" th:each="ordera : ${assigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <p class="card-text">Here you will find an overview for this order.</p>
         <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${ordera.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${ordera.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${ordera.salesId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${ordera.customer.name}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${ordera.salesPerson.name}"></span></li>
     </ul>
     <button class="assign" type="submit">Assign to self </button>
     <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
+        <a href="ordredetaljer.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
             <button class="view-btn" type="button">View details</button>
         </a>
     </div>
@@ -29,14 +31,14 @@
 <h3>Unassigned orders</h3>
     <div class="unassigned card">
         <div class="card-body" th:each="orderu : ${unassigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <p class="card-text">Here you will find an overview for this order.</p>
         <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orderu.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orderu.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesId}"></span></li>
+        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orderu.customerID}"></span></li>
+        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesPerson}"></span></li>
     </ul>
     <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
+        <a href="ordredetaljer.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
             <button class="view-btn" type="button">View details</button>
             </a>
         </div>
