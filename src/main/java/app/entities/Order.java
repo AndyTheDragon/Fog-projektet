@@ -40,6 +40,11 @@ public class Order
         return customer;
     }
 
+    public User getSalesPerson()
+    {
+        return salesPerson;
+    }
+
     public int getSalesID()
     {
         return salesPerson.getUserID();
@@ -102,7 +107,7 @@ public class Order
 
     public void setSalesID(int salesID)
     {
-        this.salesID = salesID;
+        this.salesPerson = salesPerson.setSalesID();
     }
 }
 
