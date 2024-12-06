@@ -52,7 +52,7 @@ public class OrderController {
             RoofType carportRoof = ctx.formParam("carportRoof").equals("flat") ? RoofType.FLAT : RoofType.FLAT;
             boolean isPaid = false;
 
-            Order order = new Order(0, new Customer(), salesID, carportWidth, carportLength,
+            Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
                     shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
