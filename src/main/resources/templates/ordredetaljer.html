@@ -12,50 +12,56 @@ Adde<header th:replace="~{fragments :: navbar}"></header>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
     <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
-    <div class="card m-3">
-        <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
-        <div class="card-body">
-            <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
-            <p class="card-text" th:text="@{order}">s</p>
+    <div class="row">
+        <div class="col-6">
+            <div class="card m-3">
+                <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
+                <div class="card-body">
+                    <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
+                    <p class="card-text" th:text="@{order}">s</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
+                    <li class="list-group-item">Carport bredde: <span th:text="${order.carportWidth}">300</span> cm</li>
+                    <li class="list-group-item">Skur længde: <span th:text="${order.shedLength}">100</span> cm</li>
+                    <li class="list-group-item">Skur bredde: <span th:text="${order.shedWidth}">240</span> cm</li>
+                    <li class="list-group-item">Skur beklædning: <span>forskudt</span></li>
+                    <li class="list-group-item">Tag type: <span th:text="${order.carportRoof}">Fladt</span> </li>
+                    <li class="list-group-item">Tag beklædning: <span>Trapez</span> </li>
+                </ul>
+            </div>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
-            <li class="list-group-item">Carport bredde: <span th:text="${order.carportWidth}">300</span> cm</li>
-            <li class="list-group-item">Skur længde: <span th:text="${order.shedLength}">100</span> cm</li>
-            <li class="list-group-item">Skur bredde: <span th:text="${order.shedWidth}">240</span> cm</li>
-            <li class="list-group-item">Skur beklædning: <span>forskudt</span></li>
-            <li class="list-group-item">Tag type: <span th:text="${order.carportRoof}">Fladt</span> </li>
-            <li class="list-group-item">Tag beklædning: <span>Trapez</span> </li>
-        </ul>
+        <div class="col-6">
+            <div class="card m-3">
+                <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
+                <div class="card-body">
+                    <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"> Personal information message</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Navn: <span th:text="${order.customer.name}">Jens Jensen</span></li>
+                    <li class="list-group-item">E-mail: <span th:text="${order.customer.email}">jens@jensen.dk</span></li>
+                    <li class="list-group-item">Tlf: <span th:text="${order.customer.phoneNumber}">22332244</span></li>
+                    <li class="list-group-item">Adresse: <span th:text="${order.customer.address}">Vejnavn 21</span></li>
+                    <li class="list-group-item">Postnr.: <span th:text="${order.customer.zipcode}">2800</span> </li>
+                    <li class="list-group-item">By: <span th:text="${order.customer.city}">Lyngby</span> </li>
+                </ul>
+            </div>
+            <div class="card m-3">
+                <h5 class="card-header">Produkt og sælger information</h5>
+                <div class="card-body">
+                    <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
+                    <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
+                    <p class="card-text" th:if="${#ctx.session.user!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
+                    <p class="card-text" th:if="${#ctx.session.user!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="m-3" th:utext="${order.carport.workdrawing}">
         SVG Skitse
     </div>
 
-    <div class="card m-3">
-        <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
-        <div class="card-body">
-            <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"> Personal information message</p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Navn: <span th:text="${order.customer.name}">Jens Jensen</span></li>
-            <li class="list-group-item">E-mail: <span th:text="${order.customer.email}">jens@jensen.dk</span></li>
-            <li class="list-group-item">Tlf: <span th:text="${order.customer.phoneNumber}">22332244</span></li>
-            <li class="list-group-item">Adresse: <span th:text="${order.customer.address}">Vejnavn 21</span></li>
-            <li class="list-group-item">Postnr.: <span th:text="${order.customer.zipcode}">2800</span> </li>
-            <li class="list-group-item">By: <span th:text="${order.customer.city}">Lyngby</span> </li>
-        </ul>
-    </div>
-    <div class="card m-3">
-        <h5 class="card-header">Produkt og sælger information</h5>
-        <div class="card-body">
-            <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
-            <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
-            <p class="card-text" th:if="${#ctx.session.user!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
-            <p class="card-text" th:if="${#ctx.session.user!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
-        </div>
-    </div>
     <div class="card m-3" th:if="${#ctx.session.user!=null}">
         <div class="card-body">
             <table class="table table-borderless table-striped">
