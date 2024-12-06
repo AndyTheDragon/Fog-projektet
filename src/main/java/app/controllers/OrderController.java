@@ -1,20 +1,17 @@
 package app.controllers;
 
-import app.entities.Order;
-import app.entities.User;
-import app.persistence.OrderMapper;
-import app.entities.Carport;
-import app.entities.RoofType;
+import app.entities.*;
 import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
 import app.exceptions.DatabaseException;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
-
-
 
 public class OrderController
 {
@@ -28,19 +25,63 @@ public class OrderController
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> doLogin(ctx,dbConnection));
+        app.get("/bestilling", ctx -> showOrderPage(ctx));
+        app.post("/bestilling", ctx -> createOrder(ctx, dbConnection));
 
+    }
+
+    public static void showOrderPage(Context ctx)
+    {
+        Order currentOrder = ctx.sessionAttribute("currentOrder");
+        if (currentOrder == null) {
+            ctx.attribute("message", "Du har ikke nogen ordre i gang");
+        } else {
+            ctx.attribute("order", currentOrder);
+        }
+        ctx.render("bestilling.html");
+    }
+
+    public static void createOrder(Context ctx, ConnectionPool dbConnection)
+    {
+        try {
+
+            int customerID = Integer.parseInt(ctx.formParam("customerID"));
+            int salesID = Integer.parseInt(ctx.formParam("salesID"));
+            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
+            int carportHeight = Integer.parseInt(ctx.formParam("carportHeight"));
+            boolean carportShed = Boolean.parseBoolean(ctx.formParam("carportShed"));
+            int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
+            int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+
+            RoofType carportRoof = ctx.formParam("carportRoof").equals("flat") ? RoofType.FLAT : RoofType.FLAT;
+            boolean isPaid = false;
+
+            Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
+
+            OrderMapper.saveOrderToDatabase(order, dbConnection);
+            ctx.status(201).result("Ordren blev oprettet med succes.");
+        } catch (IllegalArgumentException e) {
+            ctx.status(400).result("Fejl i input: " + e.getMessage());
+        } catch (DatabaseException e) {
+            ctx.status(500).result("Databasefejl: Kunne ikke oprette ordren.");
+        }
     }
 
     private static void doLogin(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        //US-3
     }
 
     private static void showLogin(@NotNull Context ctx)
     {
+        //US-3
     }
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        //US-5
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
