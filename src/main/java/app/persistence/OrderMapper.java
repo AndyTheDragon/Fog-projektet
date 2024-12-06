@@ -48,8 +48,8 @@ public class OrderMapper
                         rs.getString("c.phone_number"),
                         rs.getString("c.email"));
                 User salesPerson;
-                int salesId = rs.getInt("sales_id");
-                if (salesId==0)
+                Integer salesId = rs.getObject("sales_id") != null ? rs.getInt("sales_id") : 0 ;
+                if (salesId == 0)
                 {
                     salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
                 }
@@ -84,6 +84,9 @@ public class OrderMapper
                 } else {
                     allorders.add(order);
                 }
+
+                System.out.println(unassignedOrders);
+                System.out.println(allorders);
             }
         } catch (SQLException e) {
                 throw new DatabaseException("Message "+ e.getMessage());
