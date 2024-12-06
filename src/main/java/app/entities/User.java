@@ -2,11 +2,11 @@ package app.entities;
 
 public class User
 {
-    int userID;
-    String name;
-    String email;
-    String password;
-    boolean isAdmin;
+    private int userID;
+    private final String name;
+    private final String email;
+    private String password;
+    private boolean isAdmin;
 
     public User(int userID, String name, String email, String password, boolean isAdmin)
     {
@@ -15,6 +15,12 @@ public class User
         this.email = email;
         this.password = password;
         this.isAdmin = isAdmin;
+    }
+
+    public User(String name, String email)
+    {
+        this.name = name;
+        this.email = email;
     }
 
     public User()
