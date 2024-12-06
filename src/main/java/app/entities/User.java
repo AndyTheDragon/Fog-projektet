@@ -56,4 +56,9 @@ public class User
     {
         return isAdmin;
     }
+
+    public  User setSalesID()
+    {
+        return null;
+    }
 }
