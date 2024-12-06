@@ -20,8 +20,8 @@ public class OrderController {
         app.get("/orders", ctx -> showOrders(ctx, dbConnection));
         app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
-        app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> doLogin(ctx,dbConnection));
+        //app.get("/login", ctx -> showLogin(ctx));
+        //app.post("/login", ctx -> doLogin(ctx,dbConnection));
         app.get("/bestilling", ctx -> showOrderPage(ctx));
         app.post("/bestilling", ctx -> createOrder(ctx, dbConnection));
 

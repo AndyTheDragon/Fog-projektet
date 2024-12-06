@@ -1,4 +1,4 @@
-CREATE TABLE customer (
+CREATE TABLE IF NOT EXISTS customer (
       customer_id SERIAL PRIMARY KEY,
       customer_name VARCHAR(255),
       address VARCHAR(255),
@@ -10,18 +10,22 @@ CREATE TABLE customer (
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-create table account (
+create table IF NOT EXISTS account (
     user_id serial primary key,
     user_name VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     user_password VARCHAR,
     is_admin boolean DEFAULT false
 );
-
+DROP TABLE IF EXISTS carport_material_function CASCADE;
+DROP TABLE IF EXISTS material_function CASCADE;
+DROP TABLE IF EXISTS carport_material CASCADE;
+DROP TABLE IF EXISTS carport_orderlines CASCADE;
+DROP TABLE IF EXISTS carport_order CASCADE;
 CREATE TABLE carport_order (
        order_id SERIAL PRIMARY KEY,
        customer_id INT NOT NULL,
-       sales_id INT NOT NULL,
+       sales_id INT NULL DEFAULT NULL,
        carport_width INT NOT NULL,
        carport_length INT NOT NULL,
        carport_height INT NOT NULL,
