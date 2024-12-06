@@ -58,7 +58,6 @@ public class OrderController
             System.out.println("shed " + ctx.formParam("shedWidth"));
             System.out.println("shed " + ctx.formParam("shedLength"));
              */
-
             int carportWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportWidth")));
             int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
             int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
