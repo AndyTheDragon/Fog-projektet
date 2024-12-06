@@ -1,6 +1,5 @@
 package app.entities;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Order
@@ -44,6 +43,11 @@ public class Order
     public User getSalesPerson()
     {
         return salesPerson;
+    }
+
+    public int getSalesID(int salesId)
+    {
+        return salesPerson.getUserID();
     }
 
     public int getCarportWidth()
@@ -100,6 +104,7 @@ public class Order
     {
         return carport;
     }
+
 }
 
 

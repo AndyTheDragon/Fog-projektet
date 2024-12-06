@@ -76,7 +76,41 @@ public class OrderController {
 
     private static void assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
-        //US-5
+        User currentUser = ctx.sessionAttribute("currentUser");
+
+        try
+        {
+            int orderId = Integer.parseInt(ctx.formParam("orderId"));
+            Order order = OrderMapper.getOrder(orderId);
+            if (order.getSalesPerson() != null)
+            {
+                ctx.attribute("message", "Ordren er allerede tildelt");
+            }
+            else
+            {
+                int salesId = (currentUser == null ? 0 : currentUser.getUserID());
+                if (salesId > 0)
+                {
+                    OrderMapper.asssignOrder(orderId, salesId, dbConnection);
+                    ctx.attribute("message", "Ordren blev tildelt");
+                    ctx.redirect("/order/"+orderId);
+                }
+                else
+                {
+                    ctx.attribute("message", "Du skal være logget ind for at tildel ordre");
+                }
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Ugyldigt ordre id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Databasefejl: " + e.getMessage());
+        }
+        showOrders(ctx, dbConnection);
+
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
