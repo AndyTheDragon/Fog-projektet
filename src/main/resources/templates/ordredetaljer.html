@@ -119,7 +119,7 @@
     <div class="card m-3">
         <div class="row gx-3">
             <div class="col">
-                <form action="/order/assign" method="post">
+                <form th:action="@{/order/assign}" method="post">
                     <input type="hidden" name="orderId" th:value="${order.orderID}">
                     <button type="submit" class="ms-auto btn btn-lg btn-primary">Tildel</button>
                 </form>
