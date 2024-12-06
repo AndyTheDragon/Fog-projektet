@@ -10,18 +10,21 @@
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
 
-<form method="post" action="/login">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required>
-    </div>
-    <button type="submit" class="btn btn-primary" >Login</button>
-</form>
+<div class="container bg-body-tertiary m-5 p-3">
+    <div class="alert alert-info" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
+    <form method="post" action="/login">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" >Login</button>
+    </form>
+</div>
 
 </body>
 </html>
