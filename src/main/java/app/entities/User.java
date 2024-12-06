@@ -57,8 +57,8 @@ public class User
         return isAdmin;
     }
 
-    public  User setSalesID()
+    public void setUserID(int userID)
     {
-        return null;
+        this.userID = userID;
     }
 }
