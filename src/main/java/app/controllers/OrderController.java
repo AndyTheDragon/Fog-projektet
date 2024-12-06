@@ -93,6 +93,7 @@ public class OrderController {
                 OrderMapper.asssignOrder(orderId, salesId, dbConnection);
                 ctx.attribute("message", "Ordren blev tildelt");
             }
+            ctx.render("ordredetaljer.html");
         }
         catch (NumberFormatException e)
         {
