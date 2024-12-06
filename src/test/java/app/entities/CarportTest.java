@@ -59,7 +59,7 @@ class CarportTest
         int totalLength = 2*480;
         int length1 = 480;
         int length2 = 600;
-        int[] expected = new int[]{2, 0};
+        int[] expected = new int[]{2,0};
         //Act
         int[] result = carport.calcOptimalWood(totalLength, length1, length2);
 
@@ -99,9 +99,6 @@ class CarportTest
         //In this test spillage of 5% has been added to our totalt length of wood which affects the expected
         //result to be 4x480cm.
     }
-
-    //Make test mathods for all types of wood below
-
     @Test
     void calcOptimalFasciaMiddleTest()
     {
@@ -117,7 +114,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFasciaMinimumTestA()
     {
@@ -133,7 +129,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFasciaMinimumTestB()
     {
@@ -152,7 +147,6 @@ class CarportTest
         //In this test the length1 and length2 are switched around, which changes the prio of the boards.
         //This is because we would like to fint the 540cm boards first to avoid spill %.
     }
-
     @Test
     void calcOptimalFasciaMaximumTest()
     {
@@ -168,7 +162,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalFlatBargeBoardMinimumTestA()
     {
@@ -199,7 +192,6 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
     @Test
     void calcOptimalRisenBargeBoardMaximumTest()
     {
@@ -245,7 +237,31 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
+    @Test
+    void calcOptimalHorizontalBracesMaximumTest()
+    {
+        //Arrange
+        Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT);
+        int totalBraces = 0;
+        int bracesPerSection = 2;
+        int extraBracesForWideness = 4;
+        int expectedBraces = 16;
 
+        //Act
+        totalBraces += 4*bracesPerSection;
+        if (carport.width > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        if (carport.length > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        int actualBraces = totalBraces;
+
+        //Assert
+        assertEquals(expectedBraces, actualBraces);
+    }
     @Test
     void calcOptimalRafterMinimumTestA()
     {
@@ -272,6 +288,7 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
+
     @Test
     void calcOptimalRafterMaximumTest()
     {
@@ -347,5 +364,98 @@ class CarportTest
         assertEquals(expectedShortPlatesForLength, shortPlatesForLength);
         assertEquals(expectedLongPlatesForLength, longPlatesForLength);
     }
+    @Test
+    void calcJoistBracketsTest()
+    {
+        Carport carportA = new Carport(780, 600,0,0,RoofType.FLAT);
+        //Arrange
+        int expectedJoistAmount = 15;
+        int expectedBracketAmount = expectedJoistAmount *2;
+        //Act
+        int actualJoistAmount = carportA.getNumberOfJoists();
+        int actualBracketAmount = actualJoistAmount * 2;
+
+        //Assert
+        assertEquals(expectedJoistAmount, actualJoistAmount);
+        assertEquals(expectedBracketAmount, actualBracketAmount);
+
+    }
+    @Test
+    void calcBeamBoltsTest()
+    {
+        Carport carportB = new Carport (780,600,210,530,RoofType.FLAT);
+        // Arrange
+        int totalBolts = 0;
+        int boltsPerPost = 2;
+        int extraBoltsPerSeam = 4;
+        int postAmount = carportB.getNumberOfPosts(carportB.length, carportB.width, carportB.shedLength, carportB.shedWidth)-1;
+        if(carportB.shedWidth > 300){
+            postAmount -= 2;
+        }
+
+        int expectedBoltAmount = 20;
+
+        // Act
+        totalBolts += boltsPerPost*postAmount;
+        if (carportB.length > 600){
+            totalBolts += extraBoltsPerSeam;
+        }
+        int actualBoltsAmount = totalBolts;
+
+        // Assert
+        assertEquals(expectedBoltAmount,actualBoltsAmount);
+    }
+    @Test
+    void calcShedScrewsTest()
+    {
+        Carport carportC = new Carport(780,600,210,530,RoofType.FLAT);
+        // Arrange
+        int expectedInnerScrews = 600;
+        int expectedOuterScrews = 600;
+        int screwsPerCladding = 6;
+        int totalInnerScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        int totalOuterScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        // Act
+        int actualInnerScrews = totalInnerScrews;
+        int actualOuterScrews = totalOuterScrews;
+        // Assert
+        assertEquals(expectedInnerScrews, actualInnerScrews);
+        assertEquals(expectedOuterScrews, actualOuterScrews);
+
+    }
+
+    @Test
+    void calcRoofScrewsTest()
+    {
+        // Arrange
+        int expectedScrewPacks = 3;
+        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT);
+        int screwsPerSqrMeter = 12;
+
+        // Act
+        int roofArea = (carportD.length/100) * (carportD.width/100);
+
+        int totalScrews = roofArea * screwsPerSqrMeter;
+        int ActualScrewPacks = (int)Math.ceilDiv(totalScrews,200);
+
+        // Assert
+        assertEquals(expectedScrewPacks, ActualScrewPacks);
+    }
+    @Test
+    void  calcFasciaBargeScrewsTest()
+    {
+        // Arrange
+        int expectedScrewPacks = 1;
+        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT);
+        int totalLength = ((carportD.length*6)+(carportD.width*4));
+
+        // Act
+        int totalScrews = totalLength/70;
+        int ActualScrewPacks = (int) Math.ceilDiv( totalScrews,200);
+
+        // Assert
+        assertEquals(expectedScrewPacks, ActualScrewPacks);
+    }
+
 
 }
