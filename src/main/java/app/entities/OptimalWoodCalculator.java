@@ -171,7 +171,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         List <IMaterials> joistList = new ArrayList<>();
         IMaterials joistBoard;
         // *********************** //
-        // SKal refactores til at bruge calcNumberOfJoists
+        // TODO: SKal refactores til at bruge calcNumberOfJoists
         // ********************** //
         int joistSpacing = 55;
         int amountOfJoists = (length/joistSpacing) + 1;
