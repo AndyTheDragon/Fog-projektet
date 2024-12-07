@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarportTest
 {
-    Carport carport = new Carport();
-
+    Carport carport;
     @BeforeEach
     void setUp()
     {
+        carport = new Carport(780,600,210,530, RoofType.FLAT);
     }
 
     @AfterEach
@@ -41,12 +41,14 @@ class CarportTest
     void calcOptimalBeamMiddleTest()
     {
         //Arrange
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT);
         int totalLength = 2*780;
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{1, 2};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
 
         //Assert
         assertArrayEquals(expected, result);
@@ -60,8 +62,9 @@ class CarportTest
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{2,0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
 
         //Assert
         assertArrayEquals(expected, result);
@@ -75,8 +78,9 @@ class CarportTest
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{1, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
 
         //Assert
         assertArrayEquals(expected, result);
@@ -90,8 +94,9 @@ class CarportTest
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{4, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
 
         //Assert
         assertArrayEquals(expected, result);
@@ -109,8 +114,9 @@ class CarportTest
         int length1 = 360;
         int length2 = 540;
         int[] expected = new int[]{7, 1};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -124,8 +130,9 @@ class CarportTest
         int length1 = 360;
         int length2 = 540;
         int[] expected = new int[]{5, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -139,8 +146,9 @@ class CarportTest
         int length1 = 360;
         int length2 = 540;
         int[] expected = new int[]{2, 2};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length2, length1);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
 
@@ -157,8 +165,9 @@ class CarportTest
         int length1 = 360;
         int length2 = 540;
         int[] expected = new int[]{9, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -172,8 +181,9 @@ class CarportTest
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] expected = new int[]{2, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        int[] result = calc.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -187,8 +197,9 @@ class CarportTest
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] expected = new int[]{7, 1};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        int[] result = calc.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -202,8 +213,9 @@ class CarportTest
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] expected = new int[]{8, 1};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        int[] result = calc.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -217,8 +229,9 @@ class CarportTest
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] expected = new int[]{6, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        int[] result = calc.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -232,8 +245,9 @@ class CarportTest
         int highPrioBoard = 360;
         int lowPrioBoard = 540;
         int[] expected = new int[]{6, 1};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+        int[] result = calc.calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -270,8 +284,9 @@ class CarportTest
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{0, 2};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -283,8 +298,9 @@ class CarportTest
         int length1 = 480;
         int length2 = 600;
         int[] expected = new int[]{7, 0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -297,8 +313,9 @@ class CarportTest
         int length1 = 600;
         int length2 = 480;
         int[] expected = new int[]{15,0};
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
-        int[] result = carport.calcOptimalWood(totalLength, length1, length2);
+        int[] result = calc.calcOptimalWood(totalLength, length1, length2);
         //Assert
         assertArrayEquals(expected, result);
     }
@@ -321,8 +338,9 @@ class CarportTest
         int expectedShortPlatesForLength = 1;
         int expectedLongPlatesForLength = 0;
 
-        // Act
-        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
+        //Act
+        int[] result = calc.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
         int shortPlatesForLength = result[0] ;
         int longPlatesForLength = result[1];
 
@@ -352,8 +370,9 @@ class CarportTest
         int expectedShortPlatesForLength = 1;
         int expectedLongPlatesForLength = 1;
 
-        // Act
-        int[] result = carport.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
+        OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
+        //Act
+        int[] result = calc.calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
         int shortPlatesForLength = result[0] ;
         int longPlatesForLength = result[1];
 
@@ -388,7 +407,7 @@ class CarportTest
         int totalBolts = 0;
         int boltsPerPost = 2;
         int extraBoltsPerSeam = 4;
-        int postAmount = carportB.getNumberOfPosts(carportB.length, carportB.width, carportB.shedLength, carportB.shedWidth)-1;
+        int postAmount = carportB.getNumberOfPosts()-1;
         if(carportB.shedWidth > 300){
             postAmount -= 2;
         }
