@@ -1,54 +1,10 @@
 package app.entities;
 
-import app.services.WorkDrawing;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carport
+public class OptimalWoodCalculator implements CarportCalculator
 {
-    CarportCalculator calculator;
-    WorkDrawing workDrawing;
-    List<IMaterials> materialsList;
-    List<IMaterials> boltsScrewsBracketsList;
-    int length;
-    int width;
-    int height;
-    int shedLength;
-    int shedWidth;
-    RoofType roofType;
-    String shedPlacement;
-    int numberOfPosts;
-    int numberOfJoists;
-
-
-    public Carport()
-    {
-    }
-
-    public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType)
-    {
-        this.length = length;
-        this.width = width;
-        this.shedLength = shedLength;
-        this.shedWidth = shedWidth;
-        this.roofType = roofType;
-        this.shedPlacement = "right";
-        this.calculator = new OptimalWoodCalculator();
-        this.materialsList = new ArrayList<>();
-        this.boltsScrewsBracketsList = new ArrayList<>();
-        calculateMaterials();
-        calculateBoltsScrewsBrackets();
-        this.numberOfPosts = calculator.calcNumberOfPosts(length, width, shedLength, shedWidth);
-        this.numberOfJoists = calculator.calcNumberOfJoists(length);
-        this.workDrawing = new WorkDrawing(this, 640);
-    }
-
-    public boolean hasShed()
-    {
-        return shedLength > 0 && shedWidth > 0;
-    }
-
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -91,8 +47,98 @@ public class Carport
         return new int[]{bestY, bestX};
     }
 
+    public List<IMaterials> calcUnderFascia(int length, int width)
+    {
+        List <IMaterials> fasciaList = new ArrayList<>();
+        int totalLength = (length + width)*2;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
 
-    public int getNumberOfPosts(int length, int width, int shedLength, int shedWidth)
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        IMaterials underFascia;
+        if (highPrioAmount > 0)
+        {
+            underFascia = new ConstructionWood(25, 200, 3600, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", highPrioAmount, 0);
+            fasciaList.add( underFascia);
+        }
+        if(lowPrioAmount > 0)
+        {
+            underFascia = new ConstructionWood(25, 200, 5400, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", lowPrioAmount, 0);
+            fasciaList.add(underFascia);
+        }
+
+        return fasciaList;
+    }
+    public List<IMaterials> calcOverFascia(int length, int width)
+    {
+        List <IMaterials> fasciaList = new ArrayList<>();
+        int totalLength = (length + width)*2+5;
+        int highPrioBoard = 360;
+        int lowPrioBoard = 540;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        IMaterials overFascia;
+        if (highPrioAmount > 0)
+        {
+            overFascia = new ConstructionWood(25, 125, 3600, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", highPrioAmount, 0);
+            fasciaList.add(overFascia);
+        }
+        if(lowPrioAmount > 0)
+        {
+            overFascia = new ConstructionWood(25, 125, 5400, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", lowPrioAmount, 0);
+            fasciaList.add(overFascia);
+        }
+
+        return fasciaList;
+    }
+
+    public List<IMaterials> calcBeam(int length)
+    {
+        List <IMaterials> beamList = new ArrayList<>();
+        int totalLength = length*2;
+        int highPrioBoard = 480;
+        int lowPrioBoard = 600;
+        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
+
+        int highPrioAmount = optimalWood[0];
+        int lowPrioAmount = optimalWood[1];
+
+        IMaterials beam;
+        if (highPrioAmount > 0)
+        {
+            beam = new ConstructionWood(45, 195, 4800, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper (skur del, deles)", highPrioAmount, 0);
+            beamList.add(beam);
+        }
+        if(lowPrioAmount > 0)
+        {
+            beam = new ConstructionWood(45, 195, 6000, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper", lowPrioAmount, 0);
+            beamList.add(beam);
+        }
+        return beamList;
+    }
+
+    public List<IMaterials> calcRafters()
+    {
+        return null;
+    }
+
+    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth)
+    {
+        List <IMaterials> postList = new ArrayList<>();
+        int totalPosts = calcNumberOfPosts(length, width, shedLength, shedWidth);
+
+        IMaterials post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
+        postList.add(post);
+
+        return postList;
+    }
+    public int calcNumberOfPosts(int length, int width, int shedLength, int shedWidth)
     {
         int basePosts = 4;
         int extraPostsForShed = 2;
@@ -110,21 +156,31 @@ public class Carport
         }
 
         // Check if carport is longer than 5 meters
-        if (extraPostsForLongCarport()) {
+        if (extraPostsForLongCarport(length, shedLength)) {
             totalPosts += extraPostsForLongCarport;
         }
         return totalPosts;
     }
-    public boolean extraPostsForLongCarport()
+    public boolean extraPostsForLongCarport(int length, int shedLength)
     {
-        if (length-130-shedLength > 350) {
-            return true;
-        }
-        return false;
+        return length - 130 - shedLength > 350;
     }
 
+    public List<IMaterials> calcJoists(int length)
+    {
+        List <IMaterials> joistList = new ArrayList<>();
+        IMaterials joistBoard;
+        // *********************** //
+        // SKal refactores til at bruge calcNumberOfJoists
+        // ********************** //
+        int joistSpacing = 55;
+        int amountOfJoists = (length/joistSpacing) + 1;
+        joistBoard = new ConstructionWood(45, 195, 6000, "stk", "Spærtræ ubh.", "Spær, monteres på rem", amountOfJoists, 0);
+        joistList.add(joistBoard);
 
-    public int getNumberOfJoists()
+        return joistList;
+    }
+    public int calcNumberOfJoists(int length)
     {
         int joistThickness = 45; //obs mm
         int minimumSpacing = 45;
@@ -146,7 +202,7 @@ public class Carport
         return gaps;
     }
 
-    private List<IMaterials> calcBargeBoards(int length, int width)
+    public List<IMaterials> calcBargeBoards(int length, int width)
     {
         List <IMaterials> bargeBoardList = new ArrayList<>();
         int totalLength = (length + width)*2+20;
@@ -171,38 +227,37 @@ public class Carport
         return bargeBoardList;
     }
 
-    private List<IMaterials> calcBattern()
+    public List<IMaterials> calcBattern()
     {
         return null;
     }
 
-    private List<IMaterials> calcCladding()
+    public List<IMaterials> calcCladding(int shedLength, int shedWidth)
     {
-        List <IMaterials> claddingList = new ArrayList<>();
+        List<IMaterials> claddingList = new ArrayList<>();
         IMaterials cladding;
 
-        int claddingBoardRounded = getNumberOfCladdingBoards();
+        int claddingBoardRounded = calcNumberOfCladdingBoards(shedLength, shedWidth);
         cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
         claddingList.add(cladding);
 
         return claddingList;
     }
 
-    public int getNumberOfCladdingBoards()
+    public int calcNumberOfCladdingBoards(int shedLength, int shedWidth)
     {
         double totalShedLength = (shedLength + shedWidth)*2;
         double claddingBoardAmount = totalShedLength / 7.4;
-        int claddingBoardRounded = (int) Math.ceil(claddingBoardAmount);
 
-        return claddingBoardRounded;
+        return (int) Math.ceil(claddingBoardAmount);
     }
 
-    private List<IMaterials> calcHorizontalBraces()
+    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth)
     {
         List<IMaterials> horizontalBraceList = new ArrayList<>();
         IMaterials horizontalBrace;
 
-        int totalBraces = getNumberOfHorizontalBraces();
+        int totalBraces = calcNumberOfHorizontalBraces(shedLength, shedWidth);
 
         horizontalBrace = new ConstructionWood(45, 95,3000, "stk", "reglar ubh.", "løsholter til skur.", totalBraces, 0);
         horizontalBraceList.add(horizontalBrace);
@@ -210,7 +265,7 @@ public class Carport
         return horizontalBraceList;
     }
 
-    public int getNumberOfHorizontalBraces()
+    public int calcNumberOfHorizontalBraces(int shedLength, int shedWidth)
     {
         int totalBraces = 0;
         int bracesPerSection = 2;
@@ -228,7 +283,7 @@ public class Carport
         return totalBraces;
     }
 
-    private List<IMaterials> calcRoof(int length, int width)
+    public List<IMaterials> calcRoof(int length, int width)
     {
         List<IMaterials>roofList = new ArrayList<>();
 
@@ -260,7 +315,7 @@ public class Carport
         return roofList;
     }
 
-    private List<IMaterials> calcRoofScrews()
+    public List<IMaterials> calcRoofScrews(int length, int width)
     {
         List <IMaterials> roofScrewList = new ArrayList<>();
         IMaterials roofScrews;
@@ -268,20 +323,20 @@ public class Carport
         int roofArea = length * width;
 
         int totalScrews = (roofArea * screwsPerSqrMeter)/10000;
-        int screwPacks = (int) Math.ceilDiv( totalScrews,200);
+        int screwPacks = Math.ceilDiv( totalScrews,200);
         roofScrews = new BoltsScrewsBrackets(4,50,"plastmo bundskruer, 200 stk", screwPacks,"pakkke","Til montering af tagplader", 0);
         roofScrewList.add(roofScrews);
 
         return roofScrewList;
     }
 
-    private List<IMaterials> calcJoistBrackets()
+    public List<IMaterials> calcJoistBrackets(int length)
     {
         List<IMaterials> joistBracketList = new ArrayList<>();
         IMaterials rightJoistBracket;
         IMaterials leftJoistBracket;
 
-        int joistAmount = getNumberOfJoists();
+        int joistAmount = calcNumberOfJoists(length);
         int rightBracketAmount = joistAmount;
         int leftBracketAmount = joistAmount;
 
@@ -294,28 +349,28 @@ public class Carport
         return joistBracketList;
     }
 
-    private List<IMaterials> calcFasciaBargeScrews()
+    public List<IMaterials> calcFasciaBargeScrews(int length, int width)
     {
         List<IMaterials> fasciaBargeScrewList = new ArrayList<>();
         IMaterials fasciaBargeScrews;
         int totalLength = ((length*6)+(width*4));
         int totalScrews = totalLength/70;
-        int screwPacks = (int) Math.ceilDiv( totalScrews,200);
+        int screwPacks = Math.ceilDiv( totalScrews,200);
 
         fasciaBargeScrews = new BoltsScrewsBrackets((int) 4.5,50,"skruer 200stk", screwPacks,"pakke","Til montering af stern & vandbrædt", 0);
         fasciaBargeScrewList.add(fasciaBargeScrews);
         return fasciaBargeScrewList;
     }
 
-    private List<IMaterials> calcJoistBracketScrews()
+    public List<IMaterials> calcJoistBracketScrews(int length)
     {
         List<IMaterials> bracketScrewList = new ArrayList<>();
         IMaterials bracketScrews;
 
-        int joistAmount = getNumberOfJoists();
+        int joistAmount = calcNumberOfJoists(length);
         int screwsPerJoist =  25;
         int totalScrews = joistAmount * screwsPerJoist;
-        int screwPacks = (int) Math.ceil( totalScrews/200);
+        int screwPacks = Math.ceilDiv( totalScrews,200);
 
         bracketScrews = new BoltsScrewsBrackets(4,50,"beslagskruer, 250stk", screwPacks,"pakke","Til montering af beslag på spær", 0);
         bracketScrewList.add(bracketScrews);
@@ -323,7 +378,7 @@ public class Carport
         return bracketScrewList;
     }
 
-    private List<IMaterials> calcMetalStrap()
+    public List<IMaterials> calcMetalStrap(int length, int width)
     {
         List<IMaterials> metalStrapList = new ArrayList<>();
         IMaterials perfMetalStrap;
@@ -343,39 +398,39 @@ public class Carport
         return metalStrapList;
     }
 
-    private List<IMaterials> calcBeamBolts()
+    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth)
     {
-        List <IMaterials> beamBoltList = new ArrayList<>();
+        List<IMaterials> beamBoltList = new ArrayList<>();
         IMaterials beamBolt;
         IMaterials boltDisc;
         int totalBolts = 0;
         int boltPerPost = 2;
         int extraBoltPerSeam = 4;
-        totalBolts += boltPerPost * getNumberOfPosts(length, width, shedLength, shedWidth);
+        totalBolts += boltPerPost * calcNumberOfPosts(length, width, shedLength, shedWidth);
         if (length > 600)
         {
             totalBolts += extraBoltPerSeam;
         }
-        boltDisc = new BoltsScrewsBrackets(10,120,"firkantskiver",totalBolts,"stk","til montering af rem på stolper",0);
-        beamBolt = new BoltsScrewsBrackets(10,120,"bræddebolt",totalBolts,"stk","til montering af rem på stolper",0);
+        boltDisc = new BoltsScrewsBrackets(10, 120, "firkantskiver", totalBolts, "stk", "til montering af rem på stolper", 0);
+        beamBolt = new BoltsScrewsBrackets(10, 120, "bræddebolt", totalBolts, "stk", "til montering af rem på stolper", 0);
         beamBoltList.add(boltDisc);
         beamBoltList.add(beamBolt);
 
         return beamBoltList;
     }
 
-    private List<IMaterials> calcCladdingScrews()
+    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth)
     {
         List<IMaterials> claddingScrewList = new ArrayList<>();
         IMaterials innerCladdingScrews;
         IMaterials outerCladdingScrews;
 
         int screwsPerCladding = 6;
-        int totalInnerScrews = screwsPerCladding * (getNumberOfCladdingBoards() / 2);
-        int totalOuterScrews = screwsPerCladding * (getNumberOfCladdingBoards() / 2);
+        int totalInnerScrews = screwsPerCladding * (calcNumberOfCladdingBoards(shedLength, shedWidth) / 2);
+        int totalOuterScrews = screwsPerCladding * (calcNumberOfCladdingBoards(shedLength, shedWidth) / 2);
 
-        int innerScrewsPacks = (int) Math.ceil( totalInnerScrews/300);
-        int outerScrewsPacks = (int) Math.ceil( totalOuterScrews/400);
+        int innerScrewsPacks = Math.ceilDiv( totalInnerScrews, 300);
+        int outerScrewsPacks = Math.ceilDiv( totalOuterScrews, 400);
 
         innerCladdingScrews = new BoltsScrewsBrackets((int)4.5,50,"skruer 300stk", innerScrewsPacks,"pakke","Til montering af inderste beklædning", 0);
         outerCladdingScrews = new BoltsScrewsBrackets((int)4.5,70,"skruer 400stk", outerScrewsPacks,"pakke","Til montering af  yderste beklædning", 0);
@@ -386,7 +441,7 @@ public class Carport
         return claddingScrewList;
     }
 
-    private List<IMaterials> doorHandleBrackets()
+    public List<IMaterials> doorHandleBrackets()
     {
         List<IMaterials> doorHandleBracketList = new ArrayList<>();
         IMaterials doorHandle;
@@ -401,105 +456,15 @@ public class Carport
         return doorHandleBracketList;
     }
 
-    private List<IMaterials> calcHorizontalBracesBrackets()
+    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth)
     {
         List<IMaterials> horizontalBraceBracketList = new ArrayList<>();
         IMaterials horizontalBraceBracket;
-        int totalBraceBrackets = 2*getNumberOfHorizontalBraces();
+        int totalBraceBrackets = 2*calcNumberOfHorizontalBraces(shedLength, shedWidth);
 
         horizontalBraceBracket = new BoltsScrewsBrackets(35,0,"vinkelbeslag 35", totalBraceBrackets,"pakke","Til montering af løsholter", 0);
         horizontalBraceBracketList.add(horizontalBraceBracket);
 
         return horizontalBraceBracketList;
-    }
-
-    public void calculateMaterials()
-    {
-        materialsList = new ArrayList<>();
-
-        materialsList.addAll(calculator.calcUnderFascia(length, width));
-        materialsList.addAll(calculator.calcOverFascia(length, width));
-        materialsList.addAll(calculator.calcBeam(length));
-        materialsList.addAll(calculator.calcPosts(length, width, shedLength, shedWidth));
-        materialsList.addAll(calculator.calcJoists(length));
-        materialsList.addAll(calculator.calcBargeBoards(length, width));
-        materialsList.addAll(calculator.calcRoof(length, width));
-
-        if (hasShed())
-        {
-            materialsList.addAll(calculator.calcCladding(shedLength, shedWidth));
-            materialsList.addAll(calculator.calcHorizontalBraces(shedLength, shedWidth));
-        }
-
-        //System.out.println(materialsList);
-    }
-
-    public void calculateBoltsScrewsBrackets()
-    {
-        boltsScrewsBracketsList = new ArrayList<>();
-
-        boltsScrewsBracketsList.addAll(calculator.calcRoofScrews(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcJoistBrackets(length));
-        boltsScrewsBracketsList.addAll(calculator.calcJoistBracketScrews(length));
-        boltsScrewsBracketsList.addAll(calculator.calcFasciaBargeScrews(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcMetalStrap(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcBeamBolts(length, width, shedLength, shedWidth));
-
-        if (hasShed())
-        {
-            boltsScrewsBracketsList.addAll(calculator.calcCladdingScrews(shedLength, shedWidth));
-            boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets(shedLength, shedWidth));
-            boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
-        }
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public int getLength()
-    {
-        return length;
-    }
-
-    public List<IMaterials> getMaterialsList()
-    {
-        return materialsList;
-    }
-
-    public List<IMaterials> getBoltsScrewsBracketsList()
-    {
-        return boltsScrewsBracketsList;
-    }
-
-    public RoofType getRoofType()
-    {
-        return roofType;
-    }
-
-    public void setRoofType(RoofType roofType)
-    {
-        this.roofType = roofType;
-    }
-
-    public int getShedLength()
-    {
-        return shedLength;
-    }
-
-    public int getShedWidth()
-    {
-        return shedWidth;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public WorkDrawing getWorkDrawing()
-    {
-        return workDrawing;
     }
 }

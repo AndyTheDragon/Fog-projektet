@@ -428,7 +428,6 @@ class CarportTest
     void calcRoofScrewsTest()
     {
         // Arrange
-        int expectedScrewPacks = 3;
         Carport carportD = new Carport(780,600,210,530,RoofType.FLAT);
         int screwsPerSqrMeter = 12;
 
@@ -436,11 +435,13 @@ class CarportTest
         int roofArea = (carportD.length/100) * (carportD.width/100);
 
         int totalScrews = roofArea * screwsPerSqrMeter;
-        int ActualScrewPacks = (int)Math.ceilDiv(totalScrews,200);
+        int expectedScrewPacks = Math.ceilDiv(totalScrews,200);
+        int actualScrewPacks = carportD.calculator.calcRoofScrews(carportD.getLength(), carportD.getWidth()).getFirst().getAmount();
 
         // Assert
-        assertEquals(expectedScrewPacks, ActualScrewPacks);
+        assertEquals(expectedScrewPacks, actualScrewPacks);
     }
+
     @Test
     void  calcFasciaBargeScrewsTest()
     {
