@@ -471,7 +471,7 @@ class CarportTest
 
         // Act
         int totalScrews = totalLength/70;
-        int ActualScrewPacks = (int) Math.ceilDiv( totalScrews,200);
+        int ActualScrewPacks = Math.ceilDiv( totalScrews,200);
 
         // Assert
         assertEquals(expectedScrewPacks, ActualScrewPacks);
