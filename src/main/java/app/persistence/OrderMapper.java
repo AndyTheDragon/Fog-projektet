@@ -35,10 +35,12 @@ public class OrderMapper
                 " INNER JOIN account AS a ON carport_order.sales_id = a.user_id";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
                 Customer customer = new Customer(rs.getString("customer_name"),
@@ -79,16 +81,16 @@ public class OrderMapper
                         createdAt,
                         updatedAt);
 
-                if (salesId == 0) {
+                if (salesId == null)
+                {
                     unassignedOrders.add(order);
-                } else {
+                } else
+                {
                     allorders.add(order);
                 }
-
-                System.out.println(unassignedOrders);
-                System.out.println(allorders);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
                 throw new DatabaseException("Message "+ e.getMessage());
         }
 
@@ -98,6 +100,7 @@ public class OrderMapper
 
         return result;
     }
+
     public static Order getOrder(int orderId) throws DatabaseException
     {
         return new Order(1,
