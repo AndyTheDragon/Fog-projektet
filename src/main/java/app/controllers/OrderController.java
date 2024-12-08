@@ -126,7 +126,6 @@ public class OrderController {
     private static void showOrders(Context ctx, ConnectionPool connectionPool)
     {
         User currentUser = ctx.sessionAttribute("currentUser");
-        currentUser = new User();
         if (currentUser != null)
         {
             try
