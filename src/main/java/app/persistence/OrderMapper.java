@@ -41,12 +41,12 @@ public class OrderMapper
             while (rs.next()) {
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
-                Customer customer = new Customer(rs.getString("c.customer_name"),
-                        rs.getString("c.address"),
-                        rs.getString("c.zipcode"),
-                        rs.getString("c.city"),
-                        rs.getString("c.phone_number"),
-                        rs.getString("c.email"));
+                Customer customer = new Customer(rs.getString("customer_name"),
+                        rs.getString("address"),
+                        rs.getString("zipcode"),
+                        rs.getString("city"),
+                        rs.getString("phone_number"),
+                        rs.getString("email"));
                 User salesPerson;
                 Integer salesId = rs.getObject("sales_id") != null ? rs.getInt("sales_id") : 0 ;
                 if (salesId == 0)
