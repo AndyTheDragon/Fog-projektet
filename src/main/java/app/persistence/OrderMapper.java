@@ -27,12 +27,18 @@ public class OrderMapper
         ArrayList<Order> allorders = new ArrayList<>();
         ArrayList<Order> unassignedOrders = new ArrayList<>();
 
-        String sql = "SELECT order_id, sales_id, carport_width, carport_length, carport_height, shed_width, shed_length, carport_roof, is_paid, created_at, updated_at," +
-                " c.customer_name, c.address, c.zipcode, c.city, c.phone_number, c.email," +
-                " a.user_name, a.email" +
-                " from carport_order" +
-                " INNER JOIN customer AS c on carport_order.customer_id = c.customer_id" +
-                " INNER JOIN account AS a ON carport_order.sales_id = a.user_id";
+        String sql = "SELECT carport_order.*, " +
+                "c.customer_name AS customer_name, " +
+                "c.address AS customer_address, " +
+                "c.zipcode AS customer_zipcode, " +
+                "c.city AS customer_city, " +
+                "c.phone_number AS customer_phone, " +
+                "c.email AS customer_email, " +
+                "a.user_name AS user_name, " +
+                "a.email AS user_email " +
+                "FROM public.carport_order " +
+                "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
+                "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -44,11 +50,11 @@ public class OrderMapper
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
                 Customer customer = new Customer(rs.getString("customer_name"),
-                        rs.getString("address"),
-                        rs.getString("zipcode"),
-                        rs.getString("city"),
-                        rs.getString("phone_number"),
-                        rs.getString("email"));
+                        rs.getString("customer_address"),
+                        rs.getString("customer_zipcode"),
+                        rs.getString("customer_city"),
+                        rs.getString("customer_phone"),
+                        rs.getString("customer_email"));
                 User salesPerson;
                 Integer salesId = rs.getObject("sales_id") != null ? null : rs.getInt("sales_id");
                 if (salesId == null)
@@ -57,7 +63,7 @@ public class OrderMapper
                 }
                 else
                 {
-                    salesPerson = new User(rs.getString("user_name"), rs.getString("email"));
+                    salesPerson = new User(rs.getString("user_name"), rs.getString("user_email"));
                 }
                 int carportWidth = rs.getInt("carport_width");
                 int carportLength = rs.getInt("carport_length");
@@ -69,17 +75,8 @@ public class OrderMapper
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-                Order order = new Order(orderId,
-                        customer,
-                        salesPerson,
-                        carportWidth,
-                        carportLength,
-                        shedWidth,
-                        shedLength,
-                        roofType,
-                        isPaid,
-                        createdAt,
-                        updatedAt);
+                Order order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
+                        shedLength, roofType, isPaid, createdAt, updatedAt);
 
                 if (salesId == null)
                 {
