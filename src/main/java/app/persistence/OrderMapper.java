@@ -62,7 +62,7 @@ public class OrderMapper
                 int carportHeight = rs.getInt("carport_height");
                 int shedWidth = rs.getInt("shed_width");
                 int shedLength = rs.getInt("shed_length");
-                RoofType roofType = (RoofType) rs.getObject("carport_roof");
+                RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
                 boolean isPaid = rs.getBoolean("is_paid");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
