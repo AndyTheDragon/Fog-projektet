@@ -48,14 +48,14 @@ public class OrderMapper
                         rs.getString("phone_number"),
                         rs.getString("email"));
                 User salesPerson;
-                Integer salesId = rs.getObject("sales_id") != null ? rs.getInt("sales_id") : 0 ;
-                if (salesId == 0)
+                Integer salesId = rs.getObject("sales_id") != null ? null : rs.getInt("sales_id");
+                if (salesId == null)
                 {
                     salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
                 }
                 else
                 {
-                    salesPerson = new User(rs.getString("a.user_name"), rs.getString("a.email"));
+                    salesPerson = new User(rs.getString("user_name"), rs.getString("email"));
                 }
                 int carportWidth = rs.getInt("carport_width");
                 int carportLength = rs.getInt("carport_length");
