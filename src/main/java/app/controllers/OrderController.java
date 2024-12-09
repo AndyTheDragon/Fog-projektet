@@ -26,13 +26,14 @@ public class OrderController
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         //app.get("/login", ctx -> showLogin(ctx));
         //app.post("/login", ctx -> doLogin(ctx,dbConnection));
-        app.get("/bestilling", ctx -> showOrderPage(ctx));
+        app.get("/bestilling", ctx -> showOrderPage(ctx, dbConnection));
         app.post("/bestilling", ctx -> createOrder(ctx, dbConnection));
 
     }
 
-    public static void showOrderPage(Context ctx)
+    public static void showOrderPage(Context ctx, ConnectionPool dbConnection)
     {
+
         Order currentOrder = ctx.sessionAttribute("currentOrder");
         if (currentOrder == null) {
             ctx.attribute("message", "Du har ikke nogen ordre i gang");
@@ -70,17 +71,18 @@ public class OrderController
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
                     shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
-            OrderMapper.createOrder(order, dbConnection);
+            //OrderMapper.createOrder(order, dbConnection);
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
-            ctx.status(201).result("Ordren blev oprettet med succes.");
-        } catch (IllegalArgumentException e) {
-            ctx.status(400).result("Fejl i input: " + e.getMessage());
+            ctx.attribute("message", "Ordren blev oprettet med succes.");
+            ctx.render("kvittering.html");
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", "Ugyldige dimensioner");
+            ctx.render("bestilling.html");
         } catch (DatabaseException e) {
-            ctx.status(500).result("Databasefejl: Kunne ikke oprette ordren.");
+            ctx.attribute("message", "Databasefejl: " + e.getMessage());
+            ctx.render("bestilling.html");
         }
-        OrderController.showOrderPage(ctx);
-
     }
 
     private static void doLogin(@NotNull Context ctx, ConnectionPool dbConnection)
