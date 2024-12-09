@@ -18,7 +18,7 @@ public class Order
     private LocalDateTime updatedAt;
     private Carport carport;
 
-    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, CarportCalculator calculator)
     {
         this.orderID = orderID;
         this.customer = customer;
@@ -32,7 +32,7 @@ public class Order
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
     }
 
     public Customer getCustomer()
