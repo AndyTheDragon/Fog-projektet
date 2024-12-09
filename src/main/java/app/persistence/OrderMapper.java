@@ -27,12 +27,12 @@ public class OrderMapper
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
         {
             ps.setInt(2, order.getCustomerID().getCustomerID());
-            ps.setInt(3, order.getSalesID().getUserID());
+            ps.setInt(3, order.getSalesPerson().getUserID());
             ps.setInt(3, order.getCarportWidth());
             ps.setInt(4, order.getCarportLength());
             ps.setInt(5, order.getShedWidth());
             ps.setInt(6, order.getShedLength());
-            ps.setObject(7, order.getCarportRoof());
+            ps.setString(7, order.getCarportRoof().toString());
             ps.setBoolean(8, order.isPaid());
             ps.setTimestamp(10, Timestamp.valueOf(order.getCreatedAt()));
             ps.setTimestamp(11, Timestamp.valueOf(order.getUpdatedAt()));
@@ -42,7 +42,7 @@ public class OrderMapper
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int newOrderId = rs.getInt(1);
-                newOrder = new Order(newOrderId, order.getCustomerID(), order.getSalesID(), order.getCarportWidth(), order.getCarportLength(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid(), order.getCreatedAt(), order.getUpdatedAt());
+                newOrder = new Order(newOrderId, order.getCustomerID(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid(), order.getCreatedAt(), order.getUpdatedAt());
             } else {
                 throw new DatabaseException("Error creating order");
             }
@@ -177,5 +177,24 @@ public class OrderMapper
 
     public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
     {
+        String sql = "INSERT INTO carport_order (customer_id, carport_width, carport_length, carport_height, carport_shed,shed_width, shed_length, carport_roof) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, order.getCustomerID().getCustomerID());
+            ps.setInt(2, order.getCarportWidth());
+            ps.setInt(3, order.getCarportLength());
+            ps.setInt(4, order.getCarportHeight());
+            ps.setBoolean(5, order.getCarport().hasShed());
+            ps.setInt(6, order.getShedWidth());
+            ps.setInt(7, order.getShedLength());
+            ps.setString(8, order.getCarportRoof().toString());
+
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
     }
 }
