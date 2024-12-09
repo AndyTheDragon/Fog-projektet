@@ -1,10 +1,12 @@
 package app.entities;
 
+import app.exceptions.DatabaseException;
+
 import java.util.List;
 
 public interface CarportCalculator
 {
-    public List<IMaterials> calcUnderFascia(int length, int width);
+    public List<IMaterials> calcUnderFascia(int length, int width) throws DatabaseException;
     public List<IMaterials> calcOverFascia(int length, int width);
     public List<IMaterials> calcBeam(int length);
     public List<IMaterials> calcRafters();
