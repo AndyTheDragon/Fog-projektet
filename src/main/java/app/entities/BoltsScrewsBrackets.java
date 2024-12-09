@@ -47,6 +47,23 @@ public class BoltsScrewsBrackets implements IMaterials
     }
 
     @Override
+    public int getFogProductID()
+    {
+        return fogProductID;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return 0;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    @Override
     public String toString()
     {
         return "BoltsScrewsBrackets{" +
