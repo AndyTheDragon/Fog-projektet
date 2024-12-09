@@ -1,10 +1,23 @@
 package app.entities;
 
+import app.exceptions.DatabaseException;
+import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class OptimalWoodCalculator implements CarportCalculator
 {
+    private final ConnectionPool dbConnection;
+
+    public OptimalWoodCalculator(ConnectionPool dbConnection)
+    {
+        this.dbConnection = dbConnection;
+    }
+
     public int[] calcOptimalWood(int totalLength, int highPrioBoard, int lowPrioBoard)
     {
         double wastePercentage = 1.05;
@@ -47,8 +60,62 @@ public class OptimalWoodCalculator implements CarportCalculator
         return new int[]{bestY, bestX};
     }
 
-    public List<IMaterials> calcUnderFascia(int length, int width)
+    public int[] calcOptimalWood(int totalLength, List<IMaterials> conWoodList)
     {
+        double wastePercentage = 1.05;
+        boolean exactMatchFound = conWoodList.stream().anyMatch(board -> totalLength % board.getLength() == 0);
+        if (exactMatchFound)
+        {
+            wastePercentage = 1.0;
+        }
+        double totalLengthInclWaste = totalLength * wastePercentage;
+        int maxPieces = 10;
+
+        int[] bestResult = new int[conWoodList.size()];
+        double bestWaste = Double.MAX_VALUE;
+
+        int[] indices = new int[conWoodList.size()];
+
+        while(true)
+        {
+        double curentLength = 0;
+            for (int i = 0; i < conWoodList.size(); i++)
+            {
+                curentLength += indices[i] * conWoodList.get(i).getLength();
+            }
+            if (curentLength >= totalLengthInclWaste)
+            {
+                double waste = curentLength - totalLengthInclWaste;
+                if (waste < bestWaste)
+                {
+                    bestWaste = waste;
+                    System.arraycopy(indices, 0, bestResult, 0, indices.length);
+                }
+            }
+            int index = 0;
+            while (index < conWoodList.size())
+            {
+                if (indices[index] < maxPieces)
+                {
+                    indices[index]++;
+                    break;
+                } else
+                {
+                    indices[index] = 0;
+                    index++;
+                }
+            }
+            if (index == conWoodList.size())
+            {
+                break;
+            }
+        }
+        return bestResult;
+    }
+
+    public List<IMaterials> calcUnderFascia(int length, int width) throws DatabaseException
+    {
+        List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("understernbrædder", dbConnection );
         List <IMaterials> fasciaList = new ArrayList<>();
         int totalLength = (length + width)*2;
         int highPrioBoard = 360;
