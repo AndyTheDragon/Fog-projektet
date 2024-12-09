@@ -18,13 +18,14 @@ import java.util.Map;
 public class MaterialMapper
 {
 
-    public List<IMaterials> getMaterialOfType(ConnectionPool connectionPool ,String type) throws DatabaseException
+    public static List<IMaterials> getMaterialOfType(String type, ConnectionPool connectionPool) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length, f.description FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
-                " WHERE f.description = ?";
+                " WHERE f.description = ?" +
+                " ORDER BY m.length ASC";
 
         try (Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -41,19 +42,20 @@ public class MaterialMapper
                     materialsList.add(new ConstructionWood(height, width, length, "stk", materialName, description, 0, materialId));
                 }
             } catch (SQLException e) {
-                throw new DatabaseException("Could not get materials of type: " + type, e);
+                throw new DatabaseException("Message "+ e.getMessage());
             }
 
-        return null;
+        return materialsList;
     }
 
-    public List<IMaterials> getMaterialOfTypeAndLength(ConnectionPool connectionPool, String type, int minLength)
+    public static List<IMaterials> getMaterialOfTypeAndLength(ConnectionPool connectionPool, String type, int minLength) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length, f.description FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
-                " WHERE f.description = ? AND m.length >= ?";
+                " WHERE f.description = ? AND m.length >= ?"+
+                " ORDER BY m.length DESC";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -71,7 +73,7 @@ public class MaterialMapper
                 materialsList.add(new ConstructionWood(height, width, length, "stk", materialName, description, 0, materialId));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Message "+ e.getMessage());
         }
 
         return materialsList;
