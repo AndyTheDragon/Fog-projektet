@@ -37,6 +37,22 @@ public class Order
         this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
     }
 
+    public Order(int newOrderId, Customer customerID, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
+    {
+        this.orderID = newOrderId;
+        this.customerID = customerID;
+        this.salesPerson = salesPerson;
+        this.carportWidth = carportWidth;
+        this.carportLength = carportLength;
+        this.carportHeight = carportHeight;
+        this.carportShed = carportShed;
+        this.shedWidth = shedWidth;
+        this.shedLength = shedLength;
+        this.carportRoof = carportRoof;
+        this.isPaid = paid;
+    }
+
+
     public Customer getCustomerID()
     {
         return customerID;
@@ -66,7 +82,7 @@ public class Order
         return carportLength;
     }
 
-    public boolean isCarportShed()
+    public boolean getCarportShed()
     {
         return carportShed;
     }
