@@ -20,17 +20,6 @@ public class Customer
         this.email = email;
     }
 
-    public Customer(String phoneNumber, String email, String city, String address, String zipcode, String name, int customerID)
-    {
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.city = city;
-        this.address = address;
-        this.zipcode = zipcode;
-        this.name = name;
-        this.customerID = customerID;
-    }
-
     public Customer()
     {
         this.name = "John";
@@ -74,6 +63,11 @@ public class Customer
     public String getEmail()
     {
         return email;
+    }
+
+    public void setCustomerID(int customerID)
+    {
+        this.customerID = customerID;
     }
 }
 
