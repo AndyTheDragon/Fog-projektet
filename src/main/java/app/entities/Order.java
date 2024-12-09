@@ -6,9 +6,10 @@ public class Order
 {
     private int orderID;
     private Customer customerID;
-    private User salesID;
+    private User salesPerson;
     private int carportWidth;
     private int carportLength;
+    private int carportHeight;
     private boolean carportShed;
     private int shedWidth;
     private int shedLength;
@@ -18,13 +19,14 @@ public class Order
     private LocalDateTime updatedAt;
     private Carport carport;
 
-    public Order(int orderID, Customer customerID, User salesID, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    public Order(int orderID, Customer customerID, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
     {
         this.orderID = orderID;
         this.customerID = customerID;
-        this.salesID = salesID;
+        this.salesPerson = salesPerson;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
+        this.carportHeight =230;
         this.carportShed = (shedWidth>0&&shedLength>0);
         this.shedWidth = shedWidth;
         this.shedLength = shedLength;
@@ -40,12 +42,16 @@ public class Order
         return customerID;
     }
 
-    public User getSalesID()
+    public User getSalesPerson()
     {
-        return salesID;
+        return salesPerson;
     }
 
-    public int getSalesID(int salesId)
+    public int getCarportHeight()
+    {
+        return carportHeight;
+    }
+    public int getSalesID()
     {
         return salesPerson.getUserID();
     }
