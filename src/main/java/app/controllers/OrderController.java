@@ -58,7 +58,7 @@ public class OrderController
             boolean isPaid = false;
 
             Order order = new Order(0, new Customer(), new User(), carportWidth, carportLength,
-                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
             ctx.status(201).result("Ordren blev oprettet med succes.");
@@ -86,7 +86,7 @@ public class OrderController
         try
         {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
-            Order order = OrderMapper.getOrder(orderId);
+            Order order = OrderMapper.getOrder(orderId,dbConnection);
             if (order.getSalesPerson() != null)
             {
                 ctx.attribute("message", "Ordren er allerede tildelt");
@@ -142,7 +142,7 @@ public class OrderController
         try
         {
             orderId = Integer.parseInt(ctx.pathParam("orderId"));
-            order = OrderMapper.getOrder(orderId);
+            order = OrderMapper.getOrder(orderId,dbConnection);
         }
         catch (NumberFormatException e)
         {
@@ -167,7 +167,7 @@ public class OrderController
             try
             {
                 orderId = Integer.parseInt(ctx.formParam("orderId"));
-                order = OrderMapper.acceptOrder(orderId);
+                order = OrderMapper.acceptOrder(orderId, dbConnection);
                 ctx.attribute("message", "Tilbuddet er accepteret");
             }
             catch (NumberFormatException e)
@@ -195,10 +195,10 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT);
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
         WorkDrawing drawing = new WorkDrawing(carport,780);
         ctx.attribute("drawing", drawing.toString());
-        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT);
+        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
         WorkDrawing noShed = new WorkDrawing(carport2, 480);
         ctx.attribute("noshed", noShed.toString());
 
