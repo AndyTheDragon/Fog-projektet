@@ -67,19 +67,24 @@ public class Carport
     public void calculateBoltsScrewsBrackets()
     {
         boltsScrewsBracketsList = new ArrayList<>();
-
-        boltsScrewsBracketsList.addAll(calculator.calcRoofScrews(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcJoistBrackets(length));
-        boltsScrewsBracketsList.addAll(calculator.calcJoistBracketScrews(length));
-        boltsScrewsBracketsList.addAll(calculator.calcFasciaBargeScrews(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcMetalStrap(length, width));
-        boltsScrewsBracketsList.addAll(calculator.calcBeamBolts(length, width, shedLength, shedWidth));
-
-        if (hasShed())
+        try
         {
-            boltsScrewsBracketsList.addAll(calculator.calcCladdingScrews(shedLength, shedWidth));
-            boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets(shedLength, shedWidth));
-            boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
+            boltsScrewsBracketsList.addAll(calculator.calcRoofScrews(length, width));
+            boltsScrewsBracketsList.addAll(calculator.calcJoistBrackets(length));
+            boltsScrewsBracketsList.addAll(calculator.calcJoistBracketScrews(length));
+            boltsScrewsBracketsList.addAll(calculator.calcFasciaBargeScrews(length, width));
+            boltsScrewsBracketsList.addAll(calculator.calcMetalStrap(length, width));
+            boltsScrewsBracketsList.addAll(calculator.calcBeamBolts(length, width, shedLength, shedWidth));
+
+            if (hasShed())
+            {
+                boltsScrewsBracketsList.addAll(calculator.calcCladdingScrews(shedLength, shedWidth));
+                boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets(shedLength, shedWidth));
+                boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
