@@ -16,7 +16,7 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public List<IMaterials> calcUnderFascia(int length, int width) throws CalculatorException {
+    public List<IMaterials> calcUnderFascia() throws CalculatorException {
 
         if (materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
@@ -24,15 +24,14 @@ public class FromListCalculator implements CarportCalculator
                 .collect(Collectors.toList());
     }
 
-
     @Override
-    public List<IMaterials> calcOverFascia(int length, int width) throws CalculatorException
+    public List<IMaterials> calcOverFascia() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcBeam(int length) throws CalculatorException
+    public List<IMaterials> calcBeam() throws CalculatorException
     {
         return List.of();
     }
@@ -44,37 +43,37 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) throws CalculatorException
+    public List<IMaterials> calcPosts() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public int calcNumberOfPosts(int length, int width, int shedLength, int shedWidth)
+    public int calcNumberOfPosts()
     {
         return 0;
     }
 
     @Override
-    public boolean extraPostsForLongCarport(int length, int shedLength)
+    public boolean extraPostsForLongCarport()
     {
         return false;
     }
 
     @Override
-    public List<IMaterials> calcJoists(int length) throws CalculatorException
+    public List<IMaterials> calcJoists() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public int calcNumberOfJoists(int length)
+    public int calcNumberOfJoists()
     {
         return 0;
     }
 
     @Override
-    public List<IMaterials> calcBargeBoards(int length, int width) throws CalculatorException
+    public List<IMaterials> calcBargeBoards() throws CalculatorException
     {
         return List.of();
     }
@@ -86,79 +85,73 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public List<IMaterials> calcCladding(int shedLength, int shedWidth) throws CalculatorException
+    public List<IMaterials> calcCladding() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public int calcNumberOfCladdingBoards(int shedLength, int shedWidth)
+    public int calcNumberOfCladdingBoards()
     {
         return 0;
     }
 
     @Override
-    public List<IMaterials> calcHorizontalBraces(int length, int shedLength) throws CalculatorException
+    public List<IMaterials> calcHorizontalBraces() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public int calcNumberOfHorizontalSideBraces(int shedWidth)
+    public int calcNumberOfHorizontalBraces()
     {
         return 0;
     }
 
     @Override
-    public int calcNumberOfHorizontalEndBraces(int shedLength)
-    {
-        return 0;
-    }
-
-    @Override
-    public List<IMaterials> calcRoof(int length, int width) throws CalculatorException
+    public List<IMaterials> calcRoof() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcRoofScrews(int length, int width) throws CalculatorException
+    public List<IMaterials> calcRoofScrews() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcJoistBrackets(int length) throws CalculatorException
+    public List<IMaterials> calcJoistBrackets() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcFasciaBargeScrews(int length, int width) throws CalculatorException
+    public List<IMaterials> calcFasciaBargeScrews() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcJoistBracketScrews(int length) throws CalculatorException
+    public List<IMaterials> calcJoistBracketScrews() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcMetalStrap(int length, int width) throws CalculatorException
+    public List<IMaterials> calcMetalStrap() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth) throws CalculatorException
+    public List<IMaterials> calcBeamBolts() throws CalculatorException
     {
         return List.of();
     }
 
     @Override
-    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth) throws CalculatorException
+    public List<IMaterials> calcCladdingScrews() throws CalculatorException
     {
         return List.of();
     }
@@ -170,8 +163,10 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth) throws CalculatorException
+    public List<IMaterials> calcHorizontalBracesBrackets() throws CalculatorException
     {
         return List.of();
     }
+
+
 }
