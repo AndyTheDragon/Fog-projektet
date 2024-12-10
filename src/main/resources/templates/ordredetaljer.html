@@ -18,7 +18,6 @@
                 <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
-                    <p class="card-text" th:text="@{order}">s</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
@@ -118,7 +117,8 @@
                 </form>
             </div>
             <div class="col d-flex justify-content-end">
-                <form action="/draw" method="get">
+                <form action="/order/{orderId}/edit" th:action="@{/order/{id}/edit(id=${order.orderID})}" method="get">
+                    <input type="hidden" name="orderId" th:value="${order.orderID}">
                     <button type="submit" class="me-auto btn btn-lg btn-warning">Ret tilbud</button>
                 </form>
             </div>
