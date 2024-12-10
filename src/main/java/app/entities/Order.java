@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Order
 {
     private int orderID;
-    private Customer customerID;
+    private Customer customer;
     private User salesPerson;
     private int carportWidth;
     private int carportLength;
@@ -19,10 +19,10 @@ public class Order
     private LocalDateTime updatedAt;
     private Carport carport;
 
-    public Order(int orderID, Customer customerID, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, CarportCalculator calculator)
     {
         this.orderID = orderID;
-        this.customerID = customerID;
+        this.customer = customer;
         this.salesPerson = salesPerson;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
@@ -34,13 +34,13 @@ public class Order
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
     }
 
-    public Order(int newOrderId, Customer customerID, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
+    public Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
     {
         this.orderID = newOrderId;
-        this.customerID = customerID;
+        this.customer = customer;
         this.salesPerson = salesPerson;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
@@ -53,9 +53,9 @@ public class Order
     }
 
 
-    public Customer getCustomerID()
+    public Customer getCustomer()
     {
-        return customerID;
+        return customer;
     }
 
     public User getSalesPerson()

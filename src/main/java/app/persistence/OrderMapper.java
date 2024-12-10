@@ -1,9 +1,6 @@
 package app.persistence;
 
-import app.entities.Customer;
-import app.entities.Order;
-import app.entities.RoofType;
-import app.entities.User;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
@@ -57,7 +54,7 @@ public class OrderMapper
     }*/
 
 
-    public static Map<String, ArrayList<Order>> getOrders(ConnectionPool connectionPool) throws DatabaseException
+    public static Map<String, ArrayList<Order>> getOrders(ConnectionPool dbConnection) throws DatabaseException
     {
         ArrayList<Order> allorders = new ArrayList<>();
         ArrayList<Order> unassignedOrders = new ArrayList<>();
@@ -69,7 +66,7 @@ public class OrderMapper
                 " INNER JOIN customer AS c on carport_order.customer_id = c.customer_id" +
                 " INNER JOIN account AS a ON carport_order.sales_id = a.user_id";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
 
@@ -112,7 +109,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt);
+                        updatedAt, new OptimalWoodCalculator(dbConnection));
 
                 if (salesId == 0) {
                     unassignedOrders.add(order);
@@ -130,7 +127,7 @@ public class OrderMapper
 
         return result;
     }
-    public static Order getOrder(int orderId) throws DatabaseException
+    public static Order getOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
         return new Order(1,
                 new Customer(),
@@ -142,7 +139,7 @@ public class OrderMapper
                 RoofType.FLAT,
                 false,
                 LocalDateTime.now(),
-                LocalDateTime.now());
+                LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
     }
 
     public static void asssignOrder(int orderId, int salesId, ConnectionPool connectionPool) throws DatabaseException
@@ -161,7 +158,7 @@ public class OrderMapper
         }
     }
 
-    public static Order acceptOrder(int orderId) throws DatabaseException
+    public static Order acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
         return new Order(1,
                 new Customer(),
@@ -173,7 +170,7 @@ public class OrderMapper
                 RoofType.FLAT,
                 true,
                 LocalDateTime.now(),
-                LocalDateTime.now());
+                LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
     }
 
     public static Order saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException

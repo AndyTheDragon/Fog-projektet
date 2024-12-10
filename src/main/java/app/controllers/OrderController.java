@@ -34,7 +34,6 @@ public class OrderController
 
     public static void showOrderPage(Context ctx, ConnectionPool dbConnection)
     {
-
         Order currentOrder = ctx.sessionAttribute("currentOrder");
         if (currentOrder == null) {
             ctx.attribute("message", "Du har ikke nogen ordre i gang");
@@ -47,19 +46,6 @@ public class OrderController
     public static void createOrder(Context ctx, ConnectionPool dbConnection)
     {
         try {
-            /*
-            System.out.println("name " + ctx.formParam("name"));
-            System.out.println("address " + ctx.formParam("address"));
-            System.out.println("zipcode " + ctx.formParam("zipcode"));
-            System.out.println("city " + ctx.formParam("city"));
-            System.out.println("phoneNumber " + ctx.formParam("phoneNumber"));
-            System.out.println("email " + ctx.formParam("email"));
-            System.out.println("carport roof " + ctx.formParam("carportRoof"));
-            System.out.println("carport bredde " + ctx.formParam("carportWidth"));
-            System.out.println("carport længe " + ctx.formParam("carportLength"));
-            System.out.println("shed " + ctx.formParam("shedWidth"));
-            System.out.println("shed " + ctx.formParam("shedLength"));
-             */
             int carportWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportWidth")));
             int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
             int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
@@ -73,7 +59,7 @@ public class OrderController
             customer.setCustomerID(customerID);
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
-                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now());
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
             //OrderMapper.createOrder(order, dbConnection);
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
@@ -105,7 +91,7 @@ public class OrderController
         try
         {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
-            Order order = OrderMapper.getOrder(orderId);
+            Order order = OrderMapper.getOrder(orderId,dbConnection);
             if (order.getSalesPerson() != null)
             {
                 ctx.attribute("message", "Ordren er allerede tildelt");
@@ -161,7 +147,7 @@ public class OrderController
         try
         {
             orderId = Integer.parseInt(ctx.pathParam("orderId"));
-            order = OrderMapper.getOrder(orderId);
+            order = OrderMapper.getOrder(orderId,dbConnection);
         }
         catch (NumberFormatException e)
         {
@@ -186,7 +172,7 @@ public class OrderController
             try
             {
                 orderId = Integer.parseInt(ctx.formParam("orderId"));
-                order = OrderMapper.acceptOrder(orderId);
+                order = OrderMapper.acceptOrder(orderId, dbConnection);
                 ctx.attribute("message", "Tilbuddet er accepteret");
             }
             catch (NumberFormatException e)
@@ -214,10 +200,10 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT);
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
         WorkDrawing drawing = new WorkDrawing(carport,780);
         ctx.attribute("drawing", drawing.toString());
-        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT);
+        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
         WorkDrawing noShed = new WorkDrawing(carport2, 480);
         ctx.attribute("noshed", noShed.toString());
 

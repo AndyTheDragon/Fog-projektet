@@ -30,8 +30,8 @@ public class Main
 
         // Routing
         //app.get("/", ctx -> ctx.render("index.html"));
-        //UserController.addRoutes(app, connectionPool);
+        UserController.addRoutes(app, connectionPool);
         OrderController.addRoutes(app, connectionPool);
-        System.out.println(System.getenv("JDBC_USER"));
+        System.out.println(System.getenv("DEPLOYED"));
     }
 }

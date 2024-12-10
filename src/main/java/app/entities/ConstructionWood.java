@@ -48,6 +48,21 @@ public class ConstructionWood implements IMaterials
         return unit;
     }
 
+    public int getFogProductID()
+    {
+        return fogProductID;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
     @Override
     public String toString()
     {
