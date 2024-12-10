@@ -10,6 +10,7 @@
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null && #ctx.session.currentUser!=null}">
+    <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
     <h1>Rediger ordre</h1>
 
     <div class="row">

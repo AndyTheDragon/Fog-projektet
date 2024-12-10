@@ -9,9 +9,10 @@
 </head>
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
+<div class="container mt-5 p-3 pt-5 bg-body-tertiary">
+    <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
+    <h3>Tildelte ordrer</h3>
 
-<h3>Tildelte ordrer</h3>
-<div class="container">
     <div class="row">
         <div class="col-4" th:each="ordera : ${assigned}">
             <div class="card" style="width: 18rem; height: 15rem;">
@@ -30,23 +31,26 @@
             </div>
         </div>
     </div>
-</div>
 
-<h3>Ikke tildelte ordrer</h3>
-<div class="container">
-    <div class="row">
-        <div class="col-4" th:each="orderu : ${unassigned}">
-            <div class="card" style="width: 18rem; height: 15rem;">
+
+    <h3>Ikke tildelte ordrer</h3>
+    <div class="row row-cols-4 g-4">
+        <div class="col" th:each="orderu : ${unassigned}">
+            <div class="card">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Ordre ID:</strong> <span th:text="${orderu.orderId}"></span></li>
                         <li class="list-group-item"><strong>Kunde navn:</strong> <span th:text="${orderu.customer.name}"></span></li>
+                        <li class="list-group-item"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${orderu.orderStatus}"></span></li>
                         <li class="list-group-item"><strong>Sælger navn:</strong> <span th:text="${orderu.salesPerson.name}"></span></li>
                     </ul>
-                    <div class="view-information mt-2">
-                        <button class="assign btn btn-primary" type="submit">Tildel ordre til selv</button>
-                        <a href="ordredetaljer.html" class="view" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
-                            <button class="view-btn btn btn-secondary" type="button">Se informationer</button>
+                    <div class="card-text mt-2">
+                        <form method="post" th:action="@{/order/assign}">
+                            <input type="hidden" name="orderId" th:value="${#ctx.session.currentUser.userID}">
+                            <button class="btn btn-success m-1"  type="submit">Tildel ordre til selv</button>
+                        </form>
+                        <a href="ordredetaljer.html" class="btn btn-primary m-1" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
+                            Se informationer
                         </a>
                     </div>
                 </div>
