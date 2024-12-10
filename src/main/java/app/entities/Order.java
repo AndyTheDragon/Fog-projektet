@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.services.CarportCalculator;
+
 import java.time.LocalDateTime;
 
 public class Order

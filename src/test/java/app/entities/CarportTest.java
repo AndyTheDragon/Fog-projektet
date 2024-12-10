@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.CalculatorException;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.services.OptimalWoodCalculator;
@@ -482,21 +483,28 @@ class CarportTest
     }
 
     @Test
-    void calcRoofScrewsTest() throws DatabaseException
+    void calcRoofScrewsTest()
     {
-        // Arrange
-        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, calculator);
-        int screwsPerSqrMeter = 12;
+        try
+        {
+            // Arrange
+            Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, calculator);
+            int screwsPerSqrMeter = 12;
 
-        // Act
-        int roofArea = (carportD.length/100) * (carportD.width/100);
+            // Act
+            int roofArea = (carportD.length/100) * (carportD.width/100);
 
-        int totalScrews = roofArea * screwsPerSqrMeter;
-        int expectedScrewPacks = Math.ceilDiv(totalScrews,200);
-        int actualScrewPacks = carportD.calculator.calcRoofScrews(carportD.getLength(), carportD.getWidth()).getFirst().getAmount();
+            int totalScrews = roofArea * screwsPerSqrMeter;
+            int expectedScrewPacks = Math.ceilDiv(totalScrews,200);
+            int actualScrewPacks = 0;
+            actualScrewPacks = carportD.calculator.calcRoofScrews(carportD.getLength(), carportD.getWidth()).getFirst().getAmount();
+            // Assert
+            assertEquals(expectedScrewPacks, actualScrewPacks);
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
 
-        // Assert
-        assertEquals(expectedScrewPacks, actualScrewPacks);
     }
 
     @Test
