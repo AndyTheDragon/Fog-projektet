@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.persistence.ConnectionPool;
 import app.services.OptimalWoodCalculator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,12 @@ class CarportTest
 {
     OptimalWoodCalculator calculator = new OptimalWoodCalculator(dbConnection);
     Carport carport;
+    private final String USER = "carport";
+    private final String PASSWORD = "wDj+e5V&0YOx5kE";
+    private final String URL = "jdbc:postgresql://165.22.74.93:5432/%s?currentSchema=public";
+    private final String DB = "fog_carport";
+
+    private final ConnectionPool dbConnection = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
     @BeforeEach
     void setUp()
     {
