@@ -18,7 +18,7 @@ public class OrderMapper
 {
 
 
-    public static Map<String, ArrayList<Order>> getOrders(ConnectionPool connectionPool) throws DatabaseException
+    public static Map<String, ArrayList<Order>> getOrders(ConnectionPool dbConnection) throws DatabaseException
     {
         ArrayList<Order> allorders = new ArrayList<>();
         ArrayList<Order> unassignedOrders = new ArrayList<>();
@@ -36,7 +36,7 @@ public class OrderMapper
                 "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
                 "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ResultSet rs = ps.executeQuery();
@@ -118,11 +118,11 @@ public class OrderMapper
                 LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
     }
 
-    public static void asssignOrder(int orderId, int salesId, ConnectionPool connectionPool) throws DatabaseException
+    public static void asssignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
     {
         String sql = "UPDATE carport_order SET sales_id = ? WHERE order_id = ?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, salesId);
@@ -186,7 +186,7 @@ public class OrderMapper
         return newOrder;
     }
 
-    public static Order getOrderById(int orderId, ConnectionPool dbConnectionpool) throws DatabaseException
+    public static Order getOrderById(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
         Order order = null;
 
@@ -203,7 +203,7 @@ public class OrderMapper
                 "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
                 "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
 
-        try (Connection connection = dbConnectionpool.getConnection();
+        try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, orderId);
@@ -241,8 +241,17 @@ public class OrderMapper
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-                order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
-                        shedLength, roofType, isPaid, createdAt, updatedAt);
+                order = new Order(orderId,
+                        customer,
+                        salesPerson,
+                        carportWidth,
+                        carportLength,
+                        shedWidth,
+                        shedLength,
+                        roofType,
+                        isPaid,
+                        createdAt,
+                        updatedAt, new OptimalWoodCalculator(dbConnection));
             }
         } catch (SQLException e)
         {
