@@ -16,26 +16,10 @@ public class WorkDrawing
     private final boolean extraPostsForLongCarport;
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
     private final static String STYLE_DASHED="stroke:#000000; fill: #ffffff; stroke-dasharray: 5,5;";
+    private final static String STYLE_ARROW="stroke-width: 8; fill: #ffffff; ";
+    private final static String STYLE_TEXT = "font-size: 120px";
     private final static int fasciaThickness = 50;
 
-   public WorkDrawing(int carportLength, int carportWidth, int carportHeight, int shedLength, int shedWidth, int numberOfJoists, boolean extraPostsForLongCarport)
-    {
-        this.carportWidth = carportWidth * 10;
-        this.carportLength = carportLength * 10;
-        this.carportHeight = carportHeight * 10;
-        this.shedWidth = shedWidth*10;
-        this.shedLength = shedLength*10;
-        this.hasShed = true;
-        this.numberOfJoists = numberOfJoists;
-        this.extraPostsForLongCarport = extraPostsForLongCarport;
-        this.topViewDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + carportLength);
-        this.sideViewDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportHeight +100), ""+ carportLength);
-        addBeams();
-        addPosts();
-        addCladding();
-        addFascia();
-        addJoists();
-    }
     public WorkDrawing(Carport carport, int drawingWidth)
     {
         this.carportWidth = carport.getWidth() * 10;
@@ -46,8 +30,17 @@ public class WorkDrawing
         this.hasShed = carport.hasShed();
         this.numberOfJoists = carport.getNumberOfJoists();
         this.extraPostsForLongCarport = carport.extraPostsForLongCarport();
-        this.topViewDrawing = new DrawSVG(0, 0, "0 0 " + (this.carportLength + 100) + " " + (this.carportWidth + 100), "" + drawingWidth);
-        this.sideViewDrawing = new DrawSVG(0,0,"0 0 " + (this.carportLength +100) + " " + (this.carportHeight + 400), ""+ drawingWidth);
+        this.topViewDrawing = new DrawSVG(0, 0, "-1000 0 " + (this.carportLength + 2000) + " " + (this.carportWidth + 1000), "" + drawingWidth);
+        this.sideViewDrawing = new DrawSVG(0,0,"-1000 0 " + (this.carportLength +2000) + " " + (this.carportHeight + 1000), ""+ drawingWidth);
+
+        //Add width and length arrows
+        int textOffset = 750;
+        int arrowOffset = textOffset - 150;
+        topViewDrawing.addArrow(-(arrowOffset),0, -600, this.carportWidth, STYLE_ARROW);
+        topViewDrawing.addText(-textOffset,(this.carportWidth)/2, 0, ""+(this.carportWidth/10), STYLE_TEXT);
+        topViewDrawing.addArrow(0, this.carportWidth+arrowOffset, this.carportLength, this.carportWidth+arrowOffset, STYLE_ARROW);
+        topViewDrawing.addText(this.carportLength/2, this.carportWidth+textOffset, 0, ""+(this.carportLength/10), STYLE_TEXT);
+
         addBeams();
         addPosts();
         if (this.hasShed)
@@ -60,8 +53,13 @@ public class WorkDrawing
 
     private void addBeams()
     {
-        topViewDrawing.addRectangle(fasciaThickness,fasciaThickness+350,45, carportLength-2*fasciaThickness, STYLE);
-        topViewDrawing.addRectangle(fasciaThickness,fasciaThickness+carportWidth-350-45,45, carportLength-2*fasciaThickness, STYLE);
+        int topY = fasciaThickness+350;
+        int botY = fasciaThickness+carportWidth-350-45;
+        int beamThickness = 45;
+        topViewDrawing.addArrow(-200,topY+beamThickness, -200, botY, STYLE_ARROW);
+        topViewDrawing.addText(-350,(botY-topY)/2, 0, ""+(botY+topY)/10, STYLE_TEXT);
+        topViewDrawing.addRectangle(fasciaThickness,topY,beamThickness, carportLength-2*fasciaThickness, STYLE);
+        topViewDrawing.addRectangle(fasciaThickness,botY,beamThickness, carportLength-2*fasciaThickness, STYLE);
         sideViewDrawing.addSlantedRect(fasciaThickness,250,145, carportLength-2*fasciaThickness, 0.735, fasciaThickness+carportLength/2, 250, STYLE);
     }
 
@@ -69,10 +67,14 @@ public class WorkDrawing
     {
         // overstern + understern + 2xlægte - halv stolpe
         int postXoffset = 1000;
+        int leftPostY = fasciaThickness+350-96/2;
+        int rightPostY = fasciaThickness+ carportWidth -350-96/2;
+        // Arrows
+
         //Front posts
-        topViewDrawing.addRectangle(postXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
-        topViewDrawing.addRectangle(postXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
-        sideViewDrawing.addRectangle(postXoffset,fasciaThickness+350-96/2,2080,97, STYLE);
+        topViewDrawing.addRectangle(postXoffset,leftPostY,97, 97, STYLE);
+        topViewDrawing.addRectangle(postXoffset,rightPostY,97, 97, STYLE);
+        sideViewDrawing.addRectangle(postXoffset,leftPostY,2080,97, STYLE);
         int middlepostXoffset = 3300;
         if (!hasShed)
         {
@@ -81,23 +83,23 @@ public class WorkDrawing
         if (extraPostsForLongCarport)
         {
             // Middle posts
-            topViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350-96/2,97, 97, STYLE);
-            topViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+            topViewDrawing.addRectangle(postXoffset+middlepostXoffset,leftPostY,97, 97, STYLE);
+            topViewDrawing.addRectangle(postXoffset+middlepostXoffset,rightPostY,97, 97, STYLE);
             sideViewDrawing.addRectangle(postXoffset+middlepostXoffset,fasciaThickness+350,2050,97, STYLE);
         }
         if (hasShed)
         {
             //Shed posts
-            topViewDrawing.addRectangle(carportLength -300-shedLength,fasciaThickness+350-96/2,97, 97, STYLE);
+            topViewDrawing.addRectangle(carportLength -300-shedLength,leftPostY,97, 97, STYLE);
             topViewDrawing.addRectangle(carportLength -300-shedLength,fasciaThickness+ carportWidth/2-96/2,97, 97, STYLE);
-            topViewDrawing.addRectangle(carportLength -300-shedLength,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+            topViewDrawing.addRectangle(carportLength -300-shedLength,rightPostY,97, 97, STYLE);
             //Back middle post
             topViewDrawing.addRectangle(carportLength -300-97,fasciaThickness+ carportWidth/2-96/2,97, 97, STYLE);
 
         }
         //Back posts
-        topViewDrawing.addRectangle(carportLength -300-97,fasciaThickness+350-96/2,97, 97, STYLE);
-        topViewDrawing.addRectangle(carportLength -300-97,fasciaThickness+ carportWidth -350-96/2,97, 97, STYLE);
+        topViewDrawing.addRectangle(carportLength -300-97,leftPostY,97, 97, STYLE);
+        topViewDrawing.addRectangle(carportLength -300-97,rightPostY,97, 97, STYLE);
         if(!hasShed)
         {
             sideViewDrawing.addRectangle(carportLength - 300 - 97, fasciaThickness + 350, 2020, 97, STYLE);
