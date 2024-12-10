@@ -137,7 +137,43 @@ public class OrderMapper
         try (Connection connection = dbConnectionpool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, orderId);
+
             ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next())
+            {
+                int orderId = rs.getInt("order_id");
+                int customerId = rs.getInt("customer_id");
+                Customer customer = new Customer(rs.getString("customer_name"),
+                        rs.getString("customer_address"),
+                        rs.getString("customer_zipcode"),
+                        rs.getString("customer_city"),
+                        rs.getString("customer_phone"),
+                        rs.getString("customer_email"));
+                User salesPerson;
+                Integer salesId = rs.getObject("sales_id") != null ? null : rs.getInt("sales_id");
+                if (salesId == null)
+                {
+                    salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
+                }
+                else
+                {
+                    salesPerson = new User(rs.getString("user_name"), rs.getString("user_email"));
+                }
+                int carportWidth = rs.getInt("carport_width");
+                int carportLength = rs.getInt("carport_length");
+                int carportHeight = rs.getInt("carport_height");
+                int shedWidth = rs.getInt("shed_width");
+                int shedLength = rs.getInt("shed_length");
+                RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
+                boolean isPaid = rs.getBoolean("is_paid");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+
+                Order order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
+                        shedLength, roofType, isPaid, createdAt, updatedAt);
+
 
         }
 }
