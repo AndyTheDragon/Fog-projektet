@@ -19,18 +19,19 @@ public interface CarportCalculator
     public List<IMaterials> calcBattern() throws DatabaseException;
     public List<IMaterials> calcCladding(int shedLength, int shedWidth) throws DatabaseException;
     public int calcNumberOfCladdingBoards(int shedLength, int shedWidth);
-    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth) throws DatabaseException;
-    public int calcNumberOfHorizontalBraces(int shedLength, int shedWidth);
+    public List<IMaterials> calcHorizontalBraces(int length, int shedLength) throws DatabaseException;
+    public int calcNumberOfHorizontalSideBraces(int shedWidth);
+    public int calcNumberOfHorizontalEndBraces(int shedLength);
     public List<IMaterials> calcRoof(int length, int width) throws DatabaseException;
-    public List<IMaterials> calcRoofScrews(int length, int width);
-    public List<IMaterials> calcJoistBrackets(int length);
-    public List<IMaterials> calcFasciaBargeScrews(int length, int width);
-    public List<IMaterials> calcJoistBracketScrews(int length);
-    public List<IMaterials> calcMetalStrap(int length, int width);
-    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth);
-    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth);
-    public List<IMaterials> doorHandleBrackets();
-    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth);
+    public List<IMaterials> calcRoofScrews(int length, int width) throws DatabaseException;
+    public List<IMaterials> calcJoistBrackets(int length) throws DatabaseException;
+    public List<IMaterials> calcFasciaBargeScrews(int length, int width) throws DatabaseException;
+    public List<IMaterials> calcJoistBracketScrews(int length) throws DatabaseException;
+    public List<IMaterials> calcMetalStrap(int length, int width) throws DatabaseException;
+    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth) throws DatabaseException;
+    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth) throws DatabaseException;
+    public List<IMaterials> doorHandleBrackets() throws DatabaseException;
+    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth) throws DatabaseException;
 
 
 
