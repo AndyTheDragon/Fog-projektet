@@ -7,11 +7,13 @@
 <body>
 <div th:replace="~{fragments :: navbar}"></div>
 
+
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
+    <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
     <h1>Bestil QuickByg tilbud - carport med fladt tag</h1>
     <p>Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport indenfor vores standardprogram. <br>Tilbud og skitsetegning fremsendes med post hurtigst muligt.<br>Ved bestilling medfølger standardbyggevejledning.</p>
     <p>Udfyld formularen omhyggeligt og klik på "Bestil tilbud".<br>Felter markeret med * SKAL udfyldes!</p>
-    <form>
+    <form method="post" action="/bestilling">
         <div class="container bg-white p-3">
             <h3>Carport med fladt tag</h3>
             <p>
@@ -19,129 +21,129 @@
                 Så vender vi hurtigst muligt tilbage med et tilbud til dig.
             </p>
             <div class="row mb-3">
-                <label for="field[49]" class="form-label fw-bold">
+                <label for="carportWidth" class="form-label fw-bold">
                     Carport bredde*
                 </label>
                 <div class="_field-wrapper">
-                    <select class="form-select" name="field[49]" id="field[49]" required="" data-name="carport_bredde">
+                    <select class="form-select" name="carportWidth" id="carportWidth" required="" data-name="carportWidth">
                         <option selected="">
                         </option>
-                        <option value="240 cm">
+                        <option value="240">
                             240 cm
                         </option>
-                        <option value="270 cm">
+                        <option value="270">
                             270 cm
                         </option>
-                        <option value="300 cm">
+                        <option value="300">
                             300 cm
                         </option>
-                        <option value="330 cm">
+                        <option value="330">
                             330 cm
                         </option>
-                        <option value="360 cm">
+                        <option value="360">
                             360 cm
                         </option>
-                        <option value="390 cm">
+                        <option value="390">
                             390 cm
                         </option>
-                        <option value="420 cm">
+                        <option value="420">
                             420 cm
                         </option>
-                        <option value="450 cm">
+                        <option value="450">
                             450 cm
                         </option>
-                        <option value="480 cm">
+                        <option value="480">
                             480 cm
                         </option>
-                        <option value="510 cm">
+                        <option value="510">
                             510 cm
                         </option>
-                        <option value="540 cm">
+                        <option value="540">
                             540 cm
                         </option>
-                        <option value="570 cm">
+                        <option value="570">
                             570 cm
                         </option>
-                        <option value="600 cm">
+                        <option value="600">
                             600 cm
                         </option>
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[50]" class="form-label fw-bold">
+                <label for="carportLength" class="form-label fw-bold">
                     Carport længde*
                 </label>
                 <div class="_field-wrapper">
-                    <select class="form-select" name="field[50]" id="field[50]" required="" data-name="carport_lngde">
+                    <select class="form-select" name="carportLength" id="carportLength" required="" data-name="carportLength">
                         <option selected="">
                         </option>
-                        <option value="240 cm">
+                        <option value="240">
                             240 cm
                         </option>
-                        <option value="270 cm">
+                        <option value="270">
                             270 cm
                         </option>
-                        <option value="300 cm">
+                        <option value="300">
                             300 cm
                         </option>
-                        <option value="330 cm">
+                        <option value="330">
                             330 cm
                         </option>
-                        <option value="360 cm">
+                        <option value="360">
                             360 cm
                         </option>
-                        <option value="390 cm">
+                        <option value="390">
                             390 cm
                         </option>
-                        <option value="420 cm">
+                        <option value="420">
                             420 cm
                         </option>
-                        <option value="450 cm">
+                        <option value="450">
                             450 cm
                         </option>
-                        <option value="480 cm">
+                        <option value="480">
                             480 cm
                         </option>
-                        <option value="510 cm">
+                        <option value="510">
                             510 cm
                         </option>
-                        <option value="540 cm">
+                        <option value="540">
                             540 cm
                         </option>
-                        <option value="570 cm">
+                        <option value="570">
                             570 cm
                         </option>
-                        <option value="600 cm">
+                        <option value="600">
                             600 cm
                         </option>
-                        <option value="630 cm">
+                        <option value="630">
                             630 cm
                         </option>
-                        <option value="660 cm">
+                        <option value="660">
                             660 cm
                         </option>
-                        <option value="690 cm">
+                        <option value="690">
                             690 cm
                         </option>
-                        <option value="720 cm">
+                        <option value="720">
                             720 cm
                         </option>
-                        <option value="750 cm">
+                        <option value="750">
                             750 cm
                         </option>
-                        <option value="780 cm">
+                        <option value="780">
                             780 cm
                         </option>
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[51]" class="form-label fw-bold">
+                <label for="carportRoof" class="form-label fw-bold">
                     Carport trapeztag*
                 </label>
                 <div class="_field-wrapper">
-                    <select class="form-select" name="field[51]" id="field[51]" required="" data-name="carport_trapeztag">
+                    <select class="form-select" name="carportRoof" id="carportRoof" required="" data-name="carportRoof">
                         <option selected>
                         </option>
                         <option value="Uden tagplader">
@@ -161,146 +163,146 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[52]" class="form-label">
+                <label for="shedWidth" class="form-label">
                     Redskabsrum bredde*
                 </label>
                 <div class="_field-wrapper">
-                    <select class="form-select" name="field[52]" id="field[52]" required="" data-name="redskabsrum_bredde">
+                    <select class="form-select" name="shedWidth" id="shedWidth" required="" data-name="shedWidth">
                         <option value="Uden redskabsrum" selected>
                             Uden redskabsrum
                         </option>
-                        <option value="210 cm">
+                        <option value="210">
                             210 cm
                         </option>
-                        <option value="240 cm">
+                        <option value="240">
                             240 cm
                         </option>
-                        <option value="270 cm">
+                        <option value="270">
                             270 cm
                         </option>
-                        <option value="300 cm">
+                        <option value="300">
                             300 cm
                         </option>
-                        <option value="330 cm">
+                        <option value="330">
                             330 cm
                         </option>
-                        <option value="360 cm">
+                        <option value="360">
                             360 cm
                         </option>
-                        <option value="390 cm">
+                        <option value="390">
                             390 cm
                         </option>
-                        <option value="420 cm">
+                        <option value="420">
                             420 cm
                         </option>
-                        <option value="450 cm">
+                        <option value="450">
                             450 cm
                         </option>
-                        <option value="480 cm">
+                        <option value="480">
                             480 cm
                         </option>
-                        <option value="510 cm">
+                        <option value="510">
                             510 cm
                         </option>
-                        <option value="540 cm">
+                        <option value="540">
                             540 cm
                         </option>
-                        <option value="570 cm">
+                        <option value="570">
                             570 cm
                         </option>
-                        <option value="600 cm">
+                        <option value="600">
                             600 cm
                         </option>
-                        <option value="630 cm">
+                        <option value="630">
                             630 cm
                         </option>
-                        <option value="660 cm">
+                        <option value="660">
                             660 cm
                         </option>
-                        <option value="690 cm">
+                        <option value="690">
                             690 cm
                         </option>
-                        <option value="720 cm">
+                        <option value="720">
                             720 cm
                         </option>
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[53]" class="form-label">
+                <label for="shedLength" class="form-label">
                     Redskabsrum længde*
                 </label>
                 <div class="_field-wrapper">
-                    <select class="form-select" name="field[53]" id="field[53]" required="" data-name="redskabsrum_lngde">
+                    <select class="form-select" name="shedLength" id="shedLength" required="" data-name="shedLength">
                         <option value="Uden redskabsrum" selected>
                             Uden redskabsrum
                         </option>
-                        <option value="150 cm">
+                        <option value="150">
                             150 cm
                         </option>
-                        <option value="180 cm">
+                        <option value="180">
                             180 cm
                         </option>
-                        <option value="210 cm">
+                        <option value="210">
                             210 cm
                         </option>
-                        <option value="240 cm">
+                        <option value="240">
                             240 cm
                         </option>
-                        <option value="270 cm">
+                        <option value="270">
                             270 cm
                         </option>
-                        <option value="300 cm">
+                        <option value="300">
                             300 cm
                         </option>
-                        <option value="330 cm">
+                        <option value="330">
                             330 cm
                         </option>
-                        <option value="360 cm">
+                        <option value="360">
                             360 cm
                         </option>
-                        <option value="390 cm">
+                        <option value="390">
                             390 cm
                         </option>
-                        <option value="420 cm">
+                        <option value="420">
                             420 cm
                         </option>
-                        <option value="450 cm">
+                        <option value="450">
                             450 cm
                         </option>
-                        <option value="480 cm">
+                        <option value="480">
                             480 cm
                         </option>
-                        <option value="510 cm">
+                        <option value="510">
                             510 cm
                         </option>
-                        <option value="540 cm">
+                        <option value="540">
                             540 cm
                         </option>
-                        <option value="570 cm">
+                        <option value="570">
                             570 cm
                         </option>
-                        <option value="600 cm">
+                        <option value="600">
                             600 cm
                         </option>
-                        <option value="630 cm">
+                        <option value="630">
                             630 cm
                         </option>
-                        <option value="660 cm">
+                        <option value="660">
                             660 cm
                         </option>
-                        <option value="690 cm">
+                        <option value="690">
                             690 cm
                         </option>
                     </select>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[33]" class="form-label">
+                <label for="remark" class="form-label">
                     Evt. bemærkning / særlige ønsker
                 </label>
                 <div class="_field-wrapper">
-                    <textarea class="form-control" id="field[33]" name="field[33]" placeholder="" data-name="bemrkning"></textarea>
+                    <textarea class="form-control" id="remark" name="remark" placeholder="" data-name="bemærkning"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -310,43 +312,43 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="fullname" class="form-label">
+                <label for="name" class="form-label">
                     Navn*
                 </label>
                 <div class="_field-wrapper">
-                    <input class="form-control" type="text" id="fullname" name="fullname" placeholder="Fornavn og efternavn" required="" data-name="fullname">
+                    <input class="form-control" type="text" id="name" name="name" placeholder="Fornavn og efternavn" required="" data-name="name">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[45]" class="form-label">
+                <label for="address" class="form-label">
                     Adresse*
                 </label>
                 <div class="">
-                    <input class="form-control" type="text" id="field[45]" name="field[45]" value="" placeholder="Adresse (vej + nummer)" required="" data-name="bestiladresse">
+                    <input class="form-control" type="text" id="address" name="address" value="" placeholder="Adresse (vej + nummer)" required="" data-name="address">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[1]" class="form-label">
+                <label for="zipcode" class="form-label">
                     Postnummer*
                 </label>
                 <div class="_field-wrapper">
-                    <input class="form-control" type="number" id="field[1]" name="field[1]" value="" placeholder="Postnummer" required="" data-name="postnummer" min="1050" max="9990">
+                    <input class="form-control" type="number" id="zipcode" name="zipcode" value="" placeholder="Postnummer" required="" data-name="zipcode" min="1050" max="9990">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="field[46]" class="form-label">
+                <label for="city" class="form-label">
                     By*
                 </label>
                 <div class="_field-wrapper">
-                    <input class="form-control" type="text" id="field[46]" name="field[46]" value="" placeholder="Bynavn" required="" data-name="bestil_by">
+                    <input class="form-control" type="text" id="city" name="city" value="" placeholder="Bynavn" required="" data-name="city">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="phone" class="form-label">
+                <label for="phoneNumber" class="form-label">
                     Telefon*
                 </label>
                 <div class="_field-wrapper">
-                    <input class="form-control" type="tel" id="phone" name="phone" placeholder="Telefon nummer" required="" data-name="phone">
+                    <input class="form-control" type="tel" id="phoneNumber" name="phoneNumber" placeholder="Telefon nummer" required="" data-name="phoneNumber">
                 </div>
             </div>
             <div class="row mb-3">
@@ -369,7 +371,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <button class="btn btn-lg btn-primary" id="_form_65_submit" type="submit">
+                <button class="btn btn-lg btn-primary" id="_form_65_submit" type="submit" formaction="/bestilling">
                     Bestil tilbud
                 </button>
             </div>
