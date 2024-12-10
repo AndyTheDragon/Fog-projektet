@@ -106,7 +106,7 @@ public class Carport
     public int getNumberOfCladdingBoards()
     {
         /// TODO: SKAL LIGE GENTÆNKES HER, SKAL DETTE FLYTTES IND SOM EN PROPERTY?
-        return calculator.calcNumberOfCladdingBoards(length, width);
+        return calculator.calcNumberOfCladdingBoards(shedLength, shedWidth);
     }
 
 
