@@ -15,25 +15,24 @@
     <div class="row">
         <div class="col-6">
             <div class="card m-3">
-                <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
+                <h5 class="card-header" >Dimensioner</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
-                    <p class="card-text" th:text="@{order}">s</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Carport længde: <input name="carportLength" th:value="${order.carportLength}">360</input> cm</li>
-                    <li class="list-group-item">Carport bredde: <input name="carportWidth" th:text="${order.carportWidth}">300</input> cm</li>
-                    <li class="list-group-item">Skur længde: <input name="shedLength" th:text="${order.shedLength}">100</input> cm</li>
-                    <li class="list-group-item">Skur bredde: <input name="shedWidth" th:text="${order.shedWidth}">240</input> cm</li>
+                    <li class="list-group-item">Carport bredde: <input name="carportWidth" th:value="${order.carportWidth}">300</input> cm</li>
+                    <li class="list-group-item">Skur længde: <input name="shedLength" th:value="${order.shedLength}">100</input> cm</li>
+                    <li class="list-group-item">Skur bredde: <input name="shedWidth" th:value="${order.shedWidth}">240</input> cm</li>
                     <li class="list-group-item">Skur beklædning: <input>forskudt</input></li>
-                    <li class="list-group-item">Tag type: <input name="carportRoof" th:text="${order.carportRoof}">Fladt</input> </li>
+                    <li class="list-group-item">Tag type: <input name="carportRoof" th:value="${order.carportRoof}">Fladt</input> </li>
                     <li class="list-group-item">Tag beklædning: <input>Trapez</input> </li>
                 </ul>
             </div>
         </div>
         <div class="col-6">
             <div class="card m-3">
-                <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
+                <h5 class="card-header">Kunde Information</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"> Personal information message</p>
                 </div>
@@ -109,33 +108,12 @@
             <div class="col d-flex justify-content-start">
                 <form th:action="@{/order/assign}" method="post">
                     <input type="hidden" name="orderId" th:value="${order.orderID}">
-                    <button type="submit" class="ms-auto btn btn-lg btn-primary">Tildel</button>
-                </form>
-            </div>
-            <div class="col d-flex justify-content-center">
-                <form action="/draw" method="get">
-                    <button type="submit" class="btn btn-lg btn-success">Send tilbud</button>
+                    <button type="submit" class="ms-auto btn btn-lg btn-danger">Annuller</button>
                 </form>
             </div>
             <div class="col d-flex justify-content-end">
                 <form action="/draw" method="get">
-                    <button type="submit" class="me-auto btn btn-lg btn-warning">Ret tilbud</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="card m-3">
-        <div class="row gx-3" th:if="${#ctx.session.currentUser==null}">
-            <div class="col d-flex justify-content-start">
-                <form method="post" action="/order/accept">
-                <input type="hidden" name="orderId" th:value="${order.orderID}">
-                <button type="submit" formaction="/order/accept" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</button>
-                </form>
-            </div>
-            <div class="col d-flex justify-content-end">
-                <form method="post" action="/order/requestchange">
-                <input type="hidden" name="orderId" th:value="${order.orderID}">
-                <button type="submit" formaction="/order/requestchange" class="me-auto btn btn-lg btn-danger">Afvis Tilbud</button>
+                    <button type="submit" class="me-auto btn btn-lg btn-success">Gem ændringer</button>
                 </form>
             </div>
         </div>
