@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.services.CarportCalculator;
+import app.exceptions.CalculatorException;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +38,13 @@ public class Order
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
+        try
+        {
+            this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
