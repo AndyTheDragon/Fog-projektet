@@ -21,7 +21,7 @@
     </ul>
     <button class="assign" type="submit">Assign to self </button>
     <div class="view-information">
-        <a href="ordredetaljer.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
+        <a href="ordredetaljer.html" class="view" th:href="@{/order/{orderId}(orderId=${ordera.orderId})}">
             <button class="view-btn" type="button">View details</button>
         </a>
     </div>
@@ -38,7 +38,7 @@
         <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesPerson.name}"></span></li>
     </ul>
     <div class="view-information">
-        <a href="ordredetaljer.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
+        <a href="ordredetaljer.html" class="view" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
             <button class="view-btn" type="button">View details</button>
             </a>
         </div>
