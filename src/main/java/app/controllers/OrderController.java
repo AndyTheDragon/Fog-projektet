@@ -31,7 +31,8 @@ public class OrderController
         app.post("/order/requestchange", ctx -> requestChange(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
         app.get("/order/{orderId}/edit", ctx -> editOrder(ctx, dbConnection));
-
+        app.post("/order/recalculate",ctx -> recalculateOrder(ctx,dbConnection));
+        app.post("/order/update", ctx -> updateOrder(ctx,dbConnection));
 
     }
 
@@ -280,5 +281,15 @@ public class OrderController
         }
         ctx.attribute("order", order);
         ctx.render("ordreredigering.html");
+    }
+
+    private static void recalculateOrder(Context ctx, ConnectionPool dbConnection)
+    {
+        editOrder(ctx, dbConnection);
+    }
+
+    private static void updateOrder(Context ctx, ConnectionPool dbConnection)
+    {
+        editOrder(ctx, dbConnection);
     }
 }
