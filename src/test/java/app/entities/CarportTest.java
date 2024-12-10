@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.CalculatorException;
 import app.persistence.ConnectionPool;
 import app.services.OptimalWoodCalculator;
 import org.junit.jupiter.api.AfterEach;
@@ -485,7 +486,14 @@ class CarportTest
 
         int totalScrews = roofArea * screwsPerSqrMeter;
         int expectedScrewPacks = Math.ceilDiv(totalScrews,200);
-        int actualScrewPacks = carportD.calculator.calcRoofScrews().getFirst().getAmount();
+        int actualScrewPacks = 0;
+        try
+        {
+            actualScrewPacks = carportD.calculator.calcRoofScrews().getFirst().getAmount();
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         // Assert
         assertEquals(expectedScrewPacks, actualScrewPacks);
