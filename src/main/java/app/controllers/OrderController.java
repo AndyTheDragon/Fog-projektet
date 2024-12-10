@@ -79,12 +79,12 @@ public class OrderController {
         //US-5
     }
 
-    private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
+    private static void showOrderDetails(Context ctx, ConnectionPool dbConnection)
     {
-        int orderId = 0;
-        Order order = null;
-        ctx.sessionAttribute("user", "Morten");
-        if (ctx.sessionAttribute("user") == null)
+        int orderId = Integer.parseInt(ctx.pathParam("orderId"));
+        User currentUser = ctx.sessionAttribute("currentUser");
+
+        if (ctx.sessionAttribute("currentUser") == null)
         {
             ctx.attribute("message", "You need to login first");
         }
@@ -92,22 +92,20 @@ public class OrderController {
         {
             try
             {
-                orderId = Integer.parseInt(ctx.pathParam("orderId"));
-                order = OrderMapper.getOrder(orderId);
-            }
-            catch (NumberFormatException e)
+            Order order = OrderMapper.getOrderById(orderId, dbConnection);
+            if (order != null) {
+                ctx.attribute("order", order);
+            } else
             {
-                ctx.attribute("message", "Invalid order id");
+                ctx.attribute("message", "No order found with ID: " + orderId);
             }
-            catch (DatabaseException e)
+            } catch (DatabaseException e)
             {
                 ctx.attribute("message", "Database error. " + e.getMessage());
             }
-            ctx.attribute("order", order);
+
         }
         ctx.render("ordredetaljer.html");
-
-
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
