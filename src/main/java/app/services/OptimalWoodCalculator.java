@@ -1,5 +1,6 @@
-package app.entities;
+package app.services;
 
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
