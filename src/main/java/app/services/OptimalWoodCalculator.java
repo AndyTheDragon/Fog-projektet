@@ -157,8 +157,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         try
         {
             List<IMaterials> fasciaList = new ArrayList<>();
-            List<IMaterials> allFasciaList = null;
-            allFasciaList = MaterialMapper.getMaterialOfType("oversternbrædder", dbConnection);
+            List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("oversternbrædder", dbConnection);
             int totalLength = (carportLength + carportWidth) * 2 + 5;
 
             int[] optimalWood = calcOptimalWood(totalLength, allFasciaList);
@@ -166,7 +165,8 @@ public class OptimalWoodCalculator implements CarportCalculator
             for (int i = 0; i < optimalWood.length; i++)
                 if (optimalWood[i] > 0)
                 {
-                    IMaterials underFascia = (allFasciaList.get(i).setAmount(optimalWood[i]));
+                    int amount = optimalWood[i];
+                    IMaterials underFascia = allFasciaList.get(i).setAmount(amount);
                     fasciaList.add(underFascia);
                 }
             return fasciaList;
@@ -205,13 +205,13 @@ public class OptimalWoodCalculator implements CarportCalculator
         return null;
     }
 
-    public List<IMaterials> calcPosts(, ) throws CalculatorException
+    public List<IMaterials> calcPosts() throws CalculatorException
     {
         try
         {
             List<IMaterials> postList = new ArrayList<>();
             List<IMaterials> allPostList = MaterialMapper.getMaterialOfType("Stolper", (dbConnection));
-            int totalPosts = calcNumberOfPosts(carportLength, carportWidth, shedLength, shedWidth);
+            int totalPosts = calcNumberOfPosts();
 
             IMaterials post = allPostList.get(0).setAmount(totalPosts);
             postList.add(post);
@@ -224,7 +224,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         }
     }
 
-    public int calcNumberOfPosts(, )
+    public int calcNumberOfPosts()
     {
         int basePosts = 4;
         int extraPostsForShed = 2;
@@ -333,7 +333,7 @@ public class OptimalWoodCalculator implements CarportCalculator
             List<IMaterials> allCladdingList = MaterialMapper.getMaterialOfType("Beklædning", (dbConnection));
             IMaterials cladding;
 
-            int claddingBoardRounded = calcNumberOfCladdingBoards(shedLength, shedWidth);
+            int claddingBoardRounded = calcNumberOfCladdingBoards();
             cladding = allCladdingList.get(0).setAmount(claddingBoardRounded);
             claddingList.add(cladding);
 
@@ -361,8 +361,8 @@ public class OptimalWoodCalculator implements CarportCalculator
             List<IMaterials> allHorizontalSideBraceList = MaterialMapper.getMaterialOfType("løsholter til skur sider", (dbConnection));
             List<IMaterials> allHorizontalEndBraceList = MaterialMapper.getMaterialOfType("løsholter til skur gavle", (dbConnection));
 
-            int totalSideBraces = calcNumberOfHorizontalSideBraces(shedLength);
-            int totalEndBraces = calcNumberOfHorizontalEndBraces(shedWidth);
+            int totalSideBraces = calcNumberOfHorizontalSideBraces();
+            int totalEndBraces = calcNumberOfHorizontalEndBraces();
 
             IMaterials horizontalSideBraces = allHorizontalSideBraceList.get(0).setAmount(totalSideBraces);
             IMaterials horizontalEndBraces = allHorizontalEndBraceList.get(0).setAmount(totalEndBraces);
