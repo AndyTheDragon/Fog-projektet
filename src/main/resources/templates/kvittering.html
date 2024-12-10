@@ -30,6 +30,7 @@
 </nav>
 <form method="post" action="/kvittering">
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
+  <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
   <div class="container p-0">
     <div class="card px-4">
       <p class="h8 py-3">Payment Details</p>
@@ -66,7 +67,6 @@
         </div>
       </div>
     </div>
-    <p class="card-text">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
   </div>
 <footer class="footer text-faded p-3 pt-5">
   Oplysninger, CVR.
