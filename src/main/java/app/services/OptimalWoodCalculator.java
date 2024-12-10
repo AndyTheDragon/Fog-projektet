@@ -119,89 +119,64 @@ public class OptimalWoodCalculator implements CarportCalculator
         List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("understernbrædder", dbConnection );
         List <IMaterials> fasciaList = new ArrayList<>();
         int totalLength = (length + width)*2;
-        int highPrioBoard = 360;
-        int lowPrioBoard = 540;
-        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
 
-        int highPrioAmount = optimalWood[0];
-        int lowPrioAmount = optimalWood[1];
+        int[] optimalWood = calcOptimalWood(totalLength, allFasciaList);
 
-        IMaterials underFascia;
-        if (highPrioAmount > 0)
-        {
-            underFascia = new ConstructionWood(25, 200, 3600, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", highPrioAmount, 0);
-            fasciaList.add( underFascia);
-        }
-        if(lowPrioAmount > 0)
-        {
-            underFascia = new ConstructionWood(25, 200, 5400, "stk", "trykimp. Brædt", "understernbrædder til for, bag og siderne", lowPrioAmount, 0);
-            fasciaList.add(underFascia);
-        }
-
+        for (int i = 0; i < optimalWood.length; i++)
+            if (optimalWood[i] > 0)
+            {
+                IMaterials underFascia = (allFasciaList.get(i).setAmount(optimalWood[i]));
+                fasciaList.add( underFascia);
+            }
         return fasciaList;
     }
-    public List<IMaterials> calcOverFascia(int length, int width)
+
+    public List<IMaterials> calcOverFascia(int length, int width) throws DatabaseException
     {
         List <IMaterials> fasciaList = new ArrayList<>();
+        List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("oversternbrædder", dbConnection );
         int totalLength = (length + width)*2+5;
-        int highPrioBoard = 360;
-        int lowPrioBoard = 540;
-        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
 
-        int highPrioAmount = optimalWood[0];
-        int lowPrioAmount = optimalWood[1];
+        int[] optimalWood = calcOptimalWood(totalLength, allFasciaList);
 
-        IMaterials overFascia;
-        if (highPrioAmount > 0)
-        {
-            overFascia = new ConstructionWood(25, 125, 3600, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", highPrioAmount, 0);
-            fasciaList.add(overFascia);
-        }
-        if(lowPrioAmount > 0)
-        {
-            overFascia = new ConstructionWood(25, 125, 5400, "stk", "trykimp. Brædt", "oversternbrædder til for, bag og siderne", lowPrioAmount, 0);
-            fasciaList.add(overFascia);
-        }
-
+        for (int i = 0; i < optimalWood.length; i++)
+            if (optimalWood[i] > 0)
+            {
+                IMaterials underFascia = (allFasciaList.get(i).setAmount(optimalWood[i]));
+                fasciaList.add( underFascia);
+            }
         return fasciaList;
     }
 
-    public List<IMaterials> calcBeam(int length)
+    public List<IMaterials> calcBeam(int length) throws DatabaseException
     {
         List <IMaterials> beamList = new ArrayList<>();
+        List <IMaterials> allBeamList = MaterialMapper.getMaterialOfTypeAndLength("Remme i sider, sadles ned i stolper",(length/2), dbConnection );
         int totalLength = length*2;
-        int highPrioBoard = 480;
-        int lowPrioBoard = 600;
-        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
 
-        int highPrioAmount = optimalWood[0];
-        int lowPrioAmount = optimalWood[1];
+        int[] optimalWood = calcOptimalWood(totalLength, allBeamList);
 
-        IMaterials beam;
-        if (highPrioAmount > 0)
-        {
-            beam = new ConstructionWood(45, 195, 4800, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper (skur del, deles)", highPrioAmount, 0);
-            beamList.add(beam);
-        }
-        if(lowPrioAmount > 0)
-        {
-            beam = new ConstructionWood(45, 195, 6000, "stk", "spærtræ ubh.", "Remme i sider, sadles ned i stolper", lowPrioAmount, 0);
-            beamList.add(beam);
-        }
+        for(int i = 0; i < optimalWood.length; i++)
+            if (optimalWood[i] > 0)
+            {
+                IMaterials beam = (allBeamList.get(i).setAmount(optimalWood[i]));
+                beamList.add(beam);
+            }
         return beamList;
     }
 
-    public List<IMaterials> calcRafters()
+    public List<IMaterials> calcRafters() throws DatabaseException
     {
         return null;
     }
 
-    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth)
+    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) throws DatabaseException
     {
         List <IMaterials> postList = new ArrayList<>();
+        List<IMaterials> allPostList = MaterialMapper.getMaterialOfType("Stolper",(dbConnection));
         int totalPosts = calcNumberOfPosts(length, width, shedLength, shedWidth);
 
-        IMaterials post = new ConstructionWood(97, 97, 3000, "stk", "trykimp. Stolpe", "Stolper nedgraves 90 cm. i jord", totalPosts, 0);
+        IMaterials post = allPostList.get(0).setAmount(totalPosts);
         postList.add(post);
 
         return postList;
@@ -234,23 +209,19 @@ public class OptimalWoodCalculator implements CarportCalculator
         return length - 130 - shedLength > 350;
     }
 
-    public List<IMaterials> calcJoists(int length)
+    public List<IMaterials> calcJoists(int length) throws DatabaseException
     {
         List <IMaterials> joistList = new ArrayList<>();
-        IMaterials joistBoard;
-        // *********************** //
-        // TODO: SKal refactores til at bruge calcNumberOfJoists
-        // ********************** //
-        int joistSpacing = 55;
-        int amountOfJoists = (length/joistSpacing) + 1;
-        joistBoard = new ConstructionWood(45, 195, 6000, "stk", "Spærtræ ubh.", "Spær, monteres på rem", amountOfJoists, 0);
+        List<IMaterials> allJoistList = MaterialMapper.getMaterialOfType("Spær, monteres på rem", dbConnection);
+        int amountOfJoists = calcNumberOfJoists(length);
+
+        IMaterials joistBoard = allJoistList.get(0).setAmount(amountOfJoists);
         joistList.add(joistBoard);
 
         return joistList;
     }
     public int calcNumberOfJoists(int length)
     {
-        int joistThickness = 45; //obs mm
         int minimumSpacing = 45;
         int maximumSpacing = 60;
         int maxGaps = Math.floorDiv(length, minimumSpacing);
@@ -270,43 +241,36 @@ public class OptimalWoodCalculator implements CarportCalculator
         return gaps;
     }
 
-    public List<IMaterials> calcBargeBoards(int length, int width)
+    public List<IMaterials> calcBargeBoards(int length, int width) throws DatabaseException
     {
         List <IMaterials> bargeBoardList = new ArrayList<>();
+        List<IMaterials> allBargeBoardList = MaterialMapper.getMaterialOfType("Vandbrædt",(dbConnection));
         int totalLength = (length + width)*2+20;
-        int highPrioBoard = 360;
-        int lowPrioBoard = 540;
-        int[] optimalWood = calcOptimalWood(totalLength, highPrioBoard, lowPrioBoard);
 
-        int highPrioAmount = optimalWood[0];
-        int lowPrioAmount = optimalWood[1];
+        int[] optimalWood = calcOptimalWood(totalLength, allBargeBoardList);
 
-        IMaterials bargeBoard;
-        if (highPrioAmount > 0)
-        {
-            bargeBoard = new ConstructionWood(19, 100, 3600, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", highPrioAmount, 0);
-            bargeBoardList.add(bargeBoard);
-        }
-        if(lowPrioAmount > 0)
-        {
-            bargeBoard = new ConstructionWood(19, 100, 5400, "stk", "trykimp. Brædt", "Vandbrædt på stern i siderne", lowPrioAmount, 0);
-            bargeBoardList.add(bargeBoard);
-        }
+        for(int i = 0; i < optimalWood.length; i++)
+            if (optimalWood[i] > 0)
+            {
+                IMaterials bargeBoard = (allBargeBoardList.get(i).setAmount(optimalWood[i]));
+                bargeBoardList.add(bargeBoard);
+            }
         return bargeBoardList;
     }
 
-    public List<IMaterials> calcBattern()
+    public List<IMaterials> calcBattern() throws DatabaseException
     {
         return null;
     }
 
-    public List<IMaterials> calcCladding(int shedLength, int shedWidth)
+    public List<IMaterials> calcCladding(int shedLength, int shedWidth) throws DatabaseException
     {
         List<IMaterials> claddingList = new ArrayList<>();
+        List<IMaterials> allCladdingList = MaterialMapper.getMaterialOfType("Beklædning",(dbConnection));
         IMaterials cladding;
 
         int claddingBoardRounded = calcNumberOfCladdingBoards(shedLength, shedWidth);
-        cladding = new ConstructionWood(19, 100, 2100, "stk", "trykimp. Brædt", "Til beklædning af skur", claddingBoardRounded, 0);
+        cladding = allCladdingList.get(0).setAmount(claddingBoardRounded);
         claddingList.add(cladding);
 
         return claddingList;
@@ -320,20 +284,37 @@ public class OptimalWoodCalculator implements CarportCalculator
         return (int) Math.ceil(claddingBoardAmount);
     }
 
-    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth)
+    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth) throws DatabaseException
     {
         List<IMaterials> horizontalBraceList = new ArrayList<>();
-        IMaterials horizontalBrace;
+        List<IMaterials> allHorizontalSideBraceList = MaterialMapper.getMaterialOfType("løsholter til skur sider",(dbConnection));
+        List<IMaterials> allHorizontalEndBraceList = MaterialMapper.getMaterialOfType("løsholter til skur gavle",(dbConnection));
 
-        int totalBraces = calcNumberOfHorizontalBraces(shedLength, shedWidth);
+        int totalSideBraces = calcNumberOfHorizontalSideBraces(shedLength);
+        int totalEndBraces = calcNumberOfHorizontalEndBraces(shedWidth);
 
-        horizontalBrace = new ConstructionWood(45, 95,3000, "stk", "reglar ubh.", "løsholter til skur.", totalBraces, 0);
-        horizontalBraceList.add(horizontalBrace);
+        IMaterials horizontalSideBraces = allHorizontalSideBraceList.get(0).setAmount(totalSideBraces);
+        IMaterials horizontalEndBraces = allHorizontalEndBraceList.get(0).setAmount(totalEndBraces);
+        horizontalBraceList.add(horizontalEndBraces);
+        horizontalBraceList.add(horizontalSideBraces);
 
         return horizontalBraceList;
     }
 
-    public int calcNumberOfHorizontalBraces(int shedLength, int shedWidth)
+    public int calcNumberOfHorizontalSideBraces(int shedLength)
+    {
+        int totalBraces = 0;
+        int bracesPerSection = 2;
+        int extraBracesForWideness = 4;
+
+        totalBraces += 4*bracesPerSection;
+        if (shedLength > 300)
+        {
+            totalBraces += extraBracesForWideness;
+        }
+        return totalBraces;
+    }
+    public int calcNumberOfHorizontalEndBraces(int shedWidth)
     {
         int totalBraces = 0;
         int bracesPerSection = 2;
@@ -344,72 +325,62 @@ public class OptimalWoodCalculator implements CarportCalculator
         {
             totalBraces += extraBracesForWideness;
         }
-        if (shedLength > 300)
-        {
-            totalBraces += extraBracesForWideness;
-        }
         return totalBraces;
     }
 
-    public List<IMaterials> calcRoof(int length, int width)
+    public List<IMaterials> calcRoof(int length, int width) throws DatabaseException
     {
         List<IMaterials>roofList = new ArrayList<>();
+        List <IMaterials> allRoofList = MaterialMapper.getMaterialOfTypeAndLength("Tagplader",(length/2),(dbConnection));
 
         int carportWidth = width;
         int carportLength = length;
         int plateWidth = 109;
-        int shortPlateLength = 360;
-        int longPlateLength = 600;
         int overlap = 20;
 
         int platesForWidth = (int) Math.ceil((double) carportWidth / plateWidth);
         int totalLength = carportLength + overlap;
-        int [] optimalRoof = calcOptimalWood(totalLength, shortPlateLength, longPlateLength);
-        int shortPlatesForLength = optimalRoof[0];
-        int longPlatesForLength = optimalRoof[1];
-
-        IMaterials roofCovering;
-        if(shortPlatesForLength > 0)
+        int [] optimalRoof = calcOptimalWood(totalLength, allRoofList);
+        for (int i = 0; i < optimalRoof.length; i++)
         {
-            roofCovering = new RoofCovering(3600, 109, shortPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
-            roofList.add(roofCovering);
+            if (optimalRoof[i] > 0)
+            {
+                IMaterials roof = (allRoofList.get(i).setAmount(optimalRoof[i]*platesForWidth));
+                roofList.add(roof);
+            }
         }
-        if(longPlatesForLength > 0)
-        {
-            roofCovering = new RoofCovering(6000, 109, longPlatesForLength*platesForWidth, "stk", "Plastmo Ecolite blåtonet", "Tagplader monteres på spær", 0);
-            roofList.add(roofCovering);
-        }
-
         return roofList;
     }
 
-    public List<IMaterials> calcRoofScrews(int length, int width)
+    public List<IMaterials> calcRoofScrews(int length, int width) throws DatabaseException
     {
         List <IMaterials> roofScrewList = new ArrayList<>();
-        IMaterials roofScrews;
+        List<IMaterials> allRoofScrewList = MaterialMapper.getMaterialOfType("skruer til tagplader",(dbConnection));
+
         int screwsPerSqrMeter = 12;
         int roofArea = length * width;
 
         int totalScrews = (roofArea * screwsPerSqrMeter)/10000;
         int screwPacks = Math.ceilDiv( totalScrews,200);
-        roofScrews = new BoltsScrewsBrackets(4,50,"plastmo bundskruer, 200 stk", screwPacks,"pakkke","Til montering af tagplader", 0);
+        IMaterials roofScrews = (allRoofScrewList.get(0).setAmount(screwPacks));
         roofScrewList.add(roofScrews);
 
         return roofScrewList;
     }
 
-    public List<IMaterials> calcJoistBrackets(int length)
+    public List<IMaterials> calcJoistBrackets(int length) throws DatabaseException
     {
         List<IMaterials> joistBracketList = new ArrayList<>();
-        IMaterials rightJoistBracket;
-        IMaterials leftJoistBracket;
+        List<IMaterials> allRightJoistBracketList = MaterialMapper.getMaterialOfType("til montering af spær højre",(dbConnection));
+        List<IMaterials> allLeftJoistBracketList = MaterialMapper.getMaterialOfType("til montering af spær venstre",(dbConnection));
+
 
         int joistAmount = calcNumberOfJoists(length);
         int rightBracketAmount = joistAmount;
         int leftBracketAmount = joistAmount;
 
-        rightJoistBracket = new BoltsScrewsBrackets(0,0,"universalbeslag højre", rightBracketAmount,"stk","Til montering af spær på rem", 0);
-        leftJoistBracket = new BoltsScrewsBrackets(0,0,"universalbeslag left", leftBracketAmount,"stk","Til montering af spær på rem", 0);
+        IMaterials rightJoistBracket = (allRightJoistBracketList.get(0).setAmount(rightBracketAmount));
+        IMaterials leftJoistBracket = (allLeftJoistBracketList.get(0).setAmount(leftBracketAmount));
 
         joistBracketList.add(rightJoistBracket);
         joistBracketList.add(leftJoistBracket);
@@ -417,60 +388,63 @@ public class OptimalWoodCalculator implements CarportCalculator
         return joistBracketList;
     }
 
-    public List<IMaterials> calcFasciaBargeScrews(int length, int width)
+    public List<IMaterials> calcFasciaBargeScrews(int length, int width) throws DatabaseException
     {
         List<IMaterials> fasciaBargeScrewList = new ArrayList<>();
-        IMaterials fasciaBargeScrews;
+        List<IMaterials> allFasciaBargeScrewList = MaterialMapper.getMaterialOfType("til montering af stern&vandbrædt",(dbConnection));
+
         int totalLength = ((length*6)+(width*4));
         int totalScrews = totalLength/70;
         int screwPacks = Math.ceilDiv( totalScrews,200);
 
-        fasciaBargeScrews = new BoltsScrewsBrackets((int) 4.5,50,"skruer 200stk", screwPacks,"pakke","Til montering af stern & vandbrædt", 0);
+        IMaterials fasciaBargeScrews = (allFasciaBargeScrewList.get(0).setAmount(screwPacks));
         fasciaBargeScrewList.add(fasciaBargeScrews);
         return fasciaBargeScrewList;
     }
 
-    public List<IMaterials> calcJoistBracketScrews(int length)
+    public List<IMaterials> calcJoistBracketScrews(int length) throws DatabaseException
     {
         List<IMaterials> bracketScrewList = new ArrayList<>();
-        IMaterials bracketScrews;
+        List<IMaterials> allBracketScrewList = MaterialMapper.getMaterialOfType("til montering af universalbeslag + hulbånd",(dbConnection));
 
         int joistAmount = calcNumberOfJoists(length);
         int screwsPerJoist =  25;
         int totalScrews = joistAmount * screwsPerJoist;
         int screwPacks = Math.ceilDiv( totalScrews,200);
 
-        bracketScrews = new BoltsScrewsBrackets(4,50,"beslagskruer, 250stk", screwPacks,"pakke","Til montering af beslag på spær", 0);
+        IMaterials bracketScrews = (allBracketScrewList.get(0).setAmount(screwPacks));
         bracketScrewList.add(bracketScrews);
 
         return bracketScrewList;
     }
 
-    public List<IMaterials> calcMetalStrap(int length, int width)
+    public List<IMaterials> calcMetalStrap(int length, int width) throws DatabaseException
     {
         List<IMaterials> metalStrapList = new ArrayList<>();
+        List<IMaterials> allMetalStrapList = MaterialMapper.getMaterialOfType("til vindkryds",(dbConnection));
         IMaterials perfMetalStrap;
         double crossLength = Math.sqrt(length^2+width^2);
         if (crossLength < 500)
         {
             int totalStraps = 1;
-            perfMetalStrap = new BoltsScrewsBrackets(10,120,"perforeret stålbånd",totalStraps,"rulle","Til vindkryds på spær",0);
+            perfMetalStrap = (allMetalStrapList.get(0).setAmount(totalStraps));
             metalStrapList.add(perfMetalStrap);
         }
         if(crossLength > 500 )
         {
             int totalStraps = 2;
-            perfMetalStrap = new BoltsScrewsBrackets(10,120,"perforeret stålbånd",totalStraps,"rulle","Til vindkryds på spær",0);
+            perfMetalStrap = (allMetalStrapList.get(0).setAmount(totalStraps));
             metalStrapList.add(perfMetalStrap);
         }
         return metalStrapList;
     }
 
-    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth)
+    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth) throws DatabaseException
     {
         List<IMaterials> beamBoltList = new ArrayList<>();
-        IMaterials beamBolt;
-        IMaterials boltDisc;
+        List<IMaterials> allBeamBoltList = MaterialMapper.getMaterialOfType("til montering af rem",(dbConnection));
+        List<IMaterials> allBoltDiscList = MaterialMapper.getMaterialOfType("til montering af rem",(dbConnection));
+
         int totalBolts = 0;
         int boltPerPost = 2;
         int extraBoltPerSeam = 4;
@@ -479,19 +453,19 @@ public class OptimalWoodCalculator implements CarportCalculator
         {
             totalBolts += extraBoltPerSeam;
         }
-        boltDisc = new BoltsScrewsBrackets(10, 120, "firkantskiver", totalBolts, "stk", "til montering af rem på stolper", 0);
-        beamBolt = new BoltsScrewsBrackets(10, 120, "bræddebolt", totalBolts, "stk", "til montering af rem på stolper", 0);
+        IMaterials boltDisc = (allBoltDiscList.get(0).setAmount(totalBolts));
+        IMaterials beamBolt = (allBeamBoltList.get(0).setAmount(totalBolts));
         beamBoltList.add(boltDisc);
         beamBoltList.add(beamBolt);
 
         return beamBoltList;
     }
 
-    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth)
+    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth) throws DatabaseException
     {
         List<IMaterials> claddingScrewList = new ArrayList<>();
-        IMaterials innerCladdingScrews;
-        IMaterials outerCladdingScrews;
+        List<IMaterials> allOuterCladdingScrewList = MaterialMapper.getMaterialOfType("yderste beklædning",(dbConnection));
+        List<IMaterials> allInnerCladdingScrewList = MaterialMapper.getMaterialOfType("inderste beklædning",(dbConnection));
 
         int screwsPerCladding = 6;
         int totalInnerScrews = screwsPerCladding * (calcNumberOfCladdingBoards(shedLength, shedWidth) / 2);
@@ -500,8 +474,8 @@ public class OptimalWoodCalculator implements CarportCalculator
         int innerScrewsPacks = Math.ceilDiv( totalInnerScrews, 300);
         int outerScrewsPacks = Math.ceilDiv( totalOuterScrews, 400);
 
-        innerCladdingScrews = new BoltsScrewsBrackets((int)4.5,50,"skruer 300stk", innerScrewsPacks,"pakke","Til montering af inderste beklædning", 0);
-        outerCladdingScrews = new BoltsScrewsBrackets((int)4.5,70,"skruer 400stk", outerScrewsPacks,"pakke","Til montering af  yderste beklædning", 0);
+        IMaterials innerCladdingScrews = (allOuterCladdingScrewList.get(0).setAmount(innerScrewsPacks));
+        IMaterials outerCladdingScrews = (allInnerCladdingScrewList.get(0).setAmount(outerScrewsPacks));
 
         claddingScrewList.add(innerCladdingScrews);
         claddingScrewList.add(outerCladdingScrews);
@@ -509,14 +483,14 @@ public class OptimalWoodCalculator implements CarportCalculator
         return claddingScrewList;
     }
 
-    public List<IMaterials> doorHandleBrackets()
+    public List<IMaterials> doorHandleBrackets() throws DatabaseException
     {
         List<IMaterials> doorHandleBracketList = new ArrayList<>();
-        IMaterials doorHandle;
-        IMaterials doorBracket;
+        List<IMaterials> allDoorHandleList = MaterialMapper.getMaterialOfType("til lås",(dbConnection));
+        List<IMaterials> allDoorBracketList = MaterialMapper.getMaterialOfType("til skurdør",(dbConnection));
 
-        doorHandle = new BoltsScrewsBrackets(50,75,"stalddørsgreb", 1,"sæt","Til lås på dør i skur", 0);
-        doorBracket = new BoltsScrewsBrackets(390,0,"t hængsel", 2,"stk","Til skurdør", 0);
+        IMaterials doorHandle = (allDoorHandleList.get(0).setAmount(1));
+        IMaterials doorBracket = (allDoorBracketList.get(0).setAmount(2));
 
         doorHandleBracketList.add(doorHandle);
         doorHandleBracketList.add(doorBracket);
@@ -524,13 +498,14 @@ public class OptimalWoodCalculator implements CarportCalculator
         return doorHandleBracketList;
     }
 
-    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth)
+    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth) throws DatabaseException
     {
         List<IMaterials> horizontalBraceBracketList = new ArrayList<>();
-        IMaterials horizontalBraceBracket;
-        int totalBraceBrackets = 2*calcNumberOfHorizontalBraces(shedLength, shedWidth);
+        List<IMaterials> allHorizontalBraceBracketList = MaterialMapper.getMaterialOfType("til montering af løsholter",(dbConnection));
 
-        horizontalBraceBracket = new BoltsScrewsBrackets(35,0,"vinkelbeslag 35", totalBraceBrackets,"pakke","Til montering af løsholter", 0);
+        int totalBraceBrackets = 2*(calcNumberOfHorizontalSideBraces(shedLength)+calcNumberOfHorizontalEndBraces(shedWidth));
+
+        IMaterials horizontalBraceBracket = (allHorizontalBraceBracketList.get(0).setAmount(totalBraceBrackets));
         horizontalBraceBracketList.add(horizontalBraceBracket);
 
         return horizontalBraceBracketList;
