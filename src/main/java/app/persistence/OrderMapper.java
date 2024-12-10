@@ -34,8 +34,8 @@ public class OrderMapper
                 "c.city AS customer_city, " +
                 "c.phone_number AS customer_phone, " +
                 "c.email AS customer_email, " +
-                "a.user_name AS user_name, " +
-                "a.email AS user_email " +
+                "a.user_name AS sales_name, " +
+                "a.email AS sales_email " +
                 "FROM public.carport_order " +
                 "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
                 "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
@@ -63,7 +63,7 @@ public class OrderMapper
                 }
                 else
                 {
-                    salesPerson = new User(rs.getString("user_name"), rs.getString("user_email"));
+                    salesPerson = new User(rs.getString("sales_name"), rs.getString("sales_email"));
                 }
                 int carportWidth = rs.getInt("carport_width");
                 int carportLength = rs.getInt("carport_length");
