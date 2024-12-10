@@ -4,7 +4,10 @@ import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.services.OptimalWoodCalculator;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,71 +18,40 @@ import java.util.Map;
 public class OrderMapper
 {
 
- /*   public static Order createOrder(Order order, ConnectionPool dbConnection) throws DatabaseException
-    {
-        String sql = "INSERT INTO carport_order (customer_id, sales_id, carport_width, carport_length, carport_height, carport_shed, shed_length, carport_roof, is_paid, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Order newOrder;
-
-        try (Connection connection = dbConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
-        {
-            ps.setInt(1, order.getCustomerID().getCustomerID());
-            ps.setInt(2, order.getSalesPerson().getUserID());
-            ps.setInt(3, order.getCarportWidth());
-            ps.setInt(4, order.getCarportLength());
-            ps.setInt(5, order.getCarportHeight());
-            ps.setBoolean(6, order.getCarport().hasShed());
-            ps.setInt(7, order.getShedWidth());
-            ps.setInt(8, order.getShedLength());
-            ps.setString(9, order.getCarportRoof().toString());
-            ps.setBoolean(10, order.isPaid());
-            ps.setTimestamp(11, Timestamp.valueOf(order.getCreatedAt()));
-            ps.setTimestamp(12, Timestamp.valueOf(order.getUpdatedAt()));
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 1) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                int newOrderId = rs.getInt(1);
-                newOrder = new Order(newOrderId, order.getCustomerID(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
-            } else {
-                throw new DatabaseException("Error creating order");
-            }
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new DatabaseException("Error creating order "+ e.getMessage());
-        }
-        return newOrder;
-
-    }*/
-
 
     public static Map<String, ArrayList<Order>> getOrders(ConnectionPool dbConnection) throws DatabaseException
     {
         ArrayList<Order> allorders = new ArrayList<>();
         ArrayList<Order> unassignedOrders = new ArrayList<>();
 
-        String sql = "SELECT order_id, sales_id, carport_width, carport_length, carport_height, shed_width, shed_length, carport_roof, is_paid, created_at, updated_at," +
-                " c.customer_name, c.address, c.zipcode, c.city, c.phone_number, c.email," +
-                " a.user_name, a.email" +
-                " from carport_order" +
-                " INNER JOIN customer AS c on carport_order.customer_id = c.customer_id" +
-                " INNER JOIN account AS a ON carport_order.sales_id = a.user_id";
+        String sql = "SELECT carport_order.*, " +
+                "c.customer_name AS customer_name, " +
+                "c.address AS customer_address, " +
+                "c.zipcode AS customer_zipcode, " +
+                "c.city AS customer_city, " +
+                "c.phone_number AS customer_phone, " +
+                "c.email AS customer_email, " +
+                "a.user_name AS sales_name, " +
+                "a.email AS sales_email " +
+                "FROM public.carport_order " +
+                "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
+                "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
 
         try (Connection connection = dbConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
-                Customer customer = new Customer(rs.getString("c.customer_name"),
-                        rs.getString("c.address"),
-                        rs.getString("c.zipcode"),
-                        rs.getString("c.city"),
-                        rs.getString("c.phone_number"),
-                        rs.getString("c.email"));
+                Customer customer = new Customer(rs.getString("customer_name"),
+                        rs.getString("customer_address"),
+                        rs.getString("customer_zipcode"),
+                        rs.getString("customer_city"),
+                        rs.getString("customer_phone"),
+                        rs.getString("customer_email"));
                 User salesPerson;
                 int salesId = rs.getInt("sales_id");
                 if (salesId==0)
@@ -88,14 +60,14 @@ public class OrderMapper
                 }
                 else
                 {
-                    salesPerson = new User(rs.getString("a.user_name"), rs.getString("a.email"));
+                    salesPerson = new User(rs.getString("sales_name"), rs.getString("sales_email"));
                 }
                 int carportWidth = rs.getInt("carport_width");
                 int carportLength = rs.getInt("carport_length");
                 int carportHeight = rs.getInt("carport_height");
                 int shedWidth = rs.getInt("shed_width");
                 int shedLength = rs.getInt("shed_length");
-                RoofType roofType = (RoofType) rs.getObject("carport_roof");
+                RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
                 boolean isPaid = rs.getBoolean("is_paid");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
@@ -112,13 +84,16 @@ public class OrderMapper
                         createdAt,
                         updatedAt, new OptimalWoodCalculator(dbConnection));
 
-                if (salesId == 0) {
+                if (salesId == 0)
+                {
                     unassignedOrders.add(order);
-                } else {
+                } else
+                {
                     allorders.add(order);
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
                 throw new DatabaseException("Message "+ e.getMessage());
         }
 
@@ -128,6 +103,7 @@ public class OrderMapper
 
         return result;
     }
+
     public static Order getOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
         return new Order(1,
@@ -143,11 +119,11 @@ public class OrderMapper
                 LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
     }
 
-    public static void asssignOrder(int orderId, int salesId, ConnectionPool connectionPool) throws DatabaseException
+    public static void asssignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
     {
         String sql = "UPDATE carport_order SET sales_id = ? WHERE order_id = ?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, salesId);
@@ -209,5 +185,80 @@ public class OrderMapper
             throw new DatabaseException("Message " + e.getMessage());
         }
         return newOrder;
+    }
+
+    public static Order getOrderById(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    {
+        Order order = null;
+
+        String sql = "SELECT carport_order.*, " +
+                "c.customer_name AS customer_name, " +
+                "c.address AS customer_address, " +
+                "c.zipcode AS customer_zipcode, " +
+                "c.city AS customer_city, " +
+                "c.phone_number AS customer_phone, " +
+                "c.email AS customer_email, " +
+                "a.user_name AS user_name, " +
+                "a.email AS user_email " +
+                "FROM public.carport_order " +
+                "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
+                "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderId);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next())
+            {
+                orderId = rs.getInt("order_id");
+                int customerId = rs.getInt("customer_id");
+                Customer customer = new Customer(rs.getString("customer_name"),
+                        rs.getString("customer_address"),
+                        rs.getString("customer_zipcode"),
+                        rs.getString("customer_city"),
+                        rs.getString("customer_phone"),
+                        rs.getString("customer_email"));
+                User salesPerson;
+                Integer salesId = rs.getObject("sales_id") == null ? null : rs.getInt("sales_id");
+                if (salesId == null)
+                {
+                    salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
+                }
+                else
+                {
+                    salesPerson = new User(rs.getString("user_name"), rs.getString("user_email"));
+                }
+                int carportWidth = rs.getInt("carport_width");
+                int carportLength = rs.getInt("carport_length");
+                int carportHeight = rs.getInt("carport_height");
+                int shedWidth = rs.getInt("shed_width");
+                int shedLength = rs.getInt("shed_length");
+                RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
+                boolean isPaid = rs.getBoolean("is_paid");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+
+                order = new Order(orderId,
+                        customer,
+                        salesPerson,
+                        carportWidth,
+                        carportLength,
+                        shedWidth,
+                        shedLength,
+                        roofType,
+                        isPaid,
+                        createdAt,
+                        updatedAt, new OptimalWoodCalculator(dbConnection));
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message "+ e.getMessage());
+        }
+
+        return order;
     }
 }
