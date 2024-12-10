@@ -56,7 +56,7 @@ public class OrderMapper
                         rs.getString("customer_phone"),
                         rs.getString("customer_email"));
                 User salesPerson;
-                Integer salesId = rs.getObject("sales_id") != null ? null : rs.getInt("sales_id");
+                Integer salesId = rs.getObject("sales_id") == null ? null : rs.getInt("sales_id");
                 if (salesId == null)
                 {
                     salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
@@ -153,7 +153,7 @@ public class OrderMapper
                         rs.getString("customer_phone"),
                         rs.getString("customer_email"));
                 User salesPerson;
-                Integer salesId = rs.getObject("sales_id") != null ? null : rs.getInt("sales_id");
+                Integer salesId = rs.getObject("sales_id") == null ? null : rs.getInt("sales_id");
                 if (salesId == null)
                 {
                     salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
