@@ -8,37 +8,49 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<h3>Assigned orders</h3>
-<div class="assigned card">
-    <div class="card-body" th:each="ordera : ${assigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
-        <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${ordera.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${ordera.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${ordera.salesId}"></span></li>
-    </ul>
-    <button class="assign" type="submit">Assign to self </button>
-    <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
-            <button class="view-btn" type="button">View details</button>
-        </a>
+<header th:replace="~{fragments :: navbar}"></header>
+
+<h3>Tildelte ordrer</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-4" th:each="ordera : ${assigned}">
+            <div class="card" style="width: 18rem; height: 15rem;">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Ordrer ID:</strong> <span th:text="${ordera.orderId}"></span></li>
+                        <li class="list-group-item"><strong>Kunde navn:</strong> <span th:text="${ordera.customer.name}"></span></li>
+                        <li class="list-group-item"><strong>Sælger navn:</strong> <span th:text="${ordera.salesPerson.name}"></span></li>
+                    </ul>
+                    <div class="view-information mt-2">
+                        <a href="ordredetaljer.html" class="view" th:href="@{/order/{orderId}(orderId=${ordera.orderId})}">
+                            <button class="view-btn btn btn-secondary" type="button">Se informationer</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
 
-<h3>Unassigned orders</h3>
-    <div class="unassigned card">
-        <div class="card-body" th:each="orderu : ${unassigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
-        <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orderu.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orderu.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesId}"></span></li>
-    </ul>
-    <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
-            <button class="view-btn" type="button">View details</button>
-            </a>
+<h3>Ikke tildelte ordrer</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-4" th:each="orderu : ${unassigned}">
+            <div class="card" style="width: 18rem; height: 15rem;">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Ordre ID:</strong> <span th:text="${orderu.orderId}"></span></li>
+                        <li class="list-group-item"><strong>Kunde navn:</strong> <span th:text="${orderu.customer.name}"></span></li>
+                        <li class="list-group-item"><strong>Sælger navn:</strong> <span th:text="${orderu.salesPerson.name}"></span></li>
+                    </ul>
+                    <div class="view-information mt-2">
+                        <button class="assign btn btn-primary" type="submit">Tildel ordre til selv</button>
+                        <a href="ordredetaljer.html" class="view" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
+                            <button class="view-btn btn btn-secondary" type="button">Se informationer</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
