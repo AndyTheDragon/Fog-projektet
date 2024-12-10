@@ -116,4 +116,28 @@ public class OrderMapper
     public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
     {
     }
+
+    public static ArrayList<Order> getOderById(int orderId, ConnectionPool dbConnectionpool) throws DatabaseException
+    {
+        ArrayList<Order> orderById = new ArrayList<>();
+
+        String sql = "SELECT carport_order.*, " +
+                "c.customer_name AS customer_name, " +
+                "c.address AS customer_address, " +
+                "c.zipcode AS customer_zipcode, " +
+                "c.city AS customer_city, " +
+                "c.phone_number AS customer_phone, " +
+                "c.email AS customer_email, " +
+                "a.user_name AS user_name, " +
+                "a.email AS user_email " +
+                "FROM public.carport_order " +
+                "LEFT JOIN public.customer c ON carport_order.customer_id = c.customer_id " +
+                "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
+
+        try (Connection connection = dbConnectionpool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+        }
 }
