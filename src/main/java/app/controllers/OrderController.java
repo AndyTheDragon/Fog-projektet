@@ -123,8 +123,8 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        //ctx.sessionAttribute("user", "Morten");
-        if (ctx.sessionAttribute("user") == null)
+        //ctx.sessionAttribute("currentUser", "Morten");
+        if (ctx.sessionAttribute("currentUser") == null)
         {
             ctx.attribute("h1message", "Tilbuds oversigt");
             ctx.attribute("information", "Dimensioner");
@@ -163,7 +163,7 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        if (ctx.sessionAttribute("user") != null)
+        if (ctx.sessionAttribute("currentUser") != null)
         {
             ctx.attribute("message", "Du har ikke adgang til denne side");
             ctx.render("kvittering.html");
@@ -193,7 +193,7 @@ public class OrderController
     {
         int orderId = 0;
         String message = null;
-        if (ctx.sessionAttribute("user") != null)
+        if (ctx.sessionAttribute("currentUser") != null)
         {
             ctx.attribute("message", "Du har ikke adgang til denne side");
             ctx.render("kvittering.html");
