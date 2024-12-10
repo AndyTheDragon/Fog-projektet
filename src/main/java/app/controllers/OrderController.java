@@ -24,6 +24,7 @@ public class OrderController
         app.post("/order/accept", ctx -> acceptOrder(ctx,dbConnection));
         app.post("/order/requestchange", ctx -> requestChange(ctx,dbConnection));
         app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
+        app.get("/order/{orderId}/edit", ctx -> editOrder(ctx, dbConnection));
         //app.get("/login", ctx -> showLogin(ctx));
         //app.post("/login", ctx -> doLogin(ctx,dbConnection));
         app.get("/bestilling", ctx -> showOrderPage(ctx));
@@ -117,6 +118,35 @@ public class OrderController
         }
         showOrders(ctx, dbConnection);
 
+    }
+
+    private static void editOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
+        int orderId = 0;
+        Order order = null;
+        if (ctx.sessionAttribute("currentUser") != null)
+        {
+            try
+            {
+                orderId = Integer.parseInt(ctx.pathParam("orderId"));
+                order = OrderMapper.getOrder(orderId,dbConnection);
+            }
+            catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid order id");
+            }
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+        }
+        else
+        {
+            ctx.attribute("message", "Du har ikke adgang til denne side");
+            ctx.render("kvittering.html");
+        }
+        ctx.attribute("order", order);
+        ctx.render("ordreredigering.html");
     }
 
     private static void showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
