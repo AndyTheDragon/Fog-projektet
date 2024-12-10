@@ -117,9 +117,9 @@ public class OrderMapper
     {
     }
 
-    public static ArrayList<Order> getOderById(int orderId, ConnectionPool dbConnectionpool) throws DatabaseException
+    public static Order getOrderById(int orderId, ConnectionPool dbConnectionpool) throws DatabaseException
     {
-        ArrayList<Order> orderById = new ArrayList<>();
+        Order order = null;
 
         String sql = "SELECT carport_order.*, " +
                 "c.customer_name AS customer_name, " +
@@ -172,16 +172,14 @@ public class OrderMapper
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-                Order order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
+                order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
                         shedLength, roofType, isPaid, createdAt, updatedAt);
-                orderById.add(order);
-
             }
         } catch (SQLException e)
         {
             throw new DatabaseException("Message "+ e.getMessage());
         }
 
-        return orderById;
+        return order;
     }
 }
