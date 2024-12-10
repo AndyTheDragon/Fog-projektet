@@ -7,7 +7,6 @@ import app.persistence.OrderMapper;
 import app.exceptions.DatabaseException;
 import app.services.OptimalWoodCalculator;
 import app.services.SendGrid;
-import app.services.OptimalWoodCalculator;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -253,12 +252,26 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
-        WorkDrawing drawing = new WorkDrawing(carport,780);
-        ctx.attribute("drawing", drawing.toString());
-        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
-        WorkDrawing noShed = new WorkDrawing(carport2, 480);
-        ctx.attribute("noshed", noShed.toString());
+        Carport carport = null;
+        try
+        {
+            carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+            WorkDrawing drawing = new WorkDrawing(carport,780);
+            ctx.attribute("drawing", drawing.toString());
+        } catch (app.exceptions.CalculatorException e)
+        {
+            ctx.attribute("drawing", "<div class=\"alert alert-warning\">e.getMessage()</div>");
+        }
+        Carport carport2 = null;
+        try
+        {
+            carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
+            WorkDrawing noShed = new WorkDrawing(carport2, 480);
+            ctx.attribute("noshed", noShed.toString());
+        } catch (app.exceptions.CalculatorException e)
+        {
+            ctx.attribute("noshed", "<div class=\"alert alert-warning\">e.getMessage()</div>");
+        }
 
         ctx.render("drawing.html");
 
