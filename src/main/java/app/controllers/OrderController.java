@@ -4,6 +4,7 @@ import app.entities.*;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 import app.exceptions.DatabaseException;
+import app.services.SendGrid;
 import app.services.WorkDrawing;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -162,35 +163,57 @@ public class OrderController
     {
         int orderId = 0;
         Order order = null;
-        if (ctx.sessionAttribute("user") == null)
+        if (ctx.sessionAttribute("user") != null)
         {
-            try
-            {
-                orderId = Integer.parseInt(ctx.formParam("orderId"));
-                order = OrderMapper.acceptOrder(orderId, dbConnection);
-                ctx.attribute("message", "Tilbuddet er accepteret");
-            }
-            catch (NumberFormatException e)
-            {
-                ctx.attribute("message", "Invalid order id");
-            }
-            catch (DatabaseException e)
-            {
-                ctx.attribute("message", "Database error. " + e.getMessage());
-            }
-            ctx.attribute("order", order);
+            ctx.attribute("message", "Du har ikke adgang til denne side");
             ctx.render("kvittering.html");
-        }
-        ctx.attribute("message", "Du har ikke adgang til denne side");
-        ctx.render("kvittering.html");
 
-        //Skal lige have hjælp til det sidste med denne her metode så den ikke både render "kvittering" indenfor og udenfor if statementet
-        //Tænker den skal render en message som siger "Tilbud accepteret"
+            //Der skal lige kigges på det her
+        }
+        try
+        {
+            orderId = Integer.parseInt(ctx.formParam("orderId"));
+            order = OrderMapper.acceptOrder(orderId, dbConnection);
+            ctx.attribute("message", "Tilbuddet er accepteret");
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error. " + e.getMessage());
+        }
+        ctx.attribute("order", order);
+        ctx.render("kvittering.html");
 
     }
 
     private static void requestChange(@NotNull Context ctx, ConnectionPool dbConnection)
     {
+        int orderId = 0;
+        String message = null;
+        if (ctx.sessionAttribute("user") != null)
+        {
+            ctx.attribute("message", "Du har ikke adgang til denne side");
+            ctx.render("kvittering.html");
+        }
+        try
+        {
+            orderId = Integer.parseInt(ctx.formParam("orderId"));
+            message = SendGrid.requestChangeEmail(orderId, message);
+            ctx.attribute("message", "Ændringsforslag er sendt");
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error. " + e.getMessage());
+        }
+        ctx.attribute("message", message);
+        ctx.render("afvisttilbud.html");
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
