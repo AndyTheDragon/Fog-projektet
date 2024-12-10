@@ -1,5 +1,9 @@
-package app.entities;
+package app.services;
 
+import app.entities.BoltsScrewsBrackets;
+import app.entities.ConstructionWood;
+import app.entities.IMaterials;
+import app.entities.RoofCovering;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;

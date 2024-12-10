@@ -1,5 +1,6 @@
-package app.entities;
+package app.services;
 
+import app.entities.IMaterials;
 import app.exceptions.DatabaseException;
 
 import java.util.List;
