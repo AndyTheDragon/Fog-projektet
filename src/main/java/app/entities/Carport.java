@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.services.CarportCalculator;
 import app.services.WorkDrawing;
 
 import java.util.ArrayList;
@@ -36,8 +35,8 @@ public class Carport
         this.boltsScrewsBracketsList = new ArrayList<>();
         calculateMaterials();
         calculateBoltsScrewsBrackets();
-        this.numberOfPosts = this.calculator.calcNumberOfPosts(length, width, shedLength, shedWidth);
-        this.numberOfJoists = this.calculator.calcNumberOfJoists(length);
+        this.numberOfPosts = this.calculator.calcNumberOfPosts();
+        this.numberOfJoists = this.calculator.calcNumberOfJoists();
         this.workDrawing = new WorkDrawing(this, 640);
     }
 
@@ -46,18 +45,18 @@ public class Carport
         materialsList = new ArrayList<>();
         try
         {
-            materialsList.addAll(calculator.calcUnderFascia(length, width));
-            materialsList.addAll(calculator.calcOverFascia(length, width));
-            materialsList.addAll(calculator.calcBeam(length));
-            materialsList.addAll(calculator.calcPosts(length, width, shedLength, shedWidth));
-            materialsList.addAll(calculator.calcJoists(length));
-            materialsList.addAll(calculator.calcBargeBoards(length, width));
-            materialsList.addAll(calculator.calcRoof(length, width));
+            materialsList.addAll(calculator.calcUnderFascia());
+            materialsList.addAll(calculator.calcOverFascia());
+            materialsList.addAll(calculator.calcBeam());
+            materialsList.addAll(calculator.calcPosts());
+            materialsList.addAll(calculator.calcJoists());
+            materialsList.addAll(calculator.calcBargeBoards());
+            materialsList.addAll(calculator.calcRoof());
 
             if (hasShed())
             {
-                materialsList.addAll(calculator.calcCladding(shedLength, shedWidth));
-                materialsList.addAll(calculator.calcHorizontalBraces(shedLength, shedWidth));
+                materialsList.addAll(calculator.calcCladding());
+                materialsList.addAll(calculator.calcHorizontalBraces());
             }
         } catch (Exception e)
         {
@@ -68,24 +67,19 @@ public class Carport
     public void calculateBoltsScrewsBrackets()
     {
         boltsScrewsBracketsList = new ArrayList<>();
-        try
-        {
-            boltsScrewsBracketsList.addAll(calculator.calcRoofScrews(length, width));
-            boltsScrewsBracketsList.addAll(calculator.calcJoistBrackets(length));
-            boltsScrewsBracketsList.addAll(calculator.calcJoistBracketScrews(length));
-            boltsScrewsBracketsList.addAll(calculator.calcFasciaBargeScrews(length, width));
-            boltsScrewsBracketsList.addAll(calculator.calcMetalStrap(length, width));
-            boltsScrewsBracketsList.addAll(calculator.calcBeamBolts(length, width, shedLength, shedWidth));
 
-            if (hasShed())
-            {
-                boltsScrewsBracketsList.addAll(calculator.calcCladdingScrews(shedLength, shedWidth));
-                boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets(shedLength, shedWidth));
-                boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
-            }
-        }catch (Exception e)
+        boltsScrewsBracketsList.addAll(calculator.calcRoofScrews());
+        boltsScrewsBracketsList.addAll(calculator.calcJoistBrackets());
+        boltsScrewsBracketsList.addAll(calculator.calcJoistBracketScrews());
+        boltsScrewsBracketsList.addAll(calculator.calcFasciaBargeScrews());
+        boltsScrewsBracketsList.addAll(calculator.calcMetalStrap());
+        boltsScrewsBracketsList.addAll(calculator.calcBeamBolts());
+
+        if (hasShed())
         {
-            e.printStackTrace();
+            boltsScrewsBracketsList.addAll(calculator.calcCladdingScrews());
+            boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets());
+            boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
         }
     }
 
@@ -101,7 +95,7 @@ public class Carport
 
     public boolean extraPostsForLongCarport()
     {
-        return calculator.extraPostsForLongCarport(length, width);
+        return calculator.extraPostsForLongCarport();
     }
 
     public int getNumberOfJoists()
@@ -112,7 +106,7 @@ public class Carport
     public int getNumberOfCladdingBoards()
     {
         /// TODO: SKAL LIGE GENTÆNKES HER, SKAL DETTE FLYTTES IND SOM EN PROPERTY?
-        return calculator.calcNumberOfCladdingBoards(shedLength, shedWidth);
+        return calculator.calcNumberOfCladdingBoards();
     }
 
 

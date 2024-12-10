@@ -19,6 +19,7 @@ public class Order
     private boolean isPaid;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private OrderStatus orderStatus;
     private Carport carport;
 
     public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, CarportCalculator calculator)

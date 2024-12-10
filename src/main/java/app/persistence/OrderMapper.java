@@ -82,7 +82,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt, new OptimalWoodCalculator(dbConnection));
+                        updatedAt, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
 
                 if (salesId == 0)
                 {
@@ -116,7 +116,7 @@ public class OrderMapper
                 RoofType.FLAT,
                 false,
                 LocalDateTime.now(),
-                LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
+                LocalDateTime.now(), new OptimalWoodCalculator(780,600, 210 , 530, dbConnection));
     }
 
     public static void asssignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
@@ -252,7 +252,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt, new OptimalWoodCalculator(dbConnection));
+                        updatedAt, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
             }
         } catch (SQLException e)
         {

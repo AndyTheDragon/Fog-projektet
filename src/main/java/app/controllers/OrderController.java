@@ -62,7 +62,7 @@ public class OrderController
             customer.setCustomerID(customerID);
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
-                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
             //OrderMapper.createOrder(order, dbConnection);
 
             OrderMapper.saveOrderToDatabase(order, dbConnection);
@@ -252,10 +252,10 @@ public class OrderController
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
         WorkDrawing drawing = new WorkDrawing(carport,780);
         ctx.attribute("drawing", drawing.toString());
-        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
         WorkDrawing noShed = new WorkDrawing(carport2, 480);
         ctx.attribute("noshed", noShed.toString());
 

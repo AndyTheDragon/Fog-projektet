@@ -22,6 +22,18 @@ DROP TABLE IF EXISTS material_function CASCADE;
 DROP TABLE IF EXISTS carport_material CASCADE;
 DROP TABLE IF EXISTS carport_orderlines CASCADE;
 DROP TABLE IF EXISTS carport_order CASCADE;
+
+CREATE TYPE OrderStatus AS ENUM(    'UNASSIGNED',
+    'ASSIGNED',
+    'CALCULATING',
+    'OFFER_SENT',
+    'OFFER_ACCEPTED',
+    'OFFER_REJECTED',
+    'PAYMENT_REQUESTED',
+    'PAID',
+    'COMPLETED',
+    'ERROR');
+
 CREATE TABLE carport_order (
        order_id SERIAL PRIMARY KEY,
        customer_id INT NOT NULL,
@@ -36,6 +48,7 @@ CREATE TABLE carport_order (
        is_paid BOOLEAN DEFAULT false,
        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       order_status OrderStatus DEFAULT 'UNASSIGNED',
        CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,
        CONSTRAINT fk_sales FOREIGN KEY (sales_id) REFERENCES account(user_id) ON DELETE SET NULL
 );
@@ -44,8 +57,8 @@ CREATE TABLE carport_material (
        material_name VARCHAR(255),
        width int,
        height int,
-       length int
-
+       length int,
+       fog_id varchar(64)
 );
 CREATE TABLE material_function (
     function_id SERIAL PRIMARY KEY,
