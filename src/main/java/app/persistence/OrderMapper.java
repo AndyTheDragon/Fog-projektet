@@ -122,19 +122,21 @@ public class OrderMapper
         }
     }
 
-    public static Order acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    public static void acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
-        return new Order(1,
-                new Customer(),
-                new User(),
-                600,
-                780,
-                530,
-                210,
-                RoofType.FLAT,
-                true,
-                LocalDateTime.now(),
-                LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
+        String sql = "UPDATE carport_order SET is_paid = ? WHERE order_id = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setBoolean(1, true);
+            ps.setInt(2, orderId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DatabaseException("No order found with id: " + orderId);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Database error: " + e.getMessage());
+        }
     }
 
     public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
