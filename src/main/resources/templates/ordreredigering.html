@@ -9,30 +9,30 @@
 </head>
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
-<div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null}">
-    <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
+<div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null && #ctx.session.currentUser!=null}">
+    <h1>Rediger ordre</h1>
 
     <div class="row">
         <div class="col-6">
             <div class="card m-3">
-                <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
+                <h5 class="card-header" >Dimensioner</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Carport længde: <span th:text="${order.carportLength}">360</span> cm</li>
-                    <li class="list-group-item">Carport bredde: <span th:text="${order.carportWidth}">300</span> cm</li>
-                    <li class="list-group-item">Skur længde: <span th:text="${order.shedLength}">100</span> cm</li>
-                    <li class="list-group-item">Skur bredde: <span th:text="${order.shedWidth}">240</span> cm</li>
-                    <li class="list-group-item">Skur beklædning: <span>forskudt</span></li>
-                    <li class="list-group-item">Tag type: <span th:text="${order.carportRoof}">Fladt</span> </li>
-                    <li class="list-group-item">Tag beklædning: <span>Trapez</span> </li>
+                    <li class="list-group-item">Carport længde: <input name="carportLength" th:value="${order.carportLength}">360</input> cm</li>
+                    <li class="list-group-item">Carport bredde: <input name="carportWidth" th:value="${order.carportWidth}">300</input> cm</li>
+                    <li class="list-group-item">Skur længde: <input name="shedLength" th:value="${order.shedLength}">100</input> cm</li>
+                    <li class="list-group-item">Skur bredde: <input name="shedWidth" th:value="${order.shedWidth}">240</input> cm</li>
+                    <li class="list-group-item">Skur beklædning: <input>forskudt</input></li>
+                    <li class="list-group-item">Tag type: <input name="carportRoof" th:value="${order.carportRoof}">Fladt</input> </li>
+                    <li class="list-group-item">Tag beklædning: <input>Trapez</input> </li>
                 </ul>
             </div>
         </div>
         <div class="col-6">
             <div class="card m-3">
-                <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
+                <h5 class="card-header">Kunde Information</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.persinfomessage!=null}" th:text="${#ctx.persinfomessage}"> Personal information message</p>
                 </div>
@@ -80,7 +80,7 @@
                 <tr th:each="material : ${order.carport.materialsList}">
                     <td th:text="${material.type}"></td>
                     <td th:text="${material.length}"></td>
-                    <td th:text="${material.amount}"></td>
+                    <td><input type="number" class="form-control" id="fogIdWood" name="fogId" th:name="${material.fogProductID}" th:value="${material.amount}"></input></td>
                     <td th:text="${material.unit}"></td>
                     <td th:text="${material.description}"></td>
                 </tr>
@@ -90,7 +90,7 @@
                 <tr th:each="material : ${order.carport.boltsScrewsBracketsList}">
                     <td th:text="${material.type}"></td>
                     <td th:text="${material.length}"></td>
-                    <td th:text="${material.amount}"></td>
+                    <td><input type="number" class="form-control" id="fogIdBSB" name="fogId" th:name="${material.fogProductID}" th:value="${material.amount}"></input></td>
                     <td th:text="${material.unit}"></td>
                     <td th:text="${material.description}"></td>
                 </tr>
@@ -108,34 +108,12 @@
             <div class="col d-flex justify-content-start">
                 <form th:action="@{/order/assign}" method="post">
                     <input type="hidden" name="orderId" th:value="${order.orderID}">
-                    <button type="submit" class="ms-auto btn btn-lg btn-primary">Tildel</button>
+                    <button type="submit" class="ms-auto btn btn-lg btn-danger">Annuller</button>
                 </form>
             </div>
-            <div class="col d-flex justify-content-center">
+            <div class="col d-flex justify-content-end">
                 <form action="/draw" method="get">
-                    <button type="submit" class="btn btn-lg btn-success">Send tilbud</button>
-                </form>
-            </div>
-            <div class="col d-flex justify-content-end">
-                <form action="/order/{orderId}/edit" th:action="@{/order/{id}/edit(id=${order.orderID})}" method="get">
-                    <input type="hidden" name="orderId" th:value="${order.orderID}">
-                    <button type="submit" class="me-auto btn btn-lg btn-warning">Ret tilbud</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="card m-3">
-        <div class="row gx-3" th:if="${#ctx.session.currentUser==null}">
-            <div class="col d-flex justify-content-start">
-                <form method="post" action="/order/accept">
-                <input type="hidden" name="orderId" th:value="${order.orderID}">
-                <button type="submit" formaction="/order/accept" class="ms-auto btn btn-lg btn-success">Godkend Tilbud</button>
-                </form>
-            </div>
-            <div class="col d-flex justify-content-end">
-                <form method="post" action="/order/requestchange">
-                <input type="hidden" name="orderId" th:value="${order.orderID}">
-                <button type="submit" formaction="/order/requestchange" class="me-auto btn btn-lg btn-danger">Afvis Tilbud</button>
+                    <button type="submit" class="me-auto btn btn-lg btn-success">Gem ændringer</button>
                 </form>
             </div>
         </div>
