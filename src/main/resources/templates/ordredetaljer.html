@@ -9,7 +9,7 @@
 </head>
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
-<div class="container mt-5 p-3 pt-5 bg-body-tertiary">
+<div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null}">
     <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
     <div class="row">
