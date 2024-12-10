@@ -10,5 +10,5 @@ public interface IMaterials
     int getFogProductID();
     int getHeight();
     int getWidth();
-    IMaterials setAmount(int i);
+    void setAmount(int i);
 }
