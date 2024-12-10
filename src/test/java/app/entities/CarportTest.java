@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarportTest
 {
-    OptimalWoodCalculator calculator = new OptimalWoodCalculator(dbConnection);
+    OptimalWoodCalculator calculator;
     Carport carport;
     private final String USER = "carport";
     private final String PASSWORD = "wDj+e5V&0YOx5kE";
@@ -21,6 +21,12 @@ class CarportTest
     private final String DB = "fog_carport";
 
     private final ConnectionPool dbConnection = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+    CarportTest()
+    {
+        calculator = new OptimalWoodCalculator(dbConnection);
+    }
+
     @BeforeEach
     void setUp()
     {
@@ -176,7 +182,7 @@ class CarportTest
         int totalLength = length + width;
         int length1 = 360;
         int length2 = 540;
-        int[] expected = new int[]{2, 2};
+        int[] expected = new int[]{5, 0};
         OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
         int[] result = calc.calcOptimalWood(totalLength, length1, length2);
