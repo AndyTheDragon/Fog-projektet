@@ -91,7 +91,7 @@ public class Carport
 
     public boolean extraPostsForLongCarport()
     {
-        return calculator.extraPostsForLongCarport(length, width);
+        return calculator.extraPostsForLongCarport(length, shedLength);
     }
 
     public int getNumberOfJoists()
