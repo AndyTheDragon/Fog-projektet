@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.entities.*;
 import app.exceptions.DatabaseException;
+import app.services.OptimalWoodCalculator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
