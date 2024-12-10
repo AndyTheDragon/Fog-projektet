@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.*;
+import app.exceptions.CalculatorException;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
@@ -113,7 +114,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return bestResult;
     }
 
-    public List<IMaterials> calcUnderFascia(int length, int width) throws DatabaseException
+    public List<IMaterials> calcUnderFascia(int length, int width) throws CalculatorException
     {
         List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("understernbrædder", dbConnection);
         List<IMaterials> fasciaList = new ArrayList<>();
@@ -130,7 +131,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return fasciaList;
     }
 
-    public List<IMaterials> calcOverFascia(int length, int width) throws DatabaseException
+    public List<IMaterials> calcOverFascia(int length, int width) throws CalculatorException
     {
         List<IMaterials> fasciaList = new ArrayList<>();
         List<IMaterials> allFasciaList = MaterialMapper.getMaterialOfType("oversternbrædder", dbConnection);
@@ -147,7 +148,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return fasciaList;
     }
 
-    public List<IMaterials> calcBeam(int length) throws DatabaseException
+    public List<IMaterials> calcBeam(int length) throws CalculatorException
     {
         List<IMaterials> beamList = new ArrayList<>();
         List<IMaterials> allBeamList = MaterialMapper.getMaterialOfTypeAndLength("Remme i sider, sadles ned i stolper", (length / 2), dbConnection);
@@ -164,12 +165,12 @@ public class OptimalWoodCalculator implements CarportCalculator
         return beamList;
     }
 
-    public List<IMaterials> calcRafters() throws DatabaseException
+    public List<IMaterials> calcRafters() throws CalculatorException
     {
         return null;
     }
 
-    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcPosts(int length, int width, int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> postList = new ArrayList<>();
         List<IMaterials> allPostList = MaterialMapper.getMaterialOfType("Stolper", (dbConnection));
@@ -213,7 +214,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return length - 130 - shedLength > 350;
     }
 
-    public List<IMaterials> calcJoists(int length) throws DatabaseException
+    public List<IMaterials> calcJoists(int length) throws CalculatorException
     {
         List<IMaterials> joistList = new ArrayList<>();
         List<IMaterials> allJoistList = MaterialMapper.getMaterialOfType("Spær, monteres på rem", dbConnection);
@@ -246,7 +247,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return gaps;
     }
 
-    public List<IMaterials> calcBargeBoards(int length, int width) throws DatabaseException
+    public List<IMaterials> calcBargeBoards(int length, int width) throws CalculatorException
     {
         List<IMaterials> bargeBoardList = new ArrayList<>();
         List<IMaterials> allBargeBoardList = MaterialMapper.getMaterialOfType("Vandbrædt", (dbConnection));
@@ -263,12 +264,12 @@ public class OptimalWoodCalculator implements CarportCalculator
         return bargeBoardList;
     }
 
-    public List<IMaterials> calcBattern() throws DatabaseException
+    public List<IMaterials> calcBattern() throws CalculatorException
     {
         return null;
     }
 
-    public List<IMaterials> calcCladding(int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcCladding(int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> claddingList = new ArrayList<>();
         List<IMaterials> allCladdingList = MaterialMapper.getMaterialOfType("Beklædning", (dbConnection));
@@ -289,7 +290,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return (int) Math.ceil(claddingBoardAmount);
     }
 
-    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcHorizontalBraces(int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> horizontalBraceList = new ArrayList<>();
         List<IMaterials> allHorizontalSideBraceList = MaterialMapper.getMaterialOfType("løsholter til skur sider", (dbConnection));
@@ -334,7 +335,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return totalBraces;
     }
 
-    public List<IMaterials> calcRoof(int length, int width) throws DatabaseException
+    public List<IMaterials> calcRoof(int length, int width) throws CalculatorException
     {
         List<IMaterials> roofList = new ArrayList<>();
         List<IMaterials> allRoofList = MaterialMapper.getMaterialOfTypeAndLength("Tagplader", (length / 2), (dbConnection));
@@ -358,7 +359,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return roofList;
     }
 
-    public List<IMaterials> calcRoofScrews(int length, int width) throws DatabaseException
+    public List<IMaterials> calcRoofScrews(int length, int width) throws CalculatorException
     {
         List<IMaterials> roofScrewList = new ArrayList<>();
         List<IMaterials> allRoofScrewList = MaterialMapper.getMaterialOfType("skruer til tagplader", (dbConnection));
@@ -374,7 +375,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return roofScrewList;
     }
 
-    public List<IMaterials> calcJoistBrackets(int length) throws DatabaseException
+    public List<IMaterials> calcJoistBrackets(int length) throws CalculatorException
     {
         List<IMaterials> joistBracketList = new ArrayList<>();
         List<IMaterials> allRightJoistBracketList = MaterialMapper.getMaterialOfType("til montering af spær højre", (dbConnection));
@@ -394,7 +395,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return joistBracketList;
     }
 
-    public List<IMaterials> calcFasciaBargeScrews(int length, int width) throws DatabaseException
+    public List<IMaterials> calcFasciaBargeScrews(int length, int width) throws CalculatorException
     {
         List<IMaterials> fasciaBargeScrewList = new ArrayList<>();
         List<IMaterials> allFasciaBargeScrewList = MaterialMapper.getMaterialOfType("til montering af stern&vandbrædt", (dbConnection));
@@ -408,7 +409,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return fasciaBargeScrewList;
     }
 
-    public List<IMaterials> calcJoistBracketScrews(int length) throws DatabaseException
+    public List<IMaterials> calcJoistBracketScrews(int length) throws CalculatorException
     {
         List<IMaterials> bracketScrewList = new ArrayList<>();
         List<IMaterials> allBracketScrewList = MaterialMapper.getMaterialOfType("til montering af universalbeslag + hulbånd", (dbConnection));
@@ -424,7 +425,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return bracketScrewList;
     }
 
-    public List<IMaterials> calcMetalStrap(int length, int width) throws DatabaseException
+    public List<IMaterials> calcMetalStrap(int length, int width) throws CalculatorException
     {
         List<IMaterials> metalStrapList = new ArrayList<>();
         List<IMaterials> allMetalStrapList = MaterialMapper.getMaterialOfType("til vindkryds", (dbConnection));
@@ -445,7 +446,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return metalStrapList;
     }
 
-    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcBeamBolts(int length, int width, int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> beamBoltList = new ArrayList<>();
         List<IMaterials> allBeamBoltList = MaterialMapper.getMaterialOfType("til montering af rem", (dbConnection));
@@ -467,7 +468,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return beamBoltList;
     }
 
-    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcCladdingScrews(int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> claddingScrewList = new ArrayList<>();
         List<IMaterials> allOuterCladdingScrewList = MaterialMapper.getMaterialOfType("yderste beklædning", (dbConnection));
@@ -489,7 +490,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return claddingScrewList;
     }
 
-    public List<IMaterials> doorHandleBrackets() throws DatabaseException
+    public List<IMaterials> doorHandleBrackets() throws CalculatorException
     {
         List<IMaterials> doorHandleBracketList = new ArrayList<>();
         List<IMaterials> allDoorHandleList = MaterialMapper.getMaterialOfType("til lås", (dbConnection));
@@ -504,7 +505,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         return doorHandleBracketList;
     }
 
-    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth) throws DatabaseException
+    public List<IMaterials> calcHorizontalBracesBrackets(int shedLength, int shedWidth) throws CalculatorException
     {
         List<IMaterials> horizontalBraceBracketList = new ArrayList<>();
         List<IMaterials> allHorizontalBraceBracketList = MaterialMapper.getMaterialOfType("til montering af løsholter", (dbConnection));

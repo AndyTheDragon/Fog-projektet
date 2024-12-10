@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.*;
 import app.services.WorkDrawing;
 
 import java.util.ArrayList;
