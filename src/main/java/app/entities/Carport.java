@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.CalculatorException;
 import app.services.CarportCalculator;
 import app.services.WorkDrawing;
 import app.services.CarportCalculator;
@@ -43,31 +44,27 @@ public class Carport
         this.workDrawing = new WorkDrawing(this, 640);
     }
 
-    public void calculateMaterials()
+    public void calculateMaterials() throws CalculatorException
     {
         materialsList = new ArrayList<>();
-        try
-        {
-            materialsList.addAll(calculator.calcUnderFascia());
-            materialsList.addAll(calculator.calcOverFascia());
-            materialsList.addAll(calculator.calcBeam());
-            materialsList.addAll(calculator.calcPosts());
-            materialsList.addAll(calculator.calcJoists());
-            materialsList.addAll(calculator.calcBargeBoards());
-            materialsList.addAll(calculator.calcRoof());
 
-            if (hasShed())
-            {
-                materialsList.addAll(calculator.calcCladding());
-                materialsList.addAll(calculator.calcHorizontalBraces());
-            }
-        } catch (Exception e)
+        materialsList.addAll(calculator.calcUnderFascia());
+        materialsList.addAll(calculator.calcOverFascia());
+        materialsList.addAll(calculator.calcBeam());
+        materialsList.addAll(calculator.calcPosts());
+        materialsList.addAll(calculator.calcJoists());
+        materialsList.addAll(calculator.calcBargeBoards());
+        materialsList.addAll(calculator.calcRoof());
+
+        if (hasShed())
         {
-            e.printStackTrace();
+            materialsList.addAll(calculator.calcCladding());
+            materialsList.addAll(calculator.calcHorizontalBraces());
         }
+
     }
 
-    public void calculateBoltsScrewsBrackets()
+    public void calculateBoltsScrewsBrackets() throws CalculatorException
     {
         boltsScrewsBracketsList = new ArrayList<>();
 
