@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.services.OptimalWoodCalculator;
 import org.junit.jupiter.api.AfterEach;
@@ -481,7 +482,7 @@ class CarportTest
     }
 
     @Test
-    void calcRoofScrewsTest()
+    void calcRoofScrewsTest() throws DatabaseException
     {
         // Arrange
         Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, calculator);
