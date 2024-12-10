@@ -15,7 +15,7 @@ public class WorkDrawing
     private final int numberOfJoists;
     private final boolean extraPostsForLongCarport;
     private final static String STYLE="stroke:#000000; fill: #ffffff;";
-    private final static String STYLE_DASHED="stroke:#000000; fill: #ffffff; stroke-dasharray: 5,5;";
+    private final static String STYLE_DASHED="stroke:#000000; fill: #ffffff; stroke-dasharray: 5;";
     private final static String STYLE_ARROW="stroke-width: 8; fill: #ffffff; ";
     private final static String STYLE_TEXT = "font-size: 120px";
     private final static int fasciaThickness = 50;
@@ -57,7 +57,7 @@ public class WorkDrawing
         int botY = fasciaThickness+carportWidth-350-45;
         int beamThickness = 45;
         topViewDrawing.addArrow(-200,topY+beamThickness, -200, botY, STYLE_ARROW);
-        topViewDrawing.addText(-350,(botY-topY)/2, 0, ""+(botY+topY)/10, STYLE_TEXT);
+        topViewDrawing.addText(-350,(botY+topY)/2, 0, ""+(botY-topY)/10, STYLE_TEXT);
         topViewDrawing.addRectangle(fasciaThickness,topY,beamThickness, carportLength-2*fasciaThickness, STYLE);
         topViewDrawing.addRectangle(fasciaThickness,botY,beamThickness, carportLength-2*fasciaThickness, STYLE);
         sideViewDrawing.addSlantedRect(fasciaThickness,250,145, carportLength-2*fasciaThickness, 0.735, fasciaThickness+carportLength/2, 250, STYLE);
@@ -117,13 +117,16 @@ public class WorkDrawing
 
         while (sum < carportLength-2*fasciaThickness)
         {
-
+            int arrowY = carportWidth+250;
+            int arrowX = fasciaThickness+sum+45;
+            String joistSpacingString = String.format("%.1f", (float)joistSpacing/10);
+            topViewDrawing.addArrow(arrowX, arrowY, arrowX+joistSpacing, arrowY, STYLE_ARROW);
+            topViewDrawing.addText(arrowX+(joistSpacing/2), arrowY+100, 0, joistSpacingString, STYLE_TEXT);
             topViewDrawing.addRectangle(fasciaThickness+sum,fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
-            for (int i=0; i < numberOfJoists; i++)
-            {
-                double yOffSet = sum*fallPercentage;
+
+            double yOffSet = sum*fallPercentage;
             sideViewDrawing.addRectangle(fasciaThickness+10+sum,190 + (int)yOffSet,195, 45, STYLE_DASHED);
-            }
+
             sum += joistSpacing + 45;
         }
         topViewDrawing.addRectangle(carportLength-fasciaThickness-45, fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
