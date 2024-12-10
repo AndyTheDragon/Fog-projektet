@@ -162,7 +162,6 @@ public class OrderController
     private static void acceptOrder(@NotNull Context ctx, ConnectionPool dbConnection)
     {
         int orderId = 0;
-        Order order = null;
         if (ctx.sessionAttribute("currentUser") != null)
         {
             ctx.attribute("message", "Du har ikke adgang til denne side");
@@ -173,7 +172,7 @@ public class OrderController
         try
         {
             orderId = Integer.parseInt(ctx.formParam("orderId"));
-            order = OrderMapper.acceptOrder(orderId, dbConnection);
+            OrderMapper.acceptOrder(orderId, dbConnection);
             ctx.attribute("message", "Tilbuddet er accepteret");
         }
         catch (NumberFormatException e)
@@ -184,7 +183,6 @@ public class OrderController
         {
             ctx.attribute("message", "Database error. " + e.getMessage());
         }
-        ctx.attribute("order", order);
         ctx.render("kvittering.html");
 
     }
