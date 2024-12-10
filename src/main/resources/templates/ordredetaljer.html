@@ -51,8 +51,8 @@
                 <div class="card-body">
                     <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
                     <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
-                    <p class="card-text" th:if="${#ctx.session.user!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
-                    <p class="card-text" th:if="${#ctx.session.user!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
+                    <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
+                    <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
         SVG Skitse
     </div>
 
-    <div class="card m-3" th:if="${#ctx.session.user!=null}">
+    <div class="card m-3" th:if="${#ctx.session.currentUser!=null}">
         <div class="card-body">
             <table class="table table-borderless table-striped">
                 <thead>
@@ -105,7 +105,7 @@
         Pris
     </div>
     <div class="card m-3">
-        <div class="row gx-3" th:if="${#ctx.session.user!=null}">
+        <div class="row gx-3" th:if="${#ctx.session.currentUser!=null}">
             <div class="col d-flex justify-content-start">
                 <form th:action="@{/order/assign}" method="post">
                     <input type="hidden" name="orderId" th:value="${order.orderID}">
@@ -125,7 +125,7 @@
         </div>
     </div>
     <div class="card m-3">
-        <div class="row gx-3" th:if="${#ctx.session.user==null}">
+        <div class="row gx-3" th:if="${#ctx.session.currentUser==null}">
             <div class="col d-flex justify-content-start">
                 <form method="post" action="/order/accept">
                 <input type="hidden" name="orderId" th:value="${order.orderID}">
