@@ -181,7 +181,7 @@ public class OrderMapper
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
         {
-            ps.setInt(1, order.getCustomerID().getCustomerID());
+            ps.setInt(1, order.getCustomer().getCustomerID());
             ps.setInt(2, order.getCarportWidth());
             ps.setInt(3, order.getCarportLength());
             ps.setInt(4, order.getCarportHeight());
@@ -196,7 +196,7 @@ public class OrderMapper
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int newOrderId = rs.getInt(1);
-                newOrder = new Order(newOrderId, order.getCustomerID(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
+                newOrder = new Order(newOrderId, order.getCustomer(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
             } else {
                 throw new DatabaseException("Error creating order");
             }
