@@ -1,9 +1,6 @@
 package app.persistence;
 
-import app.entities.Customer;
-import app.entities.Order;
-import app.entities.RoofType;
-import app.entities.User;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -13,7 +10,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -56,8 +52,8 @@ public class OrderMapper
                         rs.getString("customer_phone"),
                         rs.getString("customer_email"));
                 User salesPerson;
-                Integer salesId = rs.getObject("sales_id") == null ? null : rs.getInt("sales_id");
-                if (salesId == null)
+                int salesId = rs.getInt("sales_id");
+                if (salesId==0)
                 {
                     salesPerson = new User("Ingen sælger tildelt endnu", "fog@fog.dk");
                 }
@@ -75,10 +71,19 @@ public class OrderMapper
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-                Order order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
-                        shedLength, roofType, isPaid, createdAt, updatedAt);
+                Order order = new Order(orderId,
+                        customer,
+                        salesPerson,
+                        carportWidth,
+                        carportLength,
+                        shedWidth,
+                        shedLength,
+                        roofType,
+                        isPaid,
+                        createdAt,
+                        updatedAt, new OptimalWoodCalculator(dbConnection));
 
-                if (salesId == null)
+                if (salesId == 0)
                 {
                     unassignedOrders.add(order);
                 } else
@@ -98,7 +103,7 @@ public class OrderMapper
         return result;
     }
 
-    public static Order getOrder(int orderId) throws DatabaseException
+    public static Order getOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
         return new Order(1,
                 new Customer(),
@@ -110,11 +115,75 @@ public class OrderMapper
                 RoofType.FLAT,
                 false,
                 LocalDateTime.now(),
-                LocalDateTime.now());
+                LocalDateTime.now(), new OptimalWoodCalculator(dbConnection));
     }
 
-    public static void saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
+    public static void asssignOrder(int orderId, int salesId, ConnectionPool connectionPool) throws DatabaseException
     {
+        String sql = "UPDATE carport_order SET sales_id = ? WHERE order_id = ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, salesId);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
+    }
+
+    public static void acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    {
+        String sql = "UPDATE carport_order SET is_paid = ? WHERE order_id = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setBoolean(1, true);
+            ps.setInt(2, orderId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DatabaseException("No order found with id: " + orderId);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Database error: " + e.getMessage());
+        }
+    }
+
+    public static Order saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
+    {
+        String sql = "INSERT INTO carport_order (customer_id, carport_width, carport_length, carport_height, carport_shed,shed_width, shed_length, carport_roof) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        Order newOrder;
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
+        {
+            ps.setInt(1, order.getCustomer().getCustomerID());
+            ps.setInt(2, order.getCarportWidth());
+            ps.setInt(3, order.getCarportLength());
+            ps.setInt(4, order.getCarportHeight());
+            ps.setBoolean(5, order.getCarport().hasShed());
+            ps.setInt(6, order.getShedWidth());
+            ps.setInt(7, order.getShedLength());
+            ps.setString(8, order.getCarportRoof().toString());
+
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected == 1)
+            {
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                int newOrderId = rs.getInt(1);
+                newOrder = new Order(newOrderId, order.getCustomer(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
+            } else {
+                throw new DatabaseException("Error creating order");
+            }
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
+        return newOrder;
     }
 
     public static Order getOrderById(int orderId, ConnectionPool dbConnectionpool) throws DatabaseException
