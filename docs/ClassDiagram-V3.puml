@@ -1,0 +1,300 @@
+@startuml
+'https://plantuml.com/class-diagram
+!pragma layout smetana
+
+class Main
+{
+    + void main(String[] args)
+
+}
+
+
+package "Entities" {
+interface IMaterials
+{
+
++ void getMaterials()
+
+}
+
+class Carport
+{
+- CarportCalculation calculator
+- WorkDrawing workDrawing
+- List<IMaterials> materialsList
+- List <IMaterials> boltsScrewsBrackets
+- int length
+- int width
+- int height
+- int shedLength
+- int shedWidth
+- RoofType roofType
+- String shedPlacement
+- int numberOfPosts
+- int numberOfJoists
++ Carport (int length, int width, int height, int shedLength, int shedWidth, RoofType roofType, String shedPlacement)
++ void calculateMaterials()
++ void calculateBoltsScrewsBrackets()
++ boolean hasShed()
++ int getNumberOfPosts()
++ boolean extraPostsForLongCarport()
++ int getNumberOfJoists()
++ int getNumberOfCladdingBoards()
++ int getHeight()
++ int getLength()
++ List<IMaterials> getMaterialsList()
++ List<IMaterials> getBoltsScrewsBrackets()
++ RoofType getRoofType()
++ void setRoofType(RoofType roofType)
++ void setRoofType(RoofType roofType)
++ int getShedLength()
++ int getShedWidth()
++ int getWidth()
++ WorkDrawing getWorkDrawing()
++ CarportCalculation getCalculator()
+
+}
+enum RoofType
+{
+    FLAT
+    RISEN
+    Rooftype getRoofType()
+}
+
+class User
+{
+- int userID
+- String name
+- String email
+- String password
+- boolean isAdmin
++ constructors()
++ getters()
++ setters()
+- boolean isAdmin()
+}
+class Customer
+{
+- int customerID
+- String name
+- String address
+- String zipcode
+- String city
+- String phoneNumber
+- String email
++ constructors()
++ getters()
++ setters()
+
+
+}
+class Order
+{
+- int orderID
+- Customer customer
+- User salesPerson
+- int carportWidth;
+- int carportLength;
+- int carportHeight;
+- boolean carportShed;
+- int shedWidth;
+- int shedLength;
+- RoofType carportRoof;
+- boolean isPaid;
+- LocalDateTime createdAt;
+- LocalDateTime updatedAt;
+- Carport carport;
++ boolean isPaid()
++ constructors()
++ getters()
+'+ setters()
+'+ boolean isAssigned()
+'+ boolean hasShed()
+}
+class ConstructionWood
+{
+- final String type
+- final int fogProductID
+- final int width
+- final int height
+- final int length
+- final int amount
+- final String unit
+- final String description
++ constructor()
++ getters()
++ @override toString()
+}
+class RoofCovering
+{
+- int length
+- int width
+- int amount
+- String unit
+- String type
+- String description
+- int fogProductID
++ constructors()
++ getters()
++ toString()
+}
+class BoltsScrewsBrackets
+{
+- String type
+- int fogProductID
+- int length
+- int width
+- int amount
+- String unit
+- String description
++ constructors()
++ getters()
++ @override toString()
+
+}
+}
+package "Controllers" {
+    class OrderController
+    {
+    + addRoutes(Javalin app, ConnectionPool dbConnection)
+    - showOrderPage(Context ctx, ConnectionPool dbConnection)
+    - createOrder(Context ctx, ConnectionPool dbConnection)
+    - doLogin(@NotNull Context ctx, ConnectionPool dbConnection)
+    - showLogin(@NotNull Context ctx)
+    - assignOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    - showOrderDetails(@NotNull Context ctx, ConnectionPool dbConnection)
+    - acceptOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    - requestChange(@NotNull Context ctx, ConnectionPool dbConnection)
+    - showDrawing(Context ctx, ConnectionPool dbConnection)
+    - showOrders(Context ctx, ConnectionPool dbConnection)
+    }
+    class UserController
+    {
+    + addRoutes()
+    + login()
+    '+ logout()
+    '+ createUser()
+    '+ getAllUsers()
+    }
+    class MaterialController
+    {
+   ' + addRoutes()
+   ' + createMaterial()
+   ' + getMaterials()
+   ' + getAllMaterials()
+   ' + getMaterialById()
+   ' + updateMaterialPrice()
+    '+ updateMaterialStock()
+    '+ updateMaterial()
+    '+ deleteMaterial()
+   }
+}
+package "Persistence" {
+
+    class CustomerMapper
+    {
+        + createCustomer()
+    }
+    class OrderMapper
+    {
+        '+ createOrder()
+        '+ getOrdersByUser()
+        + getOrders()
+        + getOrder()
+        + assignOrder()
+        + acceptOrder()
+        + saveOrderToDatabase()
+
+       ' + getAllOrders()
+       ' + getOrderById()
+       ' + updateOrder()
+       ' + deleteOrder()
+    }
+    class MaterialMapper
+    {
+        + List<IMaterials> getMaterialOfType(String type, ConnectionPool connectionPool) throws DatabaseException
+        + List<IMaterials> getMaterialOfTypeAndLength(ConnectionPool connectionPool, String type, int minLength) throws DatabaseException
+        '+ List<ConstructionWood> getConstructionWoodFromFunction(String function)
+        '+ createMaterial()
+        '+ getMaterials()
+        '+ getAllMaterials()
+        '+ getMaterialById()
+        '+ updateMaterialPrice()
+        '+ updateMaterialStock()
+        '+ updateMaterial()
+        '+ deleteMaterial()
+    }
+    class UserMapper
+    {
+        + login()
+        '+ createUser()
+        '+ getAllUsers()
+    }
+    }
+
+package "Services" {
+    class DrawSVG
+    {
+    - final String SVG_TEMPLATE
+    - final String SVG_ARROW_DEFS
+    - final String SVG_RECT_TEMPLATE
+    - final String SVG_SLANTED_RECT_TEMPLATE
+    - final String SVG_LINE_TEMPLATE
+    - final String SVG_TEXT_TEMPLATE
+    - final StringBiulder svg
+
+    + DrawSVG(int x, int y, String viewBox, String width)
+    + addRectangle(int x, int y, int height, int width, String style)
+    + addSlantedRect(int x, int y, int height, int width, double angle, int rotationX, int rotationY, String style)
+    + addLine(int x1, int y1, int x2, int y2, String style)
+    + addArrow(int x1, int y1, int x2, int y2, String style)
+    + addText(int x, int y, String text, String style)
+    + addSvg(DrawSVG innerSvg)
+    + String toString()
+    }
+    class SendGrid
+    {
+    + String static requestChangeEmail(int orderID, String message) throws DatabaseException
+    }
+    class WorkDrawing
+    {
+    - final DrawSVG topViewDrawing
+    - final DrawSVG sideViewDrawing
+    - final int carportWidth
+    - final int carportLength
+    - final int carportHeight
+    - final int shedWidth
+    - final int shedLength
+    - final boolean hasShed
+    - final int numberOfJoists
+    - final boolean extraPostsForLongCarport
+    - final String STYLE
+    - final String STYLE_DASHED
+    - final int fasciaThickness
+    + WorkDrawing (int carportLength, int carportWidth, int carportHeight, int shedLength, int shedWidth, int numberOfJoists, boolean extraPostsForLongCarport)
+    + WorkDrawing (Carport carport, int drawingWidth)
+    - addBeams()
+    - addPosts()
+    - addJoists()
+    - addFascia()
+    - addCladding()
+    + String toString()
+    + String sideView
+    }
+
+    class CarportSketch
+    {
+    }
+}
+
+ConstructionWood ..|> IMaterials
+RoofCovering ..|> IMaterials
+BoltsScrewsBrackets ..|> IMaterials
+
+
+@enduml
+implements ..|>
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
