@@ -3,7 +3,6 @@ package app.entities;
 import app.exceptions.CalculatorException;
 import app.services.CarportCalculator;
 import app.services.WorkDrawing;
-import app.services.CarportCalculator;
 
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class Carport
     int numberOfJoists;
 
 
-    public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType, CarportCalculator calculator)
+    public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType, CarportCalculator calculator) throws CalculatorException
     {
         this.length = length;
         this.width = width;
