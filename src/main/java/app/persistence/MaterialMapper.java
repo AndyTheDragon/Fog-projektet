@@ -18,7 +18,7 @@ import java.util.Map;
 public class MaterialMapper
 {
 
-    public static List<IMaterials> getMaterialOfType(String type, ConnectionPool connectionPool) throws DatabaseException
+    public static List<IMaterials> getMaterialOfType(String descriptionType, ConnectionPool connectionPool) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length, f.description FROM carport_material AS m" +
@@ -29,7 +29,7 @@ public class MaterialMapper
 
         try (Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, type);
+                ps.setString(1, descriptionType);
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -48,7 +48,7 @@ public class MaterialMapper
         return materialsList;
     }
 
-    public static List<IMaterials> getMaterialOfTypeAndLength(ConnectionPool connectionPool, String type, int minLength) throws DatabaseException
+    public static List<IMaterials> getMaterialOfTypeAndLength(String type, int minLength, ConnectionPool connectionPool ) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length, f.description FROM carport_material AS m" +
