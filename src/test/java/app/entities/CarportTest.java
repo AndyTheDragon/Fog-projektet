@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.services.OptimalWoodCalculator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarportTest
 {
+    OptimalWoodCalculator calculator = new OptimalWoodCalculator(dbConnection);
     Carport carport;
     @BeforeEach
     void setUp()
     {
-        carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        carport = new Carport(780,600,210,530, RoofType.FLAT, calculator);
     }
 
     @AfterEach
@@ -27,9 +29,9 @@ class CarportTest
     void getNumberOfJoistsTest()
     {
         // Arrange
-        Carport carportA = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportA = new Carport(780,600,210,530, RoofType.FLAT,calculator);
         int expectedA = 15;
-        Carport carportB = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportB = new Carport(480,300,0,0, RoofType.FLAT,calculator);
         int expectedB = 10;
         // Act
         int actualA = carportA.getNumberOfJoists();
@@ -44,7 +46,7 @@ class CarportTest
     void calcOptimalBeamMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carport = new Carport(780,600,210,530, RoofType.FLAT,calculator);
         int totalLength = 2*780;
         int length1 = 480;
         int length2 = 600;
@@ -277,7 +279,7 @@ class CarportTest
     void calcOptimalHorizontalBracesMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT,calculator);
         int totalBraces = 0;
         int bracesPerSection = 2;
         int extraBracesForWideness = 4;
@@ -408,7 +410,7 @@ class CarportTest
     @Test
     void calcJoistBracketsTest()
     {
-        Carport carportA = new Carport(780, 600,0,0,RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportA = new Carport(780, 600,0,0,RoofType.FLAT,calculator);
         //Arrange
         int expectedJoistAmount = 15;
         int expectedBracketAmount = expectedJoistAmount *2;
@@ -424,7 +426,7 @@ class CarportTest
     @Test
     void calcBeamBoltsTest()
     {
-        Carport carportB = new Carport (780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportB = new Carport (780,600,210,530,RoofType.FLAT, calculator);
         // Arrange
         int totalBolts = 0;
         int boltsPerPost = 2;
@@ -449,7 +451,7 @@ class CarportTest
     @Test
     void calcShedScrewsTest()
     {
-        Carport carportC = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportC = new Carport(780,600,210,530,RoofType.FLAT, calculator);
         // Arrange
         int expectedInnerScrews = 600;
         int expectedOuterScrews = 600;
@@ -469,7 +471,7 @@ class CarportTest
     void calcRoofScrewsTest()
     {
         // Arrange
-        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, calculator);
         int screwsPerSqrMeter = 12;
 
         // Act
@@ -488,7 +490,7 @@ class CarportTest
     {
         // Arrange
         int expectedScrewPacks = 1;
-        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(dbConnection));
+        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT,calculator);
         int totalLength = ((carportD.length*6)+(carportD.width*4));
 
         // Act
