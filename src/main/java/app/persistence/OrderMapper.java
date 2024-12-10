@@ -135,7 +135,8 @@ public class OrderMapper
                 "LEFT JOIN public.account a ON carport_order.sales_id = a.user_id;";
 
         try (Connection connection = dbConnectionpool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setInt(1, orderId);
 
             ResultSet rs = ps.executeQuery();
@@ -143,7 +144,7 @@ public class OrderMapper
 
             while (rs.next())
             {
-                int orderId = rs.getInt("order_id");
+                orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
                 Customer customer = new Customer(rs.getString("customer_name"),
                         rs.getString("customer_address"),
@@ -173,7 +174,14 @@ public class OrderMapper
 
                 Order order = new Order(orderId, customer, salesPerson, carportWidth, carportLength, shedWidth,
                         shedLength, roofType, isPaid, createdAt, updatedAt);
+                orderById.add(order);
 
-
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message "+ e.getMessage());
         }
+
+        return orderById;
+    }
 }
