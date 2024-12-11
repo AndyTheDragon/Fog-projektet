@@ -7,11 +7,12 @@ public class ConstructionWood implements IMaterials
     final int width;
     final int height;
     final int length;
+    final int price;
     int amount;
     final String unit;
     final String description;
 
-    public ConstructionWood(int height, int width,  int length, String unit, String type, String description, int amount, int fogProductID)
+    public ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int fogProductID, int price)
     {
         this.width = width;
         this.height = height;
@@ -21,6 +22,7 @@ public class ConstructionWood implements IMaterials
         this.description = description;
         this.amount = amount;
         this.fogProductID = fogProductID;
+        this.price = price;
     }
 
     public int getAmount()
@@ -61,6 +63,12 @@ public class ConstructionWood implements IMaterials
     public int getWidth()
     {
         return width;
+    }
+
+    @Override
+    public int getPrice()
+    {
+        return price;
     }
 
     public IMaterials setAmount(int amount)
