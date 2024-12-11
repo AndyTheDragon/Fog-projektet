@@ -5,12 +5,13 @@ public class RoofCovering implements IMaterials
     private int length;
     private int width;
     private int amount;
+    private int price;
     private String type;
     private String unit;
     private String description;
     private int fogProductID;
 
-    public RoofCovering(int length, int width, int amount, String type, String unit, String description, int fogProductID)
+    public RoofCovering(int length, int width, int amount, String type, String unit, String description, int fogProductID, int price)
     {
         this.length = length;
         this.width = width;
@@ -51,6 +52,7 @@ public class RoofCovering implements IMaterials
         return fogProductID;
     }
 
+
     @Override
     public int getHeight()
     {
@@ -60,6 +62,12 @@ public class RoofCovering implements IMaterials
     public int getWidth()
     {
         return width;
+    }
+
+    @Override
+    public int getPrice()
+    {
+        return price;
     }
 
     @Override
