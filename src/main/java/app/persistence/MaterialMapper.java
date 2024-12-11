@@ -110,7 +110,7 @@ public class MaterialMapper
              PreparedStatement ps = connection.prepareStatement(sql)) {
             for (IMaterials material : materialsList) {
                 ps.setInt(1, orderId);
-                ps.setInt(2, material.getMaterialId());
+                ps.setInt(2, material.getMaterialID());
                 ps.setInt(3, material.getAmount());
                 ps.setString(4, material.getDescription());
                 ps.executeUpdate();
