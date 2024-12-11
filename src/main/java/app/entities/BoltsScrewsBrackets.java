@@ -2,14 +2,14 @@ package app.entities;
 
 public class BoltsScrewsBrackets implements IMaterials
 {
-    private int length;
-    private int width;
-    private int amount;
-    private int price;
-    private String type;
-    private String unit;
-    private String description;
-    private int materialID;
+    final int length;
+    final int width;
+    int amount;
+    final int price;
+    final String type;
+    final String unit;
+    final String description;
+    final int materialID;
 
     public BoltsScrewsBrackets(int width, int length, String type, int amount, String unit, String description, int materialID, int price)
     {
@@ -20,6 +20,7 @@ public class BoltsScrewsBrackets implements IMaterials
         this.unit = unit;
         this.width = width;
         this.materialID = materialID;
+        this.price = price;
     }
 
     public int getAmount()
