@@ -9,9 +9,9 @@ public class RoofCovering implements IMaterials
     private String type;
     private String unit;
     private String description;
-    private int fogProductID;
+    private int materialID;
 
-    public RoofCovering(int length, int width, int amount, String type, String unit, String description, int fogProductID, int price)
+    public RoofCovering(int length, int width, int amount, String type, String unit, String description, int materialID, int price)
     {
         this.length = length;
         this.width = width;
@@ -19,7 +19,7 @@ public class RoofCovering implements IMaterials
         this.type = type;
         this.unit = unit;
         this.description = description;
-        this.fogProductID = fogProductID;
+        this.materialID = materialID;
     }
 
     public int getAmount()
@@ -47,9 +47,9 @@ public class RoofCovering implements IMaterials
         return unit;
     }
 
-    public int getFogProductID()
+    public int getMaterialID()
     {
-        return fogProductID;
+        return materialID;
     }
 
 
