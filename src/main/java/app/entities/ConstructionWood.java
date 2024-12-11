@@ -63,9 +63,10 @@ public class ConstructionWood implements IMaterials
         return width;
     }
 
-    public void setAmount(int amount)
+    public IMaterials setAmount(int amount)
     {
         this.amount = amount;
+        return this;
     }
 
     @Override
