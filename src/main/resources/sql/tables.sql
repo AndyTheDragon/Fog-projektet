@@ -58,12 +58,14 @@ CREATE TABLE carport_material (
        width int,
        height int,
        length int,
+       unit varchar(64) not null default 'stk',
        fog_id varchar(64),
        fog_price int
 );
 CREATE TABLE material_function (
     function_id SERIAL PRIMARY KEY,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    material_type varchar(64)
 );
 CREATE TABLE carport_material_function (
    material_id INT NOT NULL,

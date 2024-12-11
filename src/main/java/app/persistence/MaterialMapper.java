@@ -24,12 +24,12 @@ public class MaterialMapper
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit, f.description, f.material_type FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
-                " WHERE f.description = ?" +
+                " WHERE f.description LIKE ?" +
                 " ORDER BY m.length ASC";
 
         try (Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, descriptionType);
+                ps.setString(1, "%" + descriptionType + "%");
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
