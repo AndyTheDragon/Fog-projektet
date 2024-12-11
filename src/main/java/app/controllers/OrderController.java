@@ -339,6 +339,7 @@ public class OrderController
 
     private static void updateOrder(Context ctx, ConnectionPool dbConnection)
     {
-        editOrder(ctx, dbConnection);
+        System.out.println(ctx.formParamMap());
+
     }
 }
