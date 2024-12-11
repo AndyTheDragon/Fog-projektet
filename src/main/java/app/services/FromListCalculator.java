@@ -120,7 +120,7 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "løsholter til skur sider".equalsIgnoreCase(material.getDescription())
-                        || "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
+                        && "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 
@@ -154,7 +154,7 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "Til montering af spær".equalsIgnoreCase(material.getDescription())
-                        || "Til montering af spær".equalsIgnoreCase(material.getDescription()))
+                        && "Til montering af spær".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 
