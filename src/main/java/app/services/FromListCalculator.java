@@ -117,7 +117,11 @@ public class FromListCalculator implements CarportCalculator
     @Override
     public List<IMaterials> calcHorizontalBraces() throws CalculatorException
     {
-        return List.of();
+        if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
+        return materialsList.stream()
+                .filter(material -> "løsholter til skur sider".equalsIgnoreCase(material.getDescription())
+                        || "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
+                .collect(Collectors.toList());
     }
 
     @Override
