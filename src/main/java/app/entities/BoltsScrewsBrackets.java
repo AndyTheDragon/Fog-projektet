@@ -5,12 +5,13 @@ public class BoltsScrewsBrackets implements IMaterials
     private int length;
     private int width;
     private int amount;
+    private int price;
     private String type;
     private String unit;
     private String description;
     private int fogProductID;
 
-    public BoltsScrewsBrackets(int width, int length,String type, int amount,  String unit, String description, int fogProductID)
+    public BoltsScrewsBrackets(int width, int length, String type, int amount, String unit, String description, int fogProductID, int price)
     {
         this.amount = amount;
         this.description = description;
@@ -44,6 +45,12 @@ public class BoltsScrewsBrackets implements IMaterials
     public String getUnit()
     {
         return unit;
+    }
+
+    @Override
+    public int getPrice()
+    {
+        return price;
     }
 
     @Override
