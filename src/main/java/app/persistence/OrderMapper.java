@@ -221,10 +221,10 @@ public class OrderMapper
         }
     }
 
-    public static Order saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
+    public static int saveOrderToDatabase(Order order, ConnectionPool dbConnection) throws DatabaseException
     {
         String sql = "INSERT INTO carport_order (customer_id, carport_width, carport_length, carport_height, carport_shed,shed_width, shed_length, carport_roof) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        Order newOrder;
+        int orderId;
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS))
@@ -243,8 +243,8 @@ public class OrderMapper
             {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                int newOrderId = rs.getInt(1);
-                newOrder = new Order(newOrderId, order.getCustomer(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
+                orderId = rs.getInt(1);
+                //newOrder = new Order(newOrderId, order.getCustomer(), order.getSalesPerson(), order.getCarportWidth(), order.getCarportLength(), order.getCarportHeight(), order.getCarportShed(), order.getShedWidth(), order.getShedLength(), order.getCarportRoof(), order.isPaid());
             } else {
                 throw new DatabaseException("Error creating order");
             }
@@ -253,7 +253,7 @@ public class OrderMapper
         {
             throw new DatabaseException("Message " + e.getMessage());
         }
-        return newOrder;
+        return orderId;
     }
 
     public static void updateOrder(int orderId, int carportLength, int carportWidth, int shedLength, int shedWidth, RoofType carportRoof, ConnectionPool dbConnection) throws  DatabaseException
