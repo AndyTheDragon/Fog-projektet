@@ -4,6 +4,7 @@ import app.entities.*;
 import app.exceptions.CalculatorException;
 import app.persistence.ConnectionPool;
 import app.persistence.CustomerMapper;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import app.exceptions.DatabaseException;
 import app.services.OptimalWoodCalculator;
@@ -59,7 +60,8 @@ public class OrderController
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
                     shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
-            OrderMapper.saveOrderToDatabase(order, dbConnection);
+            int orderId = OrderMapper.saveOrderToDatabase(order, dbConnection);
+            MaterialMapper.createOrderLines(orderId, order.getCarport().getMaterialsList(), dbConnection);
             ctx.attribute("message", "Ordren blev oprettet med succes.");
             ctx.render("kvittering.html");
         } catch (NumberFormatException e) {
