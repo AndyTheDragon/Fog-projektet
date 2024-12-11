@@ -10,6 +10,7 @@ public class RoofCovering implements IMaterials
     private String unit;
     private String description;
     private int materialID;
+    private int lineID;
 
     public RoofCovering(int length, int width, int amount, String type, String unit, String description, int materialID, int price)
     {
@@ -75,6 +76,12 @@ public class RoofCovering implements IMaterials
     {
         this.amount = amount;
         return this;
+    }
+
+    @Override
+    public int getLineID()
+    {
+        return lineID;
     }
 
     @Override

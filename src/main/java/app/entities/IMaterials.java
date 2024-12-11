@@ -12,4 +12,5 @@ public interface IMaterials
     int getWidth();
     int getPrice();
     IMaterials setAmount(int i);
+    int getLineID();
 }

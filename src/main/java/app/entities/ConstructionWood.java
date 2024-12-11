@@ -11,6 +11,7 @@ public class ConstructionWood implements IMaterials
     int amount;
     final String unit;
     final String description;
+    int lineID;
 
     public ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int materialID, int price)
     {
@@ -75,6 +76,12 @@ public class ConstructionWood implements IMaterials
     {
         this.amount = amount;
         return this;
+    }
+
+    @Override
+    public int getLineID()
+    {
+        return lineID;
     }
 
     @Override
