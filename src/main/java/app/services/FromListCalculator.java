@@ -207,7 +207,11 @@ public class FromListCalculator implements CarportCalculator
     @Override
     public List<IMaterials> doorHandleBrackets() throws CalculatorException
     {
-        return List.of();
+        if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
+        return materialsList.stream()
+                .filter(material -> "Til lås".equalsIgnoreCase(material.getDescription())
+                        && "Til skurdør".equalsIgnoreCase(material.getDescription()))
+                .collect(Collectors.toList());
     }
 
     @Override
