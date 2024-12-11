@@ -103,4 +103,20 @@ public class MaterialMapper
         return materialsList;
     }
 
+    public static void saveOrderLines(int orderId, List<IMaterials> materialsList, ConnectionPool dbConnection) throws DatabaseException
+    {
+        String sql = "INSERT INTO carport_orderlines (order_id, material_id, quantity, description) VALUES (?, ?, ?, (SELECT function_id FROM material_function WHERE description LIKE ?))";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            for (IMaterials material : materialsList) {
+                ps.setInt(1, orderId);
+                ps.setInt(2, material.getMaterialID());
+                ps.setInt(3, material.getAmount());
+                ps.setString(4, material.getDescription());
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Message "+ e.getMessage());
+        }
+    }
 }
