@@ -61,7 +61,7 @@ public class MaterialMapper
         return materialsList;
     }
 
-    public static List<IMaterials> getMaterialOfTypeAndLength(String type, int minLength, ConnectionPool connectionPool ) throws DatabaseException
+    public static List<IMaterials> getMaterialOfTypeAndLength(String descriptionType, int minLength, ConnectionPool connectionPool ) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit, f.description, f.material_type FROM carport_material AS m" +
@@ -72,7 +72,7 @@ public class MaterialMapper
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, type);
+            ps.setString(1, descriptionType);
             ps.setInt(2, minLength);
             ResultSet rs = ps.executeQuery();
 
