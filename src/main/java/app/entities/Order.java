@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.CalculatorException;
 import app.services.CarportCalculator;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class Order
     private OrderStatus orderStatus;
     private Carport carport;
 
-    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator) throws CalculatorException
     {
         this.orderID = orderID;
         this.customer = customer;
