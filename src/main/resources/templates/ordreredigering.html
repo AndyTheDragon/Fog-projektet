@@ -93,7 +93,7 @@
                 <tr th:each="material : ${order.carport.materialsList}">
                     <td th:text="${material.type}"></td>
                     <td th:text="${material.length}"></td>
-                    <td><input type="number" class="form-control" id="fogIdWood" name="fogId" th:name="${material.fogProductID}" th:value="${material.amount}"></input></td>
+                    <td><input type="number" class="form-control" id="fogIdWood" name="fogId[]" th:name="|fogId[${material.materialID}]|" th:value="${material.amount}"></input></td>
                     <td th:text="${material.unit}"></td>
                     <td th:text="${material.description}"></td>
                 </tr>
@@ -103,7 +103,7 @@
                 <tr th:each="material : ${order.carport.boltsScrewsBracketsList}">
                     <td th:text="${material.type}"></td>
                     <td th:text="${material.length}"></td>
-                    <td><input type="number" class="form-control" id="fogIdBSB" name="fogId" th:name="${material.fogProductID}" th:value="${material.amount}"></input></td>
+                    <td><input type="number" class="form-control" id="fogIdBSB" name="fogIdBSB[]" th:name="|fogId[${material.materialID}]|" th:value="${material.amount}"></input></td>
                     <td th:text="${material.unit}"></td>
                     <td th:text="${material.description}"></td>
                 </tr>
