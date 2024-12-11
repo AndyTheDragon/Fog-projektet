@@ -7,12 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 
 public class MaterialMapper
@@ -21,7 +17,7 @@ public class MaterialMapper
     public static List<IMaterials> getMaterialOfType(String descriptionType, ConnectionPool connectionPool) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
-        String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit, f.description, f.material_type FROM carport_material AS m" +
+        String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit, m.fog_price, f.description, f.material_type FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
                 " WHERE f.description LIKE ?" +
@@ -37,21 +33,22 @@ public class MaterialMapper
                     int width = rs.getInt("width");
                     int length = rs.getInt("length");
                     int materialId = rs.getInt("material_id");
+                    int price = rs.getInt("fog_price");
                     String unit = rs.getString("unit");
                     String materialName = rs.getString("material_name");
                     String description = rs.getString("description");
                     String materialType = rs.getString("material_type");
                     if(materialType.equals("wood"))
                     {
-                        materialsList.add(new ConstructionWood(height, width, length, unit, materialName, description, 0, materialId));
+                        materialsList.add(new ConstructionWood(height, width, length, unit, materialName, description, 0, materialId, price ));
                     }
                     if(materialType.equals("screw"))
                     {
-                        materialsList.add(new BoltsScrewsBrackets(width, length, materialName,0, unit,  description,  materialId));
+                        materialsList.add(new BoltsScrewsBrackets(width, length, materialName,0, unit,  description,  materialId, price ));
                     }
                     if(materialType.equals("roof"))
                     {
-                        materialsList.add(new RoofCovering(length, width,0,  materialName, unit, description, materialId));
+                        materialsList.add(new RoofCovering(length, width,0,  materialName, unit, description, materialId, price ));
                     }
                 }
             } catch (SQLException e) {
@@ -64,7 +61,7 @@ public class MaterialMapper
     public static List<IMaterials> getMaterialOfTypeAndLength(String descriptionType, int minLength, ConnectionPool connectionPool ) throws DatabaseException
     {
         List<IMaterials> materialsList = new ArrayList<>();
-        String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit, f.description, f.material_type FROM carport_material AS m" +
+        String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit,m.fog_price, f.description, f.material_type FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
                 " WHERE f.description = ? AND m.length >= ?"+
@@ -81,21 +78,22 @@ public class MaterialMapper
                 int width = rs.getInt("width");
                 int length = rs.getInt("length");
                 int materialId = rs.getInt("material_id");
+                int price = rs.getInt("fog_price");
                 String unit = rs.getString("unit");
                 String materialName = rs.getString("material_name");
                 String description = rs.getString("description");
                 String materialType = rs.getString("material_type");
                 if(materialType.equals("wood"))
                 {
-                    materialsList.add(new ConstructionWood(height, width, length, unit, materialName, description, 0, materialId));
+                    materialsList.add(new ConstructionWood(height, width, length, unit, materialName, description, 0, materialId, price ));
                 }
                 if(materialType.equals("screw"))
                 {
-                    materialsList.add(new BoltsScrewsBrackets(width, length, materialName,0, unit,  description,  materialId));
+                    materialsList.add(new BoltsScrewsBrackets(width, length, materialName,0, unit,  description,  materialId, price ));
                 }
                 if(materialType.equals("roof"))
                 {
-                    materialsList.add(new RoofCovering(length, width,0,  materialName, unit, description, materialId));
+                    materialsList.add(new RoofCovering(length, width,0,  materialName, unit, description, materialId, price));
                 }
             }
         } catch (SQLException e) {
