@@ -64,6 +64,13 @@ public class BoltsScrewsBrackets implements IMaterials
     }
 
     @Override
+    public IMaterials setAmount(int i)
+    {
+        this.amount = i;
+        return this;
+    }
+
+    @Override
     public String toString()
     {
         return "BoltsScrewsBrackets{" +
