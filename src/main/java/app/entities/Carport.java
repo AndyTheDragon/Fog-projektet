@@ -23,6 +23,7 @@ public class Carport
     String shedPlacement;
     int numberOfPosts;
     int numberOfJoists;
+    int price;
 
 
     public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType, CarportCalculator calculator) throws CalculatorException
@@ -41,6 +42,7 @@ public class Carport
         this.numberOfPosts = this.calculator.calcNumberOfPosts();
         this.numberOfJoists = this.calculator.calcNumberOfJoists();
         this.workDrawing = new WorkDrawing(this, 600);
+        this.price = getTotalPrice();
     }
 
     public void calculateMaterials() throws CalculatorException
@@ -80,6 +82,31 @@ public class Carport
             boltsScrewsBracketsList.addAll(calculator.calcHorizontalBracesBrackets());
             boltsScrewsBracketsList.addAll(calculator.doorHandleBrackets());
         }
+    }
+
+    public int getTotalPrice()
+    {
+        return getMaterialPrice() + getBoltsScrewsBracketsPrice();
+    }
+
+    public int getMaterialPrice()
+    {
+        int price = 0;
+        for (IMaterials material : materialsList)
+        {
+            price += material.getPrice();
+        }
+        return price;
+    }
+
+    public int getBoltsScrewsBracketsPrice()
+    {
+        int price = 0;
+        for (IMaterials material : boltsScrewsBracketsList)
+        {
+            price += material.getPrice();
+        }
+        return price;
     }
 
     public boolean hasShed()

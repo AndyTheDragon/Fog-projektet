@@ -167,10 +167,10 @@ class CarportTest
         int width = 2*600;
         int totalLength = length + width;
         List<IMaterials> materialsList = new ArrayList<>();
-        materialsList.add(new ConstructionWood(20, 20, 1380, "stk", "Fascia", "Fascia", 0, 3));
-        materialsList.add(new ConstructionWood(20, 20, 780, "stk", "Fascia", "Fascia", 0, 1));
-        materialsList.add(new ConstructionWood(20, 20, 360, "stk", "Fascia", "Fascia", 0, 1));
-        materialsList.add(new ConstructionWood(20, 20, 540, "stk", "Fascia", "Fascia", 0, 2));
+        materialsList.add(new ConstructionWood(20, 20, 1380, "stk", "Fascia", "Fascia", 0, 3,0));
+        materialsList.add(new ConstructionWood(20, 20, 780, "stk", "Fascia", "Fascia", 0, 1,0));
+        materialsList.add(new ConstructionWood(20, 20, 360, "stk", "Fascia", "Fascia", 0, 1,0));
+        materialsList.add(new ConstructionWood(20, 20, 540, "stk", "Fascia", "Fascia", 0, 2,0));
         OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
         int [] result = calc.calcOptimalWood(totalLength, materialsList);
