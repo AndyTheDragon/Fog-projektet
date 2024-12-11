@@ -86,7 +86,8 @@ public class Carport
 
     public int getTotalPrice()
     {
-        return getMaterialPrice() + getBoltsScrewsBracketsPrice();
+        int price = getMaterialPrice() + getBoltsScrewsBracketsPrice();
+        return price;
     }
 
     public int getMaterialPrice()
@@ -94,7 +95,7 @@ public class Carport
         int price = 0;
         for (IMaterials material : materialsList)
         {
-            price += material.getPrice();
+            price += material.getPrice() * material.getAmount();
         }
         return price;
     }
@@ -104,7 +105,7 @@ public class Carport
         int price = 0;
         for (IMaterials material : boltsScrewsBracketsList)
         {
-            price += material.getPrice();
+            price += material.getPrice() * material.getAmount();
         }
         return price;
     }

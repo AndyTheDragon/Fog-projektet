@@ -21,6 +21,7 @@ public class BoltsScrewsBrackets implements IMaterials
         this.unit = unit;
         this.width = width;
         this.materialID = materialID;
+        this.price = price;
     }
 
     public BoltsScrewsBrackets(int width, int length, String type, int amount, String unit, String description, int materialID, int price, int lineID)
