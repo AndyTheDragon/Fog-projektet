@@ -63,6 +63,13 @@ public class RoofCovering implements IMaterials
     }
 
     @Override
+    public IMaterials setAmount(int amount)
+    {
+        this.amount = amount;
+        return this;
+    }
+
+    @Override
     public String toString()
     {
         return "RoofCovering{" +
