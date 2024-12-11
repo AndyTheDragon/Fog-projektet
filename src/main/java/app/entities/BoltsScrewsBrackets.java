@@ -9,9 +9,9 @@ public class BoltsScrewsBrackets implements IMaterials
     private String type;
     private String unit;
     private String description;
-    private int fogProductID;
+    private int materialID;
 
-    public BoltsScrewsBrackets(int width, int length, String type, int amount, String unit, String description, int fogProductID, int price)
+    public BoltsScrewsBrackets(int width, int length, String type, int amount, String unit, String description, int materialID, int price)
     {
         this.amount = amount;
         this.description = description;
@@ -19,7 +19,7 @@ public class BoltsScrewsBrackets implements IMaterials
         this.type = type;
         this.unit = unit;
         this.width = width;
-        this.fogProductID = fogProductID;
+        this.materialID = materialID;
     }
 
     public int getAmount()
@@ -54,9 +54,9 @@ public class BoltsScrewsBrackets implements IMaterials
     }
 
     @Override
-    public int getFogProductID()
+    public int getMaterialID()
     {
-        return fogProductID;
+        return materialID;
     }
 
     @Override
