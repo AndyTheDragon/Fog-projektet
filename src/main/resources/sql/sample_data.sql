@@ -23,6 +23,21 @@ insert into carport_material (material_name, width, height, length) VALUES
                                                                         ('38x73 mm. taglægte T1', 40, 75, 540),
                                                                         ('38x73 mm. taglægte T1', 40, 75, 360),
                                                                         ('38x73 mm. taglægte T1', 40, 75, 420);
+insert into carport_material (material_name, unit) VALUES
+                                                                        ('plastmo bundskruer 200 stk.', 'pakke'),
+                                                                        ('hulbånd 1x20 mm. 10 mtr.', 'rulle'),
+                                                                        ('universal 190 mm højre', 'stk'),
+                                                                        ('universal 190 mm venstre', 'stk'),
+                                                                        ('4,5 x 60 mm skruer 200 stk.', 'pakke'),
+                                                                        ('4,0 x 50 mm beslagskruer 250 stk.', 'pakke'),
+                                                                        ('bræddebolt 10 x 120 mm', 'stk'),
+                                                                        ('firkantskiver 40x40x11 mm', 'stk'),
+                                                                        ('4,5 x 70 mm skruer 400 stk.', 'pakke'),
+                                                                        ('4,5 x 50 mm skruer 300 stk.', 'pakke'),
+                                                                        ('stalddørsgreb 50x75', 'sæt'),
+                                                                        ('t hængsel 390 mm', 'stk'),
+                                                                        ('vinkelbeslag 35', 'stk');                                                                        ;
+
 insert into material_function (description) values
                                                 ('understernbrædder'),
                                                 ('oversternbrædder'),
