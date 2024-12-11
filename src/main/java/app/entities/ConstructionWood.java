@@ -7,7 +7,7 @@ public class ConstructionWood implements IMaterials
     final int width;
     final int height;
     final int length;
-    final int amount;
+    int amount;
     final String unit;
     final String description;
 
@@ -61,6 +61,12 @@ public class ConstructionWood implements IMaterials
     public int getWidth()
     {
         return width;
+    }
+
+    public IMaterials setAmount(int amount)
+    {
+        this.amount = amount;
+        return this;
     }
 
     @Override

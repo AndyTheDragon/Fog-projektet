@@ -1,6 +1,7 @@
 package app.persistence;
 
 import app.entities.*;
+import app.exceptions.CalculatorException;
 import app.exceptions.DatabaseException;
 import app.services.OptimalWoodCalculator;
 
@@ -95,6 +96,9 @@ public class OrderMapper
         } catch (SQLException e)
         {
                 throw new DatabaseException("Message "+ e.getMessage());
+        } catch (app.exceptions.CalculatorException e)
+        {
+            throw new RuntimeException(e);
         }
 
         Map<String, ArrayList<Order>> result = new HashMap<>();
@@ -104,7 +108,7 @@ public class OrderMapper
         return result;
     }
 
-    public static Order getOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    public static Order getOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException, CalculatorException
     {
         Order order = null;
 
@@ -176,6 +180,9 @@ public class OrderMapper
         } catch (SQLException e)
         {
             throw new DatabaseException("Message "+ e.getMessage());
+        } catch (CalculatorException e)
+        {
+            throw new CalculatorException(e.getMessage());
         }
 
         return order;

@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.exceptions.CalculatorException;
 import app.persistence.ConnectionPool;
 import app.services.OptimalWoodCalculator;
 import org.junit.jupiter.api.AfterEach;
@@ -23,7 +24,13 @@ class CarportTest
     @BeforeEach
     void setUp()
     {
-        carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        try
+        {
+            carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterEach
@@ -35,9 +42,23 @@ class CarportTest
     void getNumberOfJoistsTest()
     {
         // Arrange
-        Carport carportA = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carportA = null;
+        try
+        {
+            carportA = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int expectedA = 15;
-        Carport carportB = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
+        Carport carportB = null;
+        try
+        {
+            carportB = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int expectedB = 10;
         // Act
         int actualA = carportA.getNumberOfJoists();
@@ -52,7 +73,14 @@ class CarportTest
     void calcOptimalBeamMiddleTest()
     {
         //Arrange
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carport = null;
+        try
+        {
+            carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int totalLength = 2*780;
         int length1 = 480;
         int length2 = 600;
@@ -285,7 +313,14 @@ class CarportTest
     void calcOptimalHorizontalBracesMaximumTest()
     {
         //Arrange
-        Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carport = null;
+        try
+        {
+            carport = new Carport(780, 600, 210, 530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int totalBraces = 0;
         int bracesPerSection = 2;
         int extraBracesForWideness = 4;
@@ -416,7 +451,14 @@ class CarportTest
     @Test
     void calcJoistBracketsTest()
     {
-        Carport carportA = new Carport(780, 600,0,0,RoofType.FLAT, new OptimalWoodCalculator(780, 600, 0, 0, dbConnection));
+        Carport carportA = null;
+        try
+        {
+            carportA = new Carport(780, 600,0,0, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 0, 0, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         //Arrange
         int expectedJoistAmount = 15;
         int expectedBracketAmount = expectedJoistAmount *2;
@@ -432,7 +474,14 @@ class CarportTest
     @Test
     void calcBeamBoltsTest()
     {
-        Carport carportB = new Carport (780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carportB = null;
+        try
+        {
+            carportB = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         // Arrange
         int totalBolts = 0;
         int boltsPerPost = 2;
@@ -457,7 +506,14 @@ class CarportTest
     @Test
     void calcShedScrewsTest()
     {
-        Carport carportC = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carportC = null;
+        try
+        {
+            carportC = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         // Arrange
         int expectedInnerScrews = 600;
         int expectedOuterScrews = 600;
@@ -477,7 +533,14 @@ class CarportTest
     void calcRoofScrewsTest()
     {
         // Arrange
-        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carportD = null;
+        try
+        {
+            carportD = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int screwsPerSqrMeter = 12;
 
         // Act
@@ -485,7 +548,14 @@ class CarportTest
 
         int totalScrews = roofArea * screwsPerSqrMeter;
         int expectedScrewPacks = Math.ceilDiv(totalScrews,200);
-        int actualScrewPacks = carportD.calculator.calcRoofScrews().getFirst().getAmount();
+        int actualScrewPacks = 0;
+        try
+        {
+            actualScrewPacks = carportD.calculator.calcRoofScrews().getFirst().getAmount();
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         // Assert
         assertEquals(expectedScrewPacks, actualScrewPacks);
@@ -496,7 +566,14 @@ class CarportTest
     {
         // Arrange
         int expectedScrewPacks = 1;
-        Carport carportD = new Carport(780,600,210,530,RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        Carport carportD = null;
+        try
+        {
+            carportD = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         int totalLength = ((carportD.length*6)+(carportD.width*4));
 
         // Act

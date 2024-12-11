@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.*;
+import app.exceptions.CalculatorException;
 import app.persistence.ConnectionPool;
 import app.persistence.CustomerMapper;
 import app.persistence.OrderMapper;
@@ -67,19 +68,29 @@ public class OrderController
         } catch (DatabaseException e) {
             ctx.attribute("message", "Databasefejl: " + e.getMessage());
             ctx.render("bestilling.html");
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
-        Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
-        WorkDrawing drawing = new WorkDrawing(carport,780);
-        ctx.attribute("drawing", drawing.toString());
-        Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
-        WorkDrawing noShed = new WorkDrawing(carport2, 480);
-        ctx.attribute("noshed", noShed.toString());
+        Carport carport = null;
+        try
+        {
+            carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+            WorkDrawing drawing = new WorkDrawing(carport,780);
+            ctx.attribute("drawing", drawing.toString());
+            Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
+            WorkDrawing noShed = new WorkDrawing(carport2, 480);
+            ctx.attribute("noshed", noShed.toString());
 
-        ctx.render("drawing.html");
+            ctx.render("drawing.html");
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -153,6 +164,9 @@ public class OrderController
         catch (DatabaseException e)
         {
             ctx.attribute("message", "Database error. " + e.getMessage());
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
         }
         ctx.attribute("order", order);
         ctx.render("ordredetaljer.html");
@@ -249,6 +263,9 @@ public class OrderController
         catch (DatabaseException e)
         {
             ctx.attribute("message", "Databasefejl: " + e.getMessage());
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
         }
         showOrders(0, ctx, dbConnection);
 
@@ -272,6 +289,9 @@ public class OrderController
             catch (DatabaseException e)
             {
                 ctx.attribute("message", "Database error. " + e.getMessage());
+            } catch (CalculatorException e)
+            {
+                throw new RuntimeException(e);
             }
         }
         else
