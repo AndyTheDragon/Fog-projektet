@@ -26,6 +26,20 @@ public class ConstructionWood implements IMaterials
         this.price = price;
     }
 
+    public ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int materialID, int price, int lineID)
+    {
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.unit = unit;
+        this.type = type;
+        this.description = description;
+        this.amount = amount;
+        this.materialID = materialID;
+        this.price = price;
+        this.lineID = lineID;
+    }
+
     public int getAmount()
     {
         return amount;

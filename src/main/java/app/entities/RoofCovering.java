@@ -23,6 +23,18 @@ public class RoofCovering implements IMaterials
         this.materialID = materialID;
     }
 
+    public RoofCovering(int length, int width, int amount, String type, String unit, String description, int materialID, int price, int lineID)
+    {
+        this.length = length;
+        this.width = width;
+        this.amount = amount;
+        this.type = type;
+        this.unit = unit;
+        this.description = description;
+        this.materialID = materialID;
+        this.lineID = lineID;
+    }
+
     public int getAmount()
     {
         return amount;
