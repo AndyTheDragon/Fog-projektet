@@ -103,7 +103,7 @@ public class MaterialMapper
         return materialsList;
     }
 
-    public static void createOrderLines(int orderId, List<IMaterials> materialsList, ConnectionPool dbConnection) throws DatabaseException
+    public static void saveOrderLines(int orderId, List<IMaterials> materialsList, ConnectionPool dbConnection) throws DatabaseException
     {
         String sql = "INSERT INTO carport_orderlines (order_id, material_id, quantity, description) VALUES (?, ?, ?, (SELECT function_id FROM material_function WHERE description LIKE ?))";
         try (Connection connection = dbConnection.getConnection();
