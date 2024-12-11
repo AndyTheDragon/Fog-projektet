@@ -73,10 +73,10 @@ public class OrderController
     private static void showDrawing(Context ctx, ConnectionPool dbConnection)
     {
         Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
-        WorkDrawing drawing = new WorkDrawing(carport,780);
+        WorkDrawing drawing = new WorkDrawing(carport,1250);
         ctx.attribute("drawing", drawing.toString());
         Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
-        WorkDrawing noShed = new WorkDrawing(carport2, 480);
+        WorkDrawing noShed = new WorkDrawing(carport2, 600);
         ctx.attribute("noshed", noShed.toString());
 
         ctx.render("drawing.html");
