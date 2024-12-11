@@ -111,7 +111,7 @@ public class WorkDrawing
     {
 
         //int joistSpacing = carportLength/numberOfJoists-45-(2*45/numberOfJoists);
-        int joistSpacing = (carportLength-(3*fasciaThickness/2)-45)/numberOfJoists;
+        int joistSpacing = (carportLength-(3*fasciaThickness/2)-45)/(numberOfJoists-1);
         int sum = 0;
         double fallPercentage = 1.28/100;
         double totalFall = carportLength*fallPercentage;
@@ -121,7 +121,7 @@ public class WorkDrawing
         {
             int arrowY = carportWidth+250;
             int arrowX = fasciaThickness+sum+22;
-            String joistSpacingString = String.format("%.1f", (float)(joistSpacing+45)/10);
+            String joistSpacingString = String.format("%.1f", (float)(joistSpacing)/10);
             topViewDrawing.addArrow(arrowX, arrowY, arrowX+joistSpacing+45, arrowY, STYLE_ARROW);
             topViewDrawing.addText(arrowX+(joistSpacing/2), arrowY+130, 0, joistSpacingString, STYLE_TEXT);
             topViewDrawing.addRectangle(fasciaThickness+sum,fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
@@ -129,7 +129,7 @@ public class WorkDrawing
             double yOffSet = sum*fallPercentage;
             sideViewDrawing.addRectangle(fasciaThickness+10+sum,190 + (int)yOffSet,195, 45, STYLE_DASHED);
 
-            sum += joistSpacing + 45;
+            sum += joistSpacing + 0;
         }
         topViewDrawing.addRectangle(carportLength-fasciaThickness/2-45, fasciaThickness, carportWidth-2*fasciaThickness, 45, STYLE);
         sideViewDrawing.addRectangle(carportLength-fasciaThickness-55, 270,195, 45, STYLE_DASHED);
