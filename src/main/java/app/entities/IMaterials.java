@@ -7,7 +7,7 @@ public interface IMaterials
     int getLength();
     String getType();
     String getUnit();
-    int getFogProductID();
+    int getMaterialID();
     int getHeight();
     int getWidth();
     int getPrice();
