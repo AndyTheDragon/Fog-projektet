@@ -118,7 +118,14 @@ public class FromListCalculator implements CarportCalculator
     @Override
     public int calcNumberOfCladdingBoards()
     {
-        return 0;
+        if (materialsList == null || materialsList.isEmpty())
+        {
+            return 0;
+        }
+
+        return (int) materialsList.stream()
+                .filter(material -> "beklædning".equals(material.getDescription()))
+                .count();
     }
 
     @Override
