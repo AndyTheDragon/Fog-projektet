@@ -36,7 +36,10 @@ public class FromListCalculator implements CarportCalculator
     @Override
     public List<IMaterials> calcBeam() throws CalculatorException
     {
-        return List.of();
+        if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
+        return materialsList.stream()
+                .filter(material -> "Remme i sider, sadles ned i stolper".equalsIgnoreCase(material.getDescription()))
+                .collect(Collectors.toList());
     }
 
     @Override
