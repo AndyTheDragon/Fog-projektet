@@ -206,11 +206,11 @@ public class OrderMapper
 
     public static void acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET is_paid = ? WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET order_status = ? WHERE order_id = ?";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setBoolean(1, true);
+            ps.setString(1, OrderStatus.OFFER_ACCEPTED.toString());
             ps.setInt(2, orderId);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected == 0) {
