@@ -24,24 +24,37 @@ insert into carport_material (material_name, width, height, length) VALUES
                                                                         ('38x73 mm. taglægte T1', 40, 75, 360),
                                                                         ('38x73 mm. taglægte T1', 40, 75, 420);
 insert into material_function (description) values
-                                                ('understernbrædder'),
-                                                ('oversternbrædder'),
-                                                ('til z på bagside af dør'),
-                                                ('løsholter til skur gavle'),
-                                                ('løsholter til skur sider'),
-                                                ('Remme i sider, sadles ned i stolper'),
-                                                ('Spær, monteres på rem'),
-                                                ('Stolper nedgraves 90 cm. i jord'),
-                                                ('til beklædning af skur 1 på 2'),
-                                                ('beklædning af gavle 1 pà 2'),
-                                                ('vandbrædt på stern i sider'),
-                                                ('vandbrædt på stern i forende'),
-                                                ('tagplader monteres på spær'),
-                                                ('vandbrædt på vindskeder'),
-                                                ('Vindskeder pa rejsning'),
-                                                ('til montering oven pà tagfodslægte'),
-                                                ('til montering på spær, 7 rækker lægter på hver side'),
-                                                ('toplagte til montering af rygsten lægges i toplagte beslag');
+                                                ('understernbrædder', 'wood'),
+                                                ('oversternbrædder', 'wood'),
+                                                ('til z på bagside af dør', 'wood'),
+                                                ('løsholter til skur gavle', 'wood'),
+                                                ('løsholter til skur sider', 'wood'),
+                                                ('Remme i sider, sadles ned i stolper', 'wood'),
+                                                ('Spær, monteres på rem', 'wood'),
+                                                ('Stolper nedgraves 90 cm. i jord', 'wood'),
+                                                ('til beklædning af skur 1 på 2', 'wood'),
+                                                ('beklædning af gavle 1 pà 2', 'wood'),
+                                                ('vandbrædt på stern i sider', 'wood'),
+                                                ('vandbrædt på stern i forende', 'wood'),
+                                                ('tagplader monteres på spær', 'roof'),
+                                                ('vandbrædt på vindskeder', 'wood'),
+                                                ('Vindskeder pa rejsning', 'wood'),
+                                                ('til montering oven pà tagfodslægte', 'wood'),
+                                                ('til montering på spær, 7 rækker lægter på hver side', 'wood'),
+                                                ('toplagte til montering af rygsten lægges i toplagte beslag', 'wood');
+insert into material_function (description) values
+                                                ('Skruer til tagplader', 'screw'),
+                                                ('Til vindkryds på spær', 'screw'),
+                                                ('Til montering af spær på rem', 'screw'),
+                                                ('Til montering af stern&vandbrædt', 'screw'),
+                                                ('Til montering af universalbeslag + hulbånd', 'screw'),
+                                                ('Til montering af rem på stolper', 'screw'),
+                                                ('til montering af yderste beklædning', 'screw'),
+                                                ('til montering af inderste beklædning', 'screw'),
+                                                ('Til lås på dør i skur', 'screw'),
+                                                ('Til skurdør', 'screw'),
+                                                ('Til montering af løsholter i skur', 'screw');
+
 insert into carport_material_function (material_id, function_id) VALUES
              (1,1),
              (2,1),
@@ -61,10 +74,22 @@ insert into carport_material_function (material_id, function_id) VALUES
              (21,9),
              (17,10),
              (18,10),
-             (19,10),
-             (20,11),
-             (18,11),
-             (19,11);
+             (19,10);
+insert into carport_material_function (material_id, function_id) VALUES
+             (20,19),
+             (21,20),
+             (22,21),
+             (23,21),
+             (24,22),
+             (25,23),
+             (26,24),
+             (27,24),
+             (28,25),
+             (29,26),
+             (30,27),
+             (31,28),
+             (32,29);
+
 
 
 
