@@ -248,7 +248,6 @@ public class OrderMapper
             } else {
                 throw new DatabaseException("Error creating order");
             }
-            ps.executeUpdate();
         } catch (SQLException e)
         {
             throw new DatabaseException("Message " + e.getMessage());
