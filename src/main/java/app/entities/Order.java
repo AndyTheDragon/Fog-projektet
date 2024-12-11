@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.services.CarportCalculator;
+
 import java.time.LocalDateTime;
 
 public class Order
@@ -9,6 +11,7 @@ public class Order
     private User salesPerson;
     private int carportWidth;
     private int carportLength;
+    private int carportHeight;
     private boolean carportShed;
     private int shedWidth;
     private int shedLength;
@@ -16,15 +19,17 @@ public class Order
     private boolean isPaid;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private OrderStatus orderStatus;
     private Carport carport;
 
-    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator)
     {
         this.orderID = orderID;
         this.customer = customer;
         this.salesPerson = salesPerson;
         this.carportWidth = carportWidth;
         this.carportLength = carportLength;
+        this.carportHeight =230;
         this.carportShed = (shedWidth>0&&shedLength>0);
         this.shedWidth = shedWidth;
         this.shedLength = shedLength;
@@ -32,8 +37,25 @@ public class Order
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof);
+        this.orderStatus = orderStatus;
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
     }
+
+    public Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
+    {
+        this.orderID = newOrderId;
+        this.customer = customer;
+        this.salesPerson = salesPerson;
+        this.carportWidth = carportWidth;
+        this.carportLength = carportLength;
+        this.carportHeight = carportHeight;
+        this.carportShed = carportShed;
+        this.shedWidth = shedWidth;
+        this.shedLength = shedLength;
+        this.carportRoof = carportRoof;
+        this.isPaid = paid;
+    }
+
 
     public Customer getCustomer()
     {
@@ -45,7 +67,11 @@ public class Order
         return salesPerson;
     }
 
-    public int getSalesID(int salesId)
+    public int getCarportHeight()
+    {
+        return carportHeight;
+    }
+    public int getSalesID()
     {
         return salesPerson.getUserID();
     }
@@ -60,7 +86,7 @@ public class Order
         return carportLength;
     }
 
-    public boolean isCarportShed()
+    public boolean getCarportShed()
     {
         return carportShed;
     }
@@ -105,6 +131,10 @@ public class Order
         return carport;
     }
 
+    public String getOrderStatus()
+    {
+        return orderStatus.toString();
+    }
 }
 
 

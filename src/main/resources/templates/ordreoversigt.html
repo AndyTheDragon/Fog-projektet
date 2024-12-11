@@ -8,37 +8,54 @@
     <link rel="stylesheet" href="../public/css/styles.css" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<h3>Assigned orders</h3>
-<div class="assigned card">
-    <div class="card-body" th:each="ordera : ${assigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
-        <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${ordera.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${ordera.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${ordera.salesId}"></span></li>
-    </ul>
-    <button class="assign" type="submit">Assign to self </button>
-    <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${ordera.orderId})}">
-            <button class="view-btn" type="button">View details</button>
-        </a>
-    </div>
-</div>
-</div>
+<header th:replace="~{fragments :: navbar}"></header>
+<div class="container mt-5 p-3 pt-5 bg-body-tertiary">
+    <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
+    <h3>Tildelte ordrer</h3>
 
-<h3>Unassigned orders</h3>
-    <div class="unassigned card">
-        <div class="card-body" th:each="orderu : ${unassigned}" style="width: 18rem; height: 15rem;">
-    <ul class="list-group">
-        <p class="card-text">Here you will find an overview for this order.</p>
-        <li class="list-group-item"><strong>Order ID:</strong> <span th:text="${orderu.orderId}"></span></li>
-        <li class="list-group-item"><strong>Customer ID:</strong> <span th:text="${orderu.customerId}"></span></li>
-        <li class="list-group-item"><strong>Sales ID:</strong> <span th:text="${orderu.salesId}"></span></li>
-    </ul>
-    <div class="view-information">
-        <a href="visning.html" class="view" th:href="@{/view/{id}(id=${orderu.orderId})}">
-            <button class="view-btn" type="button">View details</button>
-            </a>
+    <div class="row">
+        <div class="col-4" th:each="ordera : ${assigned}">
+            <div class="card m-2">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Ordrer ID:</strong> <span th:text="${ordera.orderId}"></span></li>
+                        <li class="list-group-item"><strong>Kunde navn:</strong> <span th:text="${ordera.customer.name}"></span></li>
+                        <li class="list-group-item"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${ordera.orderStatus}"></span></li>
+                        <li class="list-group-item"><strong>Sælger navn:</strong> <span th:text="${ordera.salesPerson.name}"></span></li>
+                    </ul>
+                    <div class="card-text mt-2">
+                        <a href="ordredetaljer.html" class="btn btn-primary m-1" th:href="@{/order/{orderId}(orderId=${ordera.orderId})}">
+                            Se informationer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h3>Ikke tildelte ordrer</h3>
+    <div class="row row-cols g-4">
+        <div class="col" th:each="orderu : ${unassigned}">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Ordre ID:</strong> <span th:text="${orderu.orderId}"></span></li>
+                        <li class="list-group-item"><strong>Kunde navn:</strong> <span th:text="${orderu.customer.name}"></span></li>
+                        <li class="list-group-item"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${orderu.orderStatus}"></span></li>
+                        <li class="list-group-item"><strong>Sælger navn:</strong> <span th:text="${orderu.salesPerson.name}"></span></li>
+                    </ul>
+                    <div class="card-text mt-2">
+                        <form method="post" th:action="@{/order/assign}">
+                            <input type="hidden" name="orderId" th:value="${#ctx.session.currentUser.userID}">
+                            <button class="btn btn-success m-1"  type="submit">Tildel ordre til selv</button>
+                        </form>
+                        <a href="ordredetaljer.html" class="btn btn-primary m-1" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
+                            Se informationer
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
