@@ -3,7 +3,7 @@ package app.entities;
 public class ConstructionWood implements IMaterials
 {
     final String type;
-    final int fogProductID;
+    final int materialID;
     final int width;
     final int height;
     final int length;
@@ -12,7 +12,7 @@ public class ConstructionWood implements IMaterials
     final String unit;
     final String description;
 
-    public ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int fogProductID, int price)
+    public ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int materialID, int price)
     {
         this.width = width;
         this.height = height;
@@ -21,7 +21,7 @@ public class ConstructionWood implements IMaterials
         this.type = type;
         this.description = description;
         this.amount = amount;
-        this.fogProductID = fogProductID;
+        this.materialID = materialID;
         this.price = price;
     }
 
@@ -50,9 +50,9 @@ public class ConstructionWood implements IMaterials
         return unit;
     }
 
-    public int getFogProductID()
+    public int getMaterialID()
     {
-        return fogProductID;
+        return materialID;
     }
 
     public int getHeight()
