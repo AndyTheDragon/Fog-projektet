@@ -161,7 +161,10 @@ public class FromListCalculator implements CarportCalculator
     @Override
     public List<IMaterials> calcFasciaBargeScrews() throws CalculatorException
     {
-        return List.of();
+        if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
+        return materialsList.stream()
+                .filter(material -> "Til montering af stern&vandbrædt".equalsIgnoreCase(material.getDescription()))
+                .collect(Collectors.toList());
     }
 
     @Override
