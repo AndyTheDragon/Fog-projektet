@@ -256,4 +256,23 @@ public class OrderMapper
         return newOrder;
     }
 
+    public static void updateOrder(int orderId, int carportLength, int carportWidth, int shedLength, int shedWidth, RoofType carportRoof, ConnectionPool dbConnection) throws  DatabaseException
+    {
+        String sql = "UPDATE carport_order SET carport_width = ?, carport_length = ?, shed_width = ?, shed_length = ?, carport_roof = ? WHERE order_id = ?";
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, carportWidth);
+            ps.setInt(2, carportLength);
+            ps.setInt(3, shedWidth);
+            ps.setInt(4, shedLength);
+            ps.setString(5, carportRoof.toString());
+            ps.setInt(6, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
+    }
 }

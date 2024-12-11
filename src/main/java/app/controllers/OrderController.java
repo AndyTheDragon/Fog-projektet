@@ -304,7 +304,35 @@ public class OrderController
 
     private static void recalculateOrder(Context ctx, ConnectionPool dbConnection)
     {
-        editOrder(ctx, dbConnection);
+        int orderId = 0;
+        if (ctx.sessionAttribute("currentUser") != null)
+        {
+            try
+            {
+            orderId = Integer.parseInt(ctx.formParam("orderId"));
+            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
+            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+            int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+            int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
+            RoofType carportRoof = "flat".equals(ctx.formParam("carportRoof")) ? RoofType.FLAT : RoofType.FLAT;
+            OrderMapper.updateOrder(orderId, carportLength, carportWidth, shedLength, shedWidth, carportRoof, dbConnection);
+            ctx.redirect("/order/"+orderId);
+            }
+            catch (NumberFormatException e)
+            {
+                ctx.attribute("message", "Invalid order id");
+            }
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message", "Database error. " + e.getMessage());
+            }
+        }
+        else
+        {
+            ctx.attribute("message", "Du har ikke adgang til denne side");
+        }
+        ctx.render("kvittering.html");
+
     }
 
     private static void updateOrder(Context ctx, ConnectionPool dbConnection)
