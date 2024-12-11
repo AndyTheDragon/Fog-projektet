@@ -9,6 +9,7 @@
 </head>
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
+<div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null}">
     <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
@@ -50,6 +51,7 @@
                 <div class="card-body">
                     <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
                     <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
+                    <p class="card-text"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${order.orderStatus}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
                 </div>
@@ -118,7 +120,6 @@
             </div>
             <div class="col d-flex justify-content-end">
                 <form action="/order/{orderId}/edit" th:action="@{/order/{id}/edit(id=${order.orderID})}" method="get">
-                    <input type="hidden" name="orderId" th:value="${order.orderID}">
                     <button type="submit" class="me-auto btn btn-lg btn-warning">Ret tilbud</button>
                 </form>
             </div>

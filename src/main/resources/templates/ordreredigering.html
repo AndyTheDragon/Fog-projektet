@@ -10,25 +10,32 @@
 <body>
 <header th:replace="~{fragments :: navbar}"></header>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary" th:if="${order!=null && #ctx.session.currentUser!=null}">
+    <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
     <h1>Rediger ordre</h1>
 
     <div class="row">
         <div class="col-6">
+            <form method="post" th:action="@{/order/recalculate}">
             <div class="card m-3">
                 <h5 class="card-header" >Dimensioner</h5>
                 <div class="card-body">
                     <p class="card-text" th:if="${#ctx.pmessage!=null}" th:text="${#ctx.pmessage}">Short information message</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Carport længde: <input name="carportLength" th:value="${order.carportLength}">360</input> cm</li>
-                    <li class="list-group-item">Carport bredde: <input name="carportWidth" th:value="${order.carportWidth}">300</input> cm</li>
-                    <li class="list-group-item">Skur længde: <input name="shedLength" th:value="${order.shedLength}">100</input> cm</li>
-                    <li class="list-group-item">Skur bredde: <input name="shedWidth" th:value="${order.shedWidth}">240</input> cm</li>
-                    <li class="list-group-item">Skur beklædning: <input>forskudt</input></li>
-                    <li class="list-group-item">Tag type: <input name="carportRoof" th:value="${order.carportRoof}">Fladt</input> </li>
-                    <li class="list-group-item">Tag beklædning: <input>Trapez</input> </li>
+                    <li class="list-group-item">Carport længde: <input class="form-control" type="number" name="carportLength" th:value="${order.carportLength}"></li>
+                    <li class="list-group-item">Carport bredde: <input class="form-control" type="number" name="carportWidth" th:value="${order.carportWidth}"></li>
+                    <li class="list-group-item">Skur længde: <input class="form-control" type="number" name="shedLength" th:value="${order.shedLength}"></li>
+                    <li class="list-group-item">Skur bredde: <input class="form-control" type="number" name="shedWidth" th:value="${order.shedWidth}"></li>
+                    <li class="list-group-item">Skur beklædning: forskudt</li>
+                    <li class="list-group-item">Tag type: <input class="form-control" type="text" name="carportRoof" th:value="${order.carportRoof}"></li>
+                    <li class="list-group-item">Tag beklædning: Trapez </li>
                 </ul>
+                <div class="card-body">
+                    <input type="hidden" name="orderId" th:value="${order.orderID}" />
+                    <button type="submit" class="btn btn-warning">Genberegn</button>
+                </div>
             </div>
+            </form>
         </div>
         <div class="col-6">
             <div class="card m-3">
@@ -51,6 +58,7 @@
                     <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
                     <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
+                    <p class="card-text"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${order.orderStatus}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
                 </div>
             </div>
@@ -61,6 +69,11 @@
         SVG Skitse
     </div>
 
+    <div class="card m-3">
+        Pris
+    </div>
+
+    <form method="post" th:action="@{/order/update}">
     <div class="card m-3" th:if="${#ctx.session.currentUser!=null}">
         <div class="card-body">
             <table class="table table-borderless table-striped">
@@ -100,24 +113,18 @@
 
         </div>
     </div>
-    <div class="card m-3">
-        Pris
-    </div>
+
     <div class="card m-3">
         <div class="row gx-3" th:if="${#ctx.session.currentUser!=null}">
             <div class="col d-flex justify-content-start">
-                <form th:action="@{/order/assign}" method="post">
-                    <input type="hidden" name="orderId" th:value="${order.orderID}">
-                    <button type="submit" class="ms-auto btn btn-lg btn-danger">Annuller</button>
-                </form>
+                <button type="reset" class="ms-auto btn btn-lg btn-danger">Annuller</button>
             </div>
             <div class="col d-flex justify-content-end">
-                <form action="/draw" method="get">
-                    <button type="submit" class="me-auto btn btn-lg btn-success">Gem ændringer</button>
-                </form>
+                <button type="submit" class="me-auto btn btn-lg btn-success">Gem ændringer</button>
             </div>
         </div>
     </div>
+    </form>
 </div>
 <footer class="footer text-faded p-3 pt-5">
     Oplysninger, CVR.

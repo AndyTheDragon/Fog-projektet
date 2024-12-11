@@ -1,7 +1,6 @@
 package app.entities;
 
 import app.services.CarportCalculator;
-import app.exceptions.CalculatorException;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +22,7 @@ public class Order
     private OrderStatus orderStatus;
     private Carport carport;
 
-    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, CarportCalculator calculator)
+    public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator)
     {
         this.orderID = orderID;
         this.customer = customer;
@@ -38,13 +37,8 @@ public class Order
         this.isPaid = isPaid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        try
-        {
-            this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
-        } catch (CalculatorException e)
-        {
-            throw new RuntimeException(e);
-        }
+        this.orderStatus = orderStatus;
+        this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
     }
 
     public Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
@@ -137,6 +131,10 @@ public class Order
         return carport;
     }
 
+    public String getOrderStatus()
+    {
+        return orderStatus.toString();
+    }
 }
 
 

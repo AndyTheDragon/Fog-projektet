@@ -40,7 +40,7 @@ public class Carport
         calculateBoltsScrewsBrackets();
         this.numberOfPosts = this.calculator.calcNumberOfPosts();
         this.numberOfJoists = this.calculator.calcNumberOfJoists();
-        this.workDrawing = new WorkDrawing(this, 640);
+        this.workDrawing = new WorkDrawing(this, 600);
     }
 
     public void calculateMaterials() throws CalculatorException
