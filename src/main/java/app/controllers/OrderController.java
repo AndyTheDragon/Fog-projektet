@@ -28,13 +28,13 @@ public class OrderController
         app.get("/draw", ctx -> showDrawing(ctx, dbConnection));
         app.get("/orders", ctx -> showOrders(0, ctx, dbConnection));
         app.get("/orders/{salesId}", ctx -> showMyOrders(ctx, dbConnection));
-        app.get("/order/{orderId}", ctx -> showOrderDetails(ctx,dbConnection));
-        app.post("/order/accept", ctx -> acceptOrder(ctx,dbConnection));
-        app.post("/order/requestchange", ctx -> requestChange(ctx,dbConnection));
-        app.post("/order/assign",ctx -> assignOrder(ctx,dbConnection));
+        app.get("/order/{orderId}", ctx -> showOrderDetails(ctx, dbConnection));
+        app.post("/order/accept", ctx -> acceptOrder(ctx, dbConnection));
+        app.post("/order/requestchange", ctx -> requestChange(ctx, dbConnection));
+        app.post("/order/assign", ctx -> assignOrder(ctx, dbConnection));
         app.get("/order/{orderId}/edit", ctx -> editOrder(ctx, dbConnection));
-        app.post("/order/recalculate",ctx -> recalculateOrder(ctx,dbConnection));
-        app.post("/order/update", ctx -> updateOrder(ctx,dbConnection));
+        app.post("/order/recalculate", ctx -> recalculateOrder(ctx, dbConnection));
+        app.post("/order/update", ctx -> updateOrder(ctx, dbConnection));
         app.post("/order/pay", ctx -> payOrder(ctx, dbConnection));
 
     }
@@ -46,7 +46,8 @@ public class OrderController
 
     public static void createOrder(Context ctx, ConnectionPool dbConnection)
     {
-        try {
+        try
+        {
             int carportWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportWidth")));
             int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
             int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
@@ -65,13 +66,18 @@ public class OrderController
             MaterialMapper.saveOrderLines(orderId, order.getCarport().getMaterialsList(), dbConnection);
             ctx.attribute("message", "Ordren blev oprettet med succes.");
             ctx.render("kvittering.html");
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             ctx.attribute("message", "Ugyldige dimensioner");
             ctx.render("bestilling.html");
-        } catch (DatabaseException e) {
+        }
+        catch (DatabaseException e)
+        {
             ctx.attribute("message", "Databasefejl: " + e.getMessage());
             ctx.render("bestilling.html");
-        } catch (CalculatorException e)
+        }
+        catch (CalculatorException e)
         {
             throw new RuntimeException(e);
         }
@@ -81,15 +87,16 @@ public class OrderController
     {
         try
         {
-            Carport carport = new Carport(780,600,210,530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
-            WorkDrawing drawing = new WorkDrawing(carport,1250);
+            Carport carport = new Carport(780, 600, 210, 530, RoofType.FLAT, new OptimalWoodCalculator(780, 600, 210, 530, dbConnection));
+            WorkDrawing drawing = new WorkDrawing(carport, 1250);
             ctx.attribute("drawing", drawing.toString());
-            Carport carport2 = new Carport(480,300,0,0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
+            Carport carport2 = new Carport(480, 300, 0, 0, RoofType.FLAT, new OptimalWoodCalculator(480, 300, 0, 0, dbConnection));
             WorkDrawing noShed = new WorkDrawing(carport2, 600);
             ctx.attribute("noshed", noShed.toString());
 
             ctx.render("drawing.html");
-        } catch (CalculatorException e)
+        }
+        catch (CalculatorException e)
         {
             throw new RuntimeException(e);
         }
@@ -157,7 +164,7 @@ public class OrderController
         try
         {
             orderId = Integer.parseInt(ctx.pathParam("orderId"));
-            order = OrderMapper.getOrder(orderId,dbConnection);
+            order = OrderMapper.getOrder(orderId, dbConnection);
         }
         catch (NumberFormatException e)
         {
@@ -166,7 +173,8 @@ public class OrderController
         catch (DatabaseException e)
         {
             ctx.attribute("message", "Database error. " + e.getMessage());
-        } catch (CalculatorException e)
+        }
+        catch (CalculatorException e)
         {
             throw new RuntimeException(e);
         }
@@ -238,7 +246,7 @@ public class OrderController
         try
         {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
-            Order order = OrderMapper.getOrder(orderId,dbConnection);
+            Order order = OrderMapper.getOrder(orderId, dbConnection);
             if (order.getSalesPerson() != null)
             {
                 ctx.attribute("message", "Ordren er allerede tildelt");
@@ -250,7 +258,7 @@ public class OrderController
                 {
                     OrderMapper.asssignOrder(orderId, salesId, dbConnection);
                     ctx.attribute("message", "Ordren blev tildelt");
-                    ctx.redirect("/order/"+orderId);
+                    ctx.redirect("/order/" + orderId);
                 }
                 else
                 {
@@ -265,7 +273,8 @@ public class OrderController
         catch (DatabaseException e)
         {
             ctx.attribute("message", "Databasefejl: " + e.getMessage());
-        } catch (CalculatorException e)
+        }
+        catch (CalculatorException e)
         {
             throw new RuntimeException(e);
         }
@@ -282,7 +291,7 @@ public class OrderController
             try
             {
                 orderId = Integer.parseInt(ctx.pathParam("orderId"));
-                order = OrderMapper.getOrder(orderId,dbConnection);
+                order = OrderMapper.getOrder(orderId, dbConnection);
             }
             catch (NumberFormatException e)
             {
@@ -291,7 +300,8 @@ public class OrderController
             catch (DatabaseException e)
             {
                 ctx.attribute("message", "Database error. " + e.getMessage());
-            } catch (CalculatorException e)
+            }
+            catch (CalculatorException e)
             {
                 throw new RuntimeException(e);
             }
@@ -312,14 +322,14 @@ public class OrderController
         {
             try
             {
-            orderId = Integer.parseInt(ctx.formParam("orderId"));
-            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
-            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
-            int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
-            int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
-            RoofType carportRoof = "flat".equals(ctx.formParam("carportRoof")) ? RoofType.FLAT : RoofType.FLAT;
-            OrderMapper.updateOrder(orderId, carportLength, carportWidth, shedLength, shedWidth, carportRoof, dbConnection);
-            ctx.redirect("/order/"+orderId);
+                orderId = Integer.parseInt(ctx.formParam("orderId"));
+                int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
+                int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+                int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+                int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
+                RoofType carportRoof = "flat".equals(ctx.formParam("carportRoof")) ? RoofType.FLAT : RoofType.FLAT;
+                OrderMapper.updateOrder(orderId, carportLength, carportWidth, shedLength, shedWidth, carportRoof, dbConnection);
+                ctx.redirect("/order/" + orderId);
             }
             catch (NumberFormatException e)
             {
@@ -344,7 +354,8 @@ public class OrderController
 
     }
 
-    private static void payOrder(@NotNull Context ctx, ConnectionPool dbConnection) {
+    private static void payOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    {
         int orderId = 0;
 
         try
@@ -361,7 +372,7 @@ public class OrderController
         {
             ctx.attribute("message", "Database error: " + e.getMessage());
         }
-        ctx.render("kvittering.html");
+        ctx.render("ordredetaljer.html");
     }
 
 }
