@@ -72,6 +72,7 @@ public class OrderMapper
                 boolean isPaid = rs.getBoolean("is_paid");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+                OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
 
                 Order order = new Order(orderId,
                         customer,
@@ -83,7 +84,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt, OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
+                        updatedAt, orderStatus, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
 
                 if (salesId == 0)
                 {
