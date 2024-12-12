@@ -190,7 +190,7 @@ public class OrderMapper
         return order;
     }
 
-    public static void asssignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
+    public static void assignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
     {
         String sql = "UPDATE carport_order SET sales_id = ?, order_status = 'ASSIGNED' WHERE order_id = ?";
 
@@ -257,18 +257,19 @@ public class OrderMapper
         return orderId;
     }
 
-    public static void updateOrderStatusToPaid(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    public static void updateOrderStatus(int orderId, OrderStatus newStatus, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET is_Paid = TRUE WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET order_status = ?::orderstatus WHERE order_id = ?";
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderId);
+            ps.setString(1, newStatus.name());
+            ps.setInt(2, orderId);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
-                throw new DatabaseException("Failed to update order status to paid.");
+                throw new DatabaseException("Failed to update order status.");
             }
         }
         catch (SQLException e)
