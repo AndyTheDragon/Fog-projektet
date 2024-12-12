@@ -1,0 +1,386 @@
+@startuml
+'https://plantuml.com/class-diagram
+!pragma layout smetana
+
+class Main
+{
+    + void main(String[] args)
+}
+
+
+package "Entities" {
+    class BoltsScrewsBrackets
+    {
+    - int length
+    - int width
+    - int amount
+    - int price
+    - String type
+    - String unit
+    - int materialID
+    - int lineID
+    + BoltsScrewsBrackets(int length, int width, int amount, int price, String type, String unit, int materialID)
+    + BoltsScrewsBrackets(int length, int width, int amount, int price, String type, String unit, int materialID, int lineID)
+    + getters()
+    + setters()
+    }
+
+    class Carport
+    {
+    - CarportCalculator calculator
+    - WorkDrawing workDrawing
+    - List<IMaterials> materialsList
+    - List<Imaterials> boltsScrewsBracketsList
+    - int length
+    - int width
+    - int height
+    - int shedLength
+    - int shedWidth
+    - RoofType roofType
+    - String shedPlacement
+    - int numberOfPosts
+    - int numberOfJoists
+    - int price
+    + Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType, CarportCalculator)
+    + calculateMaterials()
+    + calculateBoltsScrewsBrackets()
+    + getters()
+    + setters()
+    }
+
+    class ConstructionWood
+    {
+    - final String type
+    - final int materialID
+    - final int width
+    - final int height
+    - final int length
+    - final int price
+    - int amount
+    - final String unit
+    - final String description
+    - int lineID
+    + ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int materialID, int price)
+    + ConstructionWood(int height, int width, int length, String unit, String type, String description, int amount, int materialID, int price, int lineID)
+    + getters()
+    + setters()
+    + @override toString()
+    }
+
+    class Customer
+    {
+    - int customerID
+    - String name
+    - String address
+    - String zipcode
+    - String city
+    - String phoneNumber
+    - String email
+    + Customer(String name, String address, String zipcode, String city, String phoneNumber, String email)
+    + getters()
+    + setters()
+    }
+
+    interface IMaterials
+    {
+    + int getAmount()
+    + String getDescription()
+    + int getLength()
+    + String getType()
+    + String getUnit()
+    + int getMaterialID()
+    + int getWidth()
+    + int getWidth()
+    + int getPrice()
+    IMaterials setAmount(int i)
+    + int getLineID()
+    }
+
+    class Order
+    {
+    - int orderID
+    - Customer customer
+    - User salesPerson
+    - int carportWidth;
+    - int carportLength;
+    - int carportHeight;
+    - boolean carportShed
+    - int shedWidth;
+    - int shedLength;
+    - RoofType carportRoof;
+    - boolean isPaid;
+    - LocalDateTime createdAt;
+    - LocalDateTime updatedAt;
+    - OrderStatus orderStatus
+    - Carport carport;
+    + Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator)
+    + Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid)
+    + getters()
+    + setters()
+    }
+
+     enum OrderStatus
+        {
+             UNASSIGNED
+             ASSIGNED
+             CALCULATING
+             OFFER_SENT
+             OFFER_ACCEPTED
+             OFFER_REJECTED
+             PAYMENT_REQUESTED
+             PAID
+             COMPLETED
+             ERROR
+        }
+
+    class RoofCovering
+    {
+    - int length
+    - int width
+    - int amount
+    - int price
+    - String type
+    - String unit
+    - String description
+    - int materialID
+    - int lineID
+    + RoofCovering(int length, int width, int amount, int price, String type, String unit, String description, int materialID)
+    + RoofCovering(int length, int width, int amount, int price, String type, String unit, String description, int materialID, int lineID)
+    + getters()
+    + setters()
+    + toString()
+    }
+
+    enum RoofType
+    {
+        FLAT
+        RISEN
+        Rooftype getRoofType()
+    }
+
+    class User
+    {
+    - int userID
+    - final String name
+    - final String email
+    - String password
+    - boolean isAdmin
+    + User(int userID, String name, String email, String password, boolean isAdmin)
+    + User(String name, String email)
+    + User()
+    + getters()
+    + setters()
+    }
+
+}
+package "Controllers" {
+    class OrderController
+    {
+    + addRoutes(Context ctx, ConnectionPool dbConnection)
+    + showRequestPage(Context ctx, ConnectionPool dbConnection)
+    + createOrder(Context ctx, ConnectionPool dbConnection)
+    + showDrawing(Context ctx, ConnectionPool dbConnection)
+    + showMyOrders(Context ctx, ConnectionPool dbConnection)
+    + showOrders(Context ctx, ConnectionPool dbConnection)
+    + showOrderDetails(Context ctx, ConnectionPool dbConnection)
+    + acceptOrder(Context ctx, ConnectionPool dbConnection)
+    + requestChange(Context ctx, ConnectionPool dbConnection)
+    + assignOrder(Context ctx, ConnectionPool dbConnection)
+    + editOrder(Context ctx, ConnectionPool dbConnection)
+    + recalculateOrder(Context ctx, ConnectionPool dbConnection)
+    + updateOrder(Context ctx, ConnectionPool dbConnection)
+    + payOrder(Context ctx, ConnectionPool dbConnection)
+    }
+
+    class UserController
+    {
+    + addRoutes()
+    + login()
+    }
+}
+package "Persistence" {
+    class CustomerMapper{
+    + int createCustomer(Customer customer, ConnectionPool dbConnection)
+    }
+
+    class MaterialMapper
+    {
+    + List<IMaterials> getMaterialOfType(String descriptionType, ConnectionPool dbConnection)
+    + List<IMaterials> getMaterialOfTypeAndLength(String descriptionType, int minlength, ConnectionPool dbConnection)
+    + saveOrderLines(int orderId, List<IMaterials> materialsList, ConnectionPool dbConnection)
+    }
+    class OrderMapper
+    {
+    + Map<String, ArrayList<Order>> getOrders(int limitToSalesId, ConnectionPool dbConnection)
+    + Order getOrder(int orderId, ConnectionPool dbConnection)
+    + assignOrder(int orderId, int salesId, ConnectionPool dbConnection)
+    + acceptOrder(int orderId, ConnectionPool dbConnection)
+    + saveOrderToDatabase(Order order, ConnectionPool dbConnection)
+    + updateOrderStatusToPaid(int orderId, ConnectionPool dbConnection)
+    + updateOrder(int orderID, int carportLength, int carportWidth, int shedLength, int shedWidth, RoofType roofType, ConnectionPool dbConnection)
+    }
+    class UserMapper
+    {
+        + User login()
+    }
+}
+
+package "Services" {
+    class CarportCalculator
+    {
+    + List<IMaterials> calcUnderFascia()
+    + List<IMaterials> calcOverFascia()
+    + List<IMaterials> calcBeam()
+    + List<IMaterials> calcRafters()
+    + List<IMaterials> calcPosts()
+    + int calcNumberOfPosts();
+    + boolean extraPostsForLongCarport();
+    + List<IMaterials> calcJoists()
+    + int calcNumberOfJoists();
+    + List<IMaterials> calcBargeBoards()
+    + List<IMaterials> calcBattern()
+    + List<IMaterials> calcCladding()
+    + int calcNumberOfCladdingBoards();
+    + List<IMaterials> calcHorizontalBraces()
+    + int calcNumberOfHorizontalBraces();
+    + List<IMaterials> calcRoof()
+    + List<IMaterials> calcRoofScrews()
+    + List<IMaterials> calcJoistBrackets()
+    + List<IMaterials> calcFasciaBargeScrews()
+    + List<IMaterials> calcJoistBracketScrews()
+    + List<IMaterials> calcMetalStrap()
+    + List<IMaterials> calcBeamBolts()
+    + List<IMaterials> calcCladdingScrews()
+    + List<IMaterials> doorHandleBrackets()
+    + List<IMaterials> calcHorizontalBracesBrackets()
+    }
+    class DrawSVG
+    {
+    - final String SVG_TEMPLATE
+    - final String SVG_ARROW_DEFS
+    - final String SVG_RECT_TEMPLATE
+    - final String SVG_SLANTED_RECT_TEMPLATE
+    - final String SVG_LINE_TEMPLATE
+    - final String SVG_TEXT_TEMPLATE
+
+    + DrawSVG(int x, int y, String viewBox, String width)
+    + addRectangle(int x, int y, int height, int width, String style)
+    + addSlantedRect(int x, int y, int height, int width, double angle, int rotationX, int rotationY, String style)
+    + addLine(int x1, int y1, int x2, int y2, String style)
+    + addArrow(int x1, int y1, int x2, int y2, String style)
+    + addText(int x, int y, String text, String style)
+    + addSvg(DrawSVG innerSvg)
+    + String toString()
+    }
+    class FromListCalculator{
+    - List<IMaterials> materialsList
+
+    + FromListCalculator(List<IMaterials> materialsList)
+    + List<IMaterials> calcUnderFascia()
+    + List<IMaterials> calcOverFascia()
+    + List<IMaterials> calcBeam()
+    + List<IMaterials> calcRafters()
+    + List<IMaterials> calcPosts()
+    + int calcNumberOfPosts();
+    + boolean extraPostsForLongCarport();
+    + List<IMaterials> calcJoists()
+    + int calcNumberOfJoists();
+    + List<IMaterials> calcBargeBoards()
+    + List<IMaterials> calcBattern()
+    + List<IMaterials> calcCladding()
+    + int calcNumberOfCladdingBoards();
+    + List<IMaterials> calcHorizontalBraces()
+    + int calcNumberOfHorizontalBraces();
+    + List<IMaterials> calcRoof()
+    + List<IMaterials> calcRoofScrews()
+    + List<IMaterials> calcJoistBrackets()
+    + List<IMaterials> calcFasciaBargeScrews()
+    + List<IMaterials> calcJoistBracketScrews()
+    + List<IMaterials> calcMetalStrap()
+    + List<IMaterials> calcBeamBolts()
+    + List<IMaterials> calcCladdingScrews()
+    + List<IMaterials> doorHandleBrackets()
+    + List<IMaterials> calcHorizontalBracesBrackets()
+    }
+
+    class calcOptimalWood{
+    - final ConnectionPool dbConnection
+    - int carportLength
+    - int carportWidth
+    - int carportHeight
+    - int shedLength
+    - int shedWidth
+    - String shedPlacement
+
+    + calcOptimalWood(int carportLength, int carportWidth, int shedLength, int shedWidth, ConnectionPool dbConnection)
+    + List<IMaterials> calcUnderFascia()
+    + List<IMaterials> calcOverFascia()
+    + List<IMaterials> calcBeam()
+    + List<IMaterials> calcRafters()
+    + List<IMaterials> calcPosts()
+    + int calcNumberOfPosts();
+    + boolean extraPostsForLongCarport();
+    + List<IMaterials> calcJoists()
+    + int calcNumberOfJoists();
+    + List<IMaterials> calcBargeBoards()
+    + List<IMaterials> calcBattern()
+    + List<IMaterials> calcCladding()
+    + int calcNumberOfCladdingBoards();
+    + List<IMaterials> calcHorizontalBraces()
+    + int calcNumberOfHorizontalBraces();
+    + List<IMaterials> calcRoof()
+    + List<IMaterials> calcRoofScrews()
+    + List<IMaterials> calcJoistBrackets()
+    + List<IMaterials> calcFasciaBargeScrews()
+    + List<IMaterials> calcJoistBracketScrews()
+    + List<IMaterials> calcMetalStrap()
+    + List<IMaterials> calcBeamBolts()
+    + List<IMaterials> calcCladdingScrews()
+    + List<IMaterials> doorHandleBrackets()
+    + List<IMaterials> calcHorizontalBracesBrackets()
+    }
+    class SendGrid
+    {
+    + String requestChangeEmail(int orderId, String message)
+    }
+
+    class WorkDrawing
+    {
+    - final DrawSVG topViewDrawing
+    - final DrawSVG sideViewDrawing
+    - final int carportWidth
+    - final int carportLength
+    - final int carportHeight
+    - final int shedWidth
+    - final int shedLength
+    - final boolean hasShed
+    - final int numberOfJoists
+    - final boolean extraPostsForLongCarport
+    - final static String STYLE
+    - final static String STYLE_DASHED
+    - final static String STYLE_ARROW
+    - final static String STYLE_TEXT
+    - final static int fasciaThickness
+
+    + WorkDrawing (Carport carport, int drawingWidth)
+    - addBeams()
+    - addPosts()
+    - addJoists()
+    - addFascia()
+    - addCladding()
+    + String toString()
+    + String sideView
+    }
+}
+
+ConstructionWood ..|> IMaterials
+RoofCovering ..|> IMaterials
+BoltsScrewsBrackets ..|> IMaterials
+
+
+@enduml
+implements ..|>
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
