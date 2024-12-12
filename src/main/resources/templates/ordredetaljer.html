@@ -102,13 +102,19 @@
 
         </div>
     </div>
-    <div class="card m-3">
-
-        <p class="card-text" >Carport indkøbspris: <span th:text="${order.buyInPrice}">420</span> kr</p>
-        <p class="card-text" >Carport foreslået salgspris: <span th:text="${order.sellPrice}">420</span> kr</p>
-
-
+    <div class="card m-3" th:if="${#session.currentUser}">
+        <div class="card-body row-cols-3">
+            <div class="card-text col" >Carport indkøbspris: <span th:text="${order.buyInPrice}">420</span> kr</div>
+            <div class="card-text col" >Carport foreslået salgspris: <input type="number" th:value="${order.sellPrice}"> kr</div>
+            <div class="card-text col">Avance procent <input type="number" th:value="" /></div>
+        </div>
     </div>
+    <div class="card m-3" th:if="${!(#session.currentUser)}">
+        <div class="card-body">
+            <p class="card-text" >Carport pris: <span th:text="${order.sellPrice}">420</span> kr</p>
+        </div>
+    </div>
+
     <div class="card m-3">
         <div class="row gx-3" th:if="${#ctx.session.currentUser!=null}">
             <div class="col d-flex justify-content-start">
