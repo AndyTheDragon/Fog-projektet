@@ -23,7 +23,9 @@ public class Carport
     String shedPlacement;
     int numberOfPosts;
     int numberOfJoists;
-    int price;
+    double buyInPrice;
+    double sellPrice;
+    float profitMargin;
 
 
     public Carport(int length, int width, int shedLength, int shedWidth, RoofType roofType, CarportCalculator calculator) throws CalculatorException
@@ -42,7 +44,8 @@ public class Carport
         this.numberOfPosts = this.calculator.calcNumberOfPosts();
         this.numberOfJoists = this.calculator.calcNumberOfJoists();
         this.workDrawing = new WorkDrawing(this, 600);
-        this.price = getTotalPrice();
+        this.buyInPrice = getBuyInPrice();
+        this.sellPrice = getSellPrice();
     }
 
     public void calculateMaterials() throws CalculatorException
@@ -84,9 +87,15 @@ public class Carport
         }
     }
 
-    public int getTotalPrice()
+    public double getSellPrice()
     {
-        int price = getMaterialPrice() + getBoltsScrewsBracketsPrice();
+        profitMargin = 1.5f;
+        return buyInPrice * profitMargin;
+    }
+
+    public double getBuyInPrice()
+    {
+        double price = getMaterialPrice() + getBoltsScrewsBracketsPrice();
         return price;
     }
 
@@ -180,6 +189,16 @@ public class Carport
     public int getWidth()
     {
         return width;
+    }
+
+    public float getProfitMargin()
+    {
+        return profitMargin;
+    }
+
+    public void setProfitMargin(float profitMargin)
+    {
+        this.profitMargin = profitMargin;
     }
 
     public WorkDrawing getWorkDrawing()
