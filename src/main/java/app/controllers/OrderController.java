@@ -51,6 +51,7 @@ public class OrderController
             int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
             int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
             int shedLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedLength")));
+            double price = Double.parseDouble(Objects.requireNonNull(ctx.formParam("price")));
 
             RoofType carportRoof = "flat".equals(ctx.formParam("carportRoof")) ? RoofType.FLAT : RoofType.FLAT;
             boolean isPaid = false;
@@ -60,7 +61,7 @@ public class OrderController
             customer.setCustomerID(customerID);
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
-                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection), price);
             int orderId = OrderMapper.saveOrderToDatabase(order, dbConnection);
             MaterialMapper.saveOrderLines(orderId, order.getCarport().getMaterialsList(), dbConnection);
             ctx.attribute("message", "Ordren blev oprettet med succes.");
