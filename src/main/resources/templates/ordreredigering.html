@@ -58,7 +58,15 @@
                     <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
                     <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
-                    <p class="card-text"><strong>Ordre status:</strong> <span class="badge text-bg-warning" th:text="${order.orderStatus}"></span></p>
+                    <p class="card-text"><strong>Ordre status:</strong>
+                        <span class="badge text-bg-warning" th:text="${order.orderStatus}"></span>
+                        <span>
+                            <form method="post" th:action="@{/order/pay}">
+                                <input type="hidden" name="orderId" th:value="${order.orderID}" />
+                                <button type="submit" class="btn btn-warning" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" th:if="${order.isPaid==false}">Betal</button>
+                            </form>
+                        </span>
+                    </p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
                 </div>
             </div>
