@@ -11,9 +11,9 @@
 <header th:replace="~{fragments :: navbar}"></header>
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
     <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
-    <h3>Tildelte ordrer</h3>
 
-    <div class="row">
+    <div class="row" th:if="${ordera}">
+        <h3>Tildelte ordrer</h3>
         <div class="col-4" th:each="ordera : ${assigned}">
             <div class="card m-2">
                 <div class="card-body">
@@ -34,8 +34,8 @@
     </div>
 
 
-    <h3>Ikke tildelte ordrer</h3>
-    <div class="row row-cols g-4">
+    <div class="row row-cols g-4" th:if="${orderu}">
+        <h3>Ikke tildelte ordrer</h3>
         <div class="col" th:each="orderu : ${unassigned}">
             <div class="card">
                 <div class="card-body">
