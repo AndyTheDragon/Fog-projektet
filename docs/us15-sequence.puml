@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+skinparam handwritten true
+
+actor Sælger
+participant View as V
+participant "OrderController" as C
+participant "OrderMapper" as M
+participant entity.User as User
+participant entity.Customer as Customer
+participant entity.Carport as Carport
+participant entity.Order as Order
+participant DB
+
+
+Sælger -> V: Se tildelte ordrer
+activate V
+
+V -> C: Get request til /order/{order-id}
+activate C
+C -> C: Kontroller brugerrettigheder
+C -> M: getOrder(order-id)
+activate M
+M -> DB: execute sql
+DB --> M: ordre data
+M -> User : new User()
+M -> Customer: new Customer()
+M -> Order: new Order(user, customer, data)
+Order -> Carport: new Carport()
+activate Order
+Order --> C: order objekt (eller Exception)
+deactivate Order
+deactivate M
+C -> C: Gem order i ctx.attribute
+C -> C: Gem error-message i ctx.attribute
+C -> V: render ordredetaljer.html
+deactivate C
+
+deactivate V
+
+@enduml

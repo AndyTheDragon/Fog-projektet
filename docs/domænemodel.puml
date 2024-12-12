@@ -1,0 +1,84 @@
+@startuml
+'https://plantuml.com/object-diagram
+!pragma layout smetana
+
+object CarportOrdre
+object Carport
+object Materialeliste
+object Tilbud
+object Plukliste
+object Stykliste
+object Vejledning
+object Ordrebekræftelse
+object Faktura
+object CarportSkitse
+object Arbejdstegning
+object Post {
+Stolpe
+}
+object Beam {
+Rem
+}
+object Joist {
+Spær
+}
+object Rafter {
+Lægte
+}
+object Fascia {
+Stern
+}
+object Tagbeklædning
+object Vindskede
+object Beklædning
+object SømSkruerBeslag
+object Sælger
+object Slutkunde
+object Email
+object Tag
+object Skur
+
+
+CarportOrdre *-- Tilbud
+CarportOrdre *--- Materialeliste
+CarportOrdre *-- CarportSkitse
+CarportOrdre *-- Vejledning
+CarportOrdre o-- Ordrebekræftelse
+CarportOrdre o-- Faktura
+Vejledning *-- Stykliste
+Vejledning *-- Arbejdstegning
+Materialeliste <|--- Stykliste
+Materialeliste <|--- Plukliste
+Carport *- Post
+Carport *- Beam
+Carport *- Joist
+Carport o-- Rafter
+Carport *-- Tagbeklædning
+Carport *-- Fascia
+Carport o-- Vindskede
+Carport o-- Beklædning
+Carport *-- SømSkruerBeslag
+Carport *--- Tag
+Carport o--- Skur
+Materialeliste *--- Post
+Materialeliste *--- Joist
+Materialeliste *--- Beam
+Materialeliste o--- Rafter
+Materialeliste *--- Tagbeklædning
+Materialeliste *--- Fascia
+Materialeliste o--- Vindskede
+Materialeliste o--- Beklædning
+Materialeliste *--- SømSkruerBeslag
+Slutkunde --> Carport
+Tilbud <-- Carport
+CarportOrdre <-- Sælger
+Sælger <--> Email
+Email <--> Slutkunde
+
+
+@enduml
+
+extends <|-- (is-a)
+composition *-- (must-have)
+Aggregation o-- (can-have)
+Associering <--
