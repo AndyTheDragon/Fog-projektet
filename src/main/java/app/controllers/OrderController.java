@@ -251,7 +251,7 @@ public class OrderController
         {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
             Order order = OrderMapper.getOrder(orderId, dbConnection);
-            if (order.getSalesPerson() != null)
+            if (order.getSalesPerson().getUserID()!=0)
             {
                 ctx.attribute("message", "Ordren er allerede tildelt");
             }
