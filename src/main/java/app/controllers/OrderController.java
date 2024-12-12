@@ -35,6 +35,7 @@ public class OrderController
         app.get("/order/{orderId}/edit", ctx -> editOrder(ctx, dbConnection));
         app.post("/order/recalculate",ctx -> recalculateOrder(ctx,dbConnection));
         app.post("/order/update", ctx -> updateOrder(ctx,dbConnection));
+        app.post("/order/pay", ctx -> payOrder(ctx, dbConnection));
 
     }
 
@@ -342,4 +343,25 @@ public class OrderController
         System.out.println(ctx.formParamMap());
 
     }
+
+    private static void payOrder(@NotNull Context ctx, ConnectionPool dbConnection) {
+        int orderId = 0;
+
+        try
+        {
+            orderId = Integer.parseInt(ctx.formParam("orderId"));
+            OrderMapper.updateOrderStatusToPaid(orderId, dbConnection);
+            ctx.attribute("message", "Ordren er betalt.");
+        }
+        catch (NumberFormatException e)
+        {
+            ctx.attribute("message", "Invalid order id");
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message", "Database error: " + e.getMessage());
+        }
+        ctx.render("kvittering.html");
+    }
+
 }
