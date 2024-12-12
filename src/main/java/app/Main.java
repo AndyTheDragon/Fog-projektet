@@ -10,9 +10,9 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 
 public class Main
 {
-    private static final String USER = "carport";
-    private static final String PASSWORD = "wDj+e5V&0YOx5kE";
-    private static final String URL = "jdbc:postgresql://165.22.74.93:5432/%s?currentSchema=public";
+    private static final String USER = "";
+    private static final String PASSWORD = "";
+    private static final String URL = "jdbc:postgresql://IP:5432/%s?currentSchema=public";
     private static final String DB = "fog_carport";
 
     private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
