@@ -47,7 +47,7 @@
                     </ul>
                     <div class="card-text mt-2">
                         <form method="post" th:action="@{/order/assign}">
-                            <input type="hidden" name="orderId" th:value="${#orderu.orderId}">
+                            <input type="hidden" name="orderId" th:value="${orderu.orderId}">
                             <button class="btn btn-success m-1"  type="submit">Tildel ordre til selv</button>
                         </form>
                         <a href="ordredetaljer.html" class="btn btn-primary m-1" th:href="@{/order/{orderId}(orderId=${orderu.orderId})}">
