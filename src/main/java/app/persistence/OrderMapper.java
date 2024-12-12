@@ -184,13 +184,14 @@ public class OrderMapper
         {
             throw new CalculatorException(e.getMessage());
         }
+        if (order == null) throw new DatabaseException("Order not found");
 
         return order;
     }
 
     public static void asssignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET sales_id = ? WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET sales_id = ?, order_status = 'ASSIGNED' WHERE order_id = ?";
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
