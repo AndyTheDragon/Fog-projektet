@@ -113,7 +113,11 @@ public class OrderController
     private static void showOrders(int salesId, Context ctx, ConnectionPool connectionPool)
     {
         User currentUser = ctx.sessionAttribute("currentUser");
-        if (currentUser != null)
+        if (currentUser == null)
+        {
+            ctx.attribute("message", "Du skal være logget ind for at se denne side.");
+        }
+        else
         {
             try
             {
