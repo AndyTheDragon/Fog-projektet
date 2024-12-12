@@ -22,7 +22,7 @@ public class UserController
             User user = UserMapper.login(email, password, dbconnection);
             ctx.sessionAttribute("currentUser", user);
 
-            ctx.redirect("/orders");
+            ctx.redirect("/orders/" + user.getUserID());
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
