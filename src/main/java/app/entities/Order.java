@@ -24,6 +24,7 @@ public class Order
     private Carport carport;
     private double buyInPrice;
     private double sellPrice;
+    private double profitMargin;
 
     public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator) throws CalculatorException
     {
@@ -146,6 +147,11 @@ public class Order
     public double getSellPrice()
     {
         return sellPrice;
+    }
+
+    public double getProfitMargin()
+    {
+        return carport.getProfitMargin();
     }
 
     public double getCarportBuyInPrice()
