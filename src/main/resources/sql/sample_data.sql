@@ -36,7 +36,10 @@ insert into carport_material (material_name, unit) VALUES
                                                                         ('4,5 x 50 mm skruer 300 stk.', 'pakke'),
                                                                         ('stalddørsgreb 50x75', 'sæt'),
                                                                         ('t hængsel 390 mm', 'stk'),
-                                                                        ('vinkelbeslag 35', 'stk');                                                                        ;
+                                                                        ('vinkelbeslag 35', 'stk');
+insert into carport_material (material_name, width, length, fog_price, unit) VALUES
+                     ('Plastmo Ecolite blåtonet', 109, 360, 71, 'stk'),
+                     ('Plastmo Ecolite blåtonet', 109, 600, 123, 'stk');
 
 insert into material_function (description) values
                                                 ('understernbrædder', 'wood'),
@@ -107,6 +110,9 @@ insert into carport_material_function (material_id, function_id) VALUES
              (36,27),
              (37,28),
              (38,29);
+insert into carport_material_function (material_id, function_id) VALUES
+             (39,13),
+             (40,13);
 
 
 
