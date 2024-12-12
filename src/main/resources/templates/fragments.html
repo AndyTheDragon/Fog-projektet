@@ -26,9 +26,8 @@
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="index.html" th:href="@{/}" th:if="${#ctx.session.currentUser==null}">Login</a>
                     <a class="nav-link" href="index.html" th:href="@{/logout}" th:if="${#ctx.session.currentUser!=null}">Logout</a>
-                    <a class="nav-link" href="#" th:href="@{/orders}">Ordre oversigt</a>
-                    <a class="nav-link" href="#" th:href="@{/order/1}">Ordre detaljer</a>
-                    <a class="nav-link" href="#" th:href="@{/draw}">Tegning</a>
+                    <a class="nav-link" href="#" th:href="@{/orders}" th:if="${#ctx.session.currentUser!=null}">Ordre oversigt</a>
+                    <a class="nav-link" href="#" th:href="@{/order/31}" th:if="${#ctx.session.currentUser==null}">Vis tilbud</a>
                     <a class="nav-link" href="#" th:href="@{/bestilling}">Bestillingsformular</a>
                 </div>
             </div>
