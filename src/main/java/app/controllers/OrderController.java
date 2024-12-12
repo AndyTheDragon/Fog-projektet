@@ -52,6 +52,7 @@ public class OrderController
             int carportLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("carportLength")));
             int shedWidth = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedWidth")));
             int shedLength = Integer.parseInt(Objects.requireNonNull(ctx.formParam("shedLength")));
+            double price = Double.parseDouble(Objects.requireNonNull(ctx.formParam("price")));
 
             RoofType carportRoof = "flat".equals(ctx.formParam("carportRoof")) ? RoofType.FLAT : RoofType.FLAT;
             boolean isPaid = false;

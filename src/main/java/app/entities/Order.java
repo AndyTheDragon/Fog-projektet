@@ -22,6 +22,8 @@ public class Order
     private LocalDateTime updatedAt;
     private OrderStatus orderStatus;
     private Carport carport;
+    private double buyInPrice;
+    private double sellPrice;
 
     public Order(int orderID, Customer customer, User salesPerson, int carportWidth, int carportLength, int shedWidth, int shedLength, RoofType carportRoof, boolean isPaid, LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus orderStatus, CarportCalculator calculator) throws CalculatorException
     {
@@ -40,6 +42,8 @@ public class Order
         this.updatedAt = updatedAt;
         this.orderStatus = orderStatus;
         this.carport = new Carport(carportLength, carportWidth, shedLength, shedWidth, carportRoof,calculator);
+        buyInPrice = carport.getBuyInPrice();
+        sellPrice = carport.getSellPrice();
     }
 
     public Order(int newOrderId, Customer customer, User salesPerson, int carportWidth, int carportLength, int carportHeight, boolean carportShed, int shedWidth, int shedLength, RoofType carportRoof, boolean paid)
@@ -55,6 +59,8 @@ public class Order
         this.shedLength = shedLength;
         this.carportRoof = carportRoof;
         this.isPaid = paid;
+        this.buyInPrice = getCarportBuyInPrice();
+        this.sellPrice = getCarportSellPrice();
     }
 
 
@@ -130,6 +136,27 @@ public class Order
     public Carport getCarport()
     {
         return carport;
+    }
+
+    public double getBuyInPrice()
+    {
+        return buyInPrice;
+    }
+
+    public double getSellPrice()
+    {
+        return sellPrice;
+    }
+
+    public double getCarportBuyInPrice()
+    {
+        double price = carport.getBuyInPrice();
+        return price;
+    }
+    private double getCarportSellPrice()
+    {
+        double price = carport.getSellPrice();
+        return price;
     }
 
     public String getOrderStatus()
