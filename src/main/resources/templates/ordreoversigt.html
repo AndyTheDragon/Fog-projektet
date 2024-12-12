@@ -12,7 +12,7 @@
 <div class="container mt-5 p-3 pt-5 bg-body-tertiary">
     <div class="alert alert-warning" th:if="${#ctx.message}" th:text="${#ctx.message}"></div>
 
-    <div class="row" th:if="${ordera}">
+    <div class="row" th:if="${assigned!=null}">
         <h3>Tildelte ordrer</h3>
         <div class="col-4" th:each="ordera : ${assigned}">
             <div class="card m-2">
@@ -34,7 +34,7 @@
     </div>
 
 
-    <div class="row row-cols g-4" th:if="${orderu}">
+    <div class="row row-cols g-4" th:if="${unassigned!=null}">
         <h3>Ikke tildelte ordrer</h3>
         <div class="col" th:each="orderu : ${unassigned}">
             <div class="card">
