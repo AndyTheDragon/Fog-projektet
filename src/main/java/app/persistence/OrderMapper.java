@@ -68,6 +68,7 @@ public class OrderMapper
                 int carportHeight = rs.getInt("carport_height");
                 int shedWidth = rs.getInt("shed_width");
                 int shedLength = rs.getInt("shed_length");
+                double price = rs.getDouble("price");
                 RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
                 boolean isPaid = rs.getBoolean("is_paid");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
@@ -83,7 +84,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt, OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
+                        updatedAt, OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection), price);
 
                 if (salesId == 0)
                 {
@@ -159,6 +160,7 @@ public class OrderMapper
                 int carportHeight = rs.getInt("carport_height");
                 int shedWidth = rs.getInt("shed_width");
                 int shedLength = rs.getInt("shed_length");
+                double price = rs.getDouble("price");
                 RoofType roofType = RoofType.valueOf(rs.getString("carport_roof").toUpperCase());
                 boolean isPaid = rs.getBoolean("is_paid");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
@@ -175,7 +177,7 @@ public class OrderMapper
                         roofType,
                         isPaid,
                         createdAt,
-                        updatedAt, orderStatus, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
+                        updatedAt, orderStatus, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection), price);
             }
         } catch (SQLException e)
         {
@@ -237,6 +239,7 @@ public class OrderMapper
             ps.setInt(6, order.getShedWidth());
             ps.setInt(7, order.getShedLength());
             ps.setString(8, order.getCarportRoof().toString());
+            ps.setDouble(9, order.getCarport().getSellPrice());
 
             int rowsAffected = ps.executeUpdate();
             if(rowsAffected == 1)
