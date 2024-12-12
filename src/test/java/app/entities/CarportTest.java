@@ -518,8 +518,22 @@ class CarportTest
         int expectedInnerScrews = 600;
         int expectedOuterScrews = 600;
         int screwsPerCladding = 6;
-        int totalInnerScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
-        int totalOuterScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        int totalInnerScrews = 0;
+        try
+        {
+            totalInnerScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
+        int totalOuterScrews = 0;
+        try
+        {
+            totalOuterScrews = screwsPerCladding * (carportC.getNumberOfCladdingBoards() / 2);
+        } catch (CalculatorException e)
+        {
+            throw new RuntimeException(e);
+        }
         // Act
         int actualInnerScrews = totalInnerScrews;
         int actualOuterScrews = totalOuterScrews;

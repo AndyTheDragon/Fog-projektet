@@ -102,7 +102,7 @@ public class Carport
         return this.numberOfJoists;
     }
 
-    public int getNumberOfCladdingBoards()
+    public int getNumberOfCladdingBoards() throws CalculatorException
     {
         /// TODO: SKAL LIGE GENTÆNKES HER, SKAL DETTE FLYTTES IND SOM EN PROPERTY?
         return calculator.calcNumberOfCladdingBoards();

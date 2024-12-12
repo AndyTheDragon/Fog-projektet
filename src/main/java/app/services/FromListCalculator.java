@@ -9,10 +9,22 @@ import java.util.stream.Collectors;
 public class FromListCalculator implements CarportCalculator
 {
     private List<IMaterials> materialsList;
+    private int carportLength;
+    private int carportWidth;
+    private int carportHeight;
+    private int shedLength;
+    private int shedWidth;
+    private String shedPlacement;
 
-    FromListCalculator(List<IMaterials> materialsList)
+    FromListCalculator(int carportLength, int carportWidth, int shedLength, int shedWidth, List<IMaterials> materialsList)
     {
         this.materialsList = materialsList;
+        this.carportLength = this.carportLength;
+        this.carportWidth = this.carportWidth;
+        this.shedLength = this.shedLength;
+        this.shedWidth = this.shedWidth;
+        this.carportHeight = 230;
+        this.shedPlacement = "right";
     }
 
     @Override
@@ -58,22 +70,21 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public int calcNumberOfPosts()
+    public int calcNumberOfPosts() throws CalculatorException
     {
-        if (materialsList == null || materialsList.isEmpty())
+        int sum = 0;
+        for (IMaterials material : calcPosts())
         {
-            return 0;
+            sum += material.getAmount();
         }
+        return sum;
 
-        return (int) materialsList.stream()
-                .filter(material -> "Stolper".equals(material.getDescription()))
-                .count();
     }
 
     @Override
     public boolean extraPostsForLongCarport()
     {
-        return false;
+        return carportLength - 130 - shedLength > 350;
     }
 
     @Override
@@ -86,9 +97,14 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public int calcNumberOfJoists()
+    public int calcNumberOfJoists() throws CalculatorException
     {
-        return 0;
+        int sum = 0;
+        for (IMaterials material : calcJoists())
+        {
+            sum += material.getAmount();
+        }
+        return sum;
     }
 
     @Override
@@ -116,16 +132,14 @@ public class FromListCalculator implements CarportCalculator
     }
 
     @Override
-    public int calcNumberOfCladdingBoards()
+    public int calcNumberOfCladdingBoards() throws CalculatorException
     {
-        if (materialsList == null || materialsList.isEmpty())
+        int sum = 0;
+        for (IMaterials material : calcCladding())
         {
-            return 0;
+            sum += material.getAmount();
         }
-
-        return (int) materialsList.stream()
-                .filter(material -> "beklædning".equals(material.getDescription()))
-                .count();
+        return sum;
     }
 
     @Override
@@ -134,22 +148,19 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "løsholter til skur sider".equalsIgnoreCase(material.getDescription())
-                        && "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
+                        || "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public int calcNumberOfHorizontalBraces()
+    public int calcNumberOfHorizontalBraces() throws CalculatorException
     {
-        if (materialsList == null || materialsList.isEmpty())
+        int sum = 0;
+        for (IMaterials material : calcHorizontalBraces())
         {
-            return 0;
+            sum += material.getAmount();
         }
-
-        return (int) materialsList.stream()
-                .filter(material -> "beklædning".equals(material.getDescription())
-                        && "løsholter til skur gavle".equalsIgnoreCase(material.getDescription()))
-                .count();
+        return sum;
     }
 
     @Override
@@ -176,7 +187,7 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "Til montering af spær".equalsIgnoreCase(material.getDescription())
-                        && "Til montering af spær".equalsIgnoreCase(material.getDescription()))
+                        || "Til montering af spær".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 
@@ -222,7 +233,7 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "yderste beklædning".equalsIgnoreCase(material.getDescription())
-                        && "inderste beklædning".equalsIgnoreCase(material.getDescription()))
+                        || "inderste beklædning".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 
@@ -232,7 +243,7 @@ public class FromListCalculator implements CarportCalculator
         if(materialsList == null || materialsList.isEmpty()) throw new CalculatorException("materialList is null or empty");
         return materialsList.stream()
                 .filter(material -> "Til lås".equalsIgnoreCase(material.getDescription())
-                        && "Til skurdør".equalsIgnoreCase(material.getDescription()))
+                        || "Til skurdør".equalsIgnoreCase(material.getDescription()))
                 .collect(Collectors.toList());
     }
 

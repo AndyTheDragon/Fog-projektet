@@ -224,7 +224,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         }
     }
 
-    public int calcNumberOfPosts()
+    public int calcNumberOfPosts() throws CalculatorException
     {
         int basePosts = 4;
         int extraPostsForShed = 2;
@@ -275,7 +275,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         }
     }
 
-    public int calcNumberOfJoists()
+    public int calcNumberOfJoists() throws CalculatorException
     {
         int minimumSpacing = 45;
         int maximumSpacing = 60;
@@ -345,7 +345,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         }
     }
 
-    public int calcNumberOfCladdingBoards()
+    public int calcNumberOfCladdingBoards() throws CalculatorException
     {
         double totalShedLength = (shedLength + shedWidth) * 2;
         double claddingBoardAmount = totalShedLength / 7.4;
@@ -378,7 +378,7 @@ public class OptimalWoodCalculator implements CarportCalculator
     }
 
     @Override
-    public int calcNumberOfHorizontalBraces()
+    public int calcNumberOfHorizontalBraces() throws CalculatorException
     {
         return 0;
     }
