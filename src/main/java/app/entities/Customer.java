@@ -20,16 +20,6 @@ public class Customer
         this.email = email;
     }
 
-    public Customer()
-    {
-        this.name = "John";
-        this.address = "Johnsvej 1";
-        this.zipcode = "9000";
-        this.city = "Aalborg";
-        this.phoneNumber = "12345678";
-        this.email = "John@john.dk";
-    }
-
     public int getCustomerID()
     {
         return customerID;
