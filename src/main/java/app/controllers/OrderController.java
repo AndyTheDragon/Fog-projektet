@@ -61,7 +61,7 @@ public class OrderController
             customer.setCustomerID(customerID);
 
             Order order = new Order(0, customer, new User(), carportWidth, carportLength,
-                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection), price);
+                    shedWidth, shedLength, carportRoof, isPaid, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.UNASSIGNED, new OptimalWoodCalculator(carportLength, carportWidth, shedLength, shedWidth, dbConnection));
             int orderId = OrderMapper.saveOrderToDatabase(order, dbConnection);
             MaterialMapper.saveOrderLines(orderId, order.getCarport().getMaterialsList(), dbConnection);
             ctx.attribute("message", "Ordren blev oprettet med succes.");
