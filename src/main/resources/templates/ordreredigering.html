@@ -58,15 +58,23 @@
                     <p class="card-text">Ordre ID: <span th:text="${order.orderID}"></span></p>
                     <p class="card-text">Sælger: <span th:text="${order.salesPerson.name}"></span></p>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Ordren er betalt: <span th:text="${order.isPaid}"></span></p>
-                    <p class="card-text"><strong>Ordre status:</strong>
-                        <span class="badge text-bg-warning" th:text="${order.orderStatus}"></span>
-                        <span>
-                            <form method="post" th:action="@{/order/pay}">
-                                <input type="hidden" name="orderId" th:value="${order.orderID}" />
-                                <button type="submit" class="btn btn-warning" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" th:if="${order.isPaid==false}">Betal</button>
-                            </form>
-                        </span>
-                    </p>
+                    <p class="card-text"><strong>Ordre status:</strong><span class="badge text-bg-warning" th:text="${order.orderStatus}"></span></p>
+                    <form method="post" th:action="@{/order/{id}/updatestatus(id=${order.orderID})}" class="">
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="hidden" name="orderId" th:value="${order.orderID}" />
+                            <select class="form-select" aria-label="Default select example" name="orderStatus">
+                                <option selected>Vælg ny status</option>
+                                <option th:each="state : ${states}"
+                                        th:value="${state}"
+                                        th:text="${state}"></option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-warning btn-sm">Opdater status</button>
+                        </div>
+                    </div>
+                    </form>
                     <p class="card-text" th:if="${#ctx.session.currentUser!=null}">Seneste opdatering: <span th:text="${order.updatedAt}"></span></p>
                 </div>
             </div>

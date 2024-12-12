@@ -35,7 +35,7 @@ public class OrderController
         app.get("/order/{orderId}/edit", ctx -> editOrder(ctx, dbConnection));
         app.post("/order/recalculate", ctx -> recalculateOrder(ctx, dbConnection));
         app.post("/order/update", ctx -> updateOrder(ctx, dbConnection));
-        app.post("/order/pay", ctx -> payOrder(ctx, dbConnection));
+        app.post("/order/{orderId}/updatestatus", ctx -> updateOrderStatus(ctx, dbConnection));
 
     }
 
@@ -260,7 +260,7 @@ public class OrderController
                 int salesId = (currentUser == null ? 0 : currentUser.getUserID());
                 if (salesId > 0)
                 {
-                    OrderMapper.asssignOrder(orderId, salesId, dbConnection);
+                    OrderMapper.assignOrder(orderId, salesId, dbConnection);
                     ctx.attribute("message", "Ordren blev tildelt");
                     ctx.redirect("/order/" + orderId);
                 }
@@ -316,6 +316,7 @@ public class OrderController
             ctx.render("kvittering.html");
         }
         ctx.attribute("order", order);
+        ctx.attribute("states", OrderStatus.values());
         ctx.render("ordreredigering.html");
     }
 
@@ -358,15 +359,16 @@ public class OrderController
 
     }
 
-    private static void payOrder(@NotNull Context ctx, ConnectionPool dbConnection)
+    private static void updateOrderStatus(@NotNull Context ctx, ConnectionPool dbConnection)
     {
         int orderId = 0;
 
         try
         {
             orderId = Integer.parseInt(ctx.formParam("orderId"));
-            OrderMapper.updateOrderStatusToPaid(orderId, dbConnection);
-            ctx.attribute("message", "Ordren er betalt.");
+            OrderStatus orderStatus = OrderStatus.valueOf(ctx.formParam("orderStatus"));
+            OrderMapper.updateOrderStatus(orderId, orderStatus, dbConnection);
+            ctx.attribute("message", "Ordrestatus opdateret.");
         }
         catch (NumberFormatException e)
         {
@@ -376,7 +378,7 @@ public class OrderController
         {
             ctx.attribute("message", "Database error: " + e.getMessage());
         }
-        ctx.render("ordredetaljer.html");
+        showOrderDetails(ctx, dbConnection);
     }
 
 }
