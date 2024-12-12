@@ -255,6 +255,27 @@ public class OrderMapper
         return orderId;
     }
 
+    public static void updateOrderStatusToPaid(int orderId, ConnectionPool dbConnection) throws DatabaseException
+    {
+        String sql = "UPDATE carport_order SET is_Paid = TRUE WHERE order_id = ?";
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update order status to paid.");
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new DatabaseException("Message " + e.getMessage());
+        }
+    }
+
+
     public static void updateOrder(int orderId, int carportLength, int carportWidth, int shedLength, int shedWidth, RoofType carportRoof, ConnectionPool dbConnection) throws  DatabaseException
     {
         String sql = "UPDATE carport_order SET carport_width = ?, carport_length = ?, shed_width = ?, shed_length = ?, carport_roof = ? WHERE order_id = ?";
