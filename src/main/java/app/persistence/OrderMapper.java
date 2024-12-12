@@ -192,7 +192,7 @@ public class OrderMapper
 
     public static void assignOrder(int orderId, int salesId, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET sales_id = ?, order_status = 'ASSIGNED' WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET sales_id = ?, order_status = 'ASSIGNED', updated_at=now() WHERE order_id = ?";
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -208,7 +208,7 @@ public class OrderMapper
 
     public static void acceptOrder(int orderId, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET order_status = ? WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET order_status = ?, updated_at=now() WHERE order_id = ?";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -259,7 +259,7 @@ public class OrderMapper
 
     public static void updateOrderStatus(int orderId, OrderStatus newStatus, ConnectionPool dbConnection) throws DatabaseException
     {
-        String sql = "UPDATE carport_order SET order_status = ?::orderstatus WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET order_status = ?::orderstatus, updated_at=now() WHERE order_id = ?";
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -281,7 +281,7 @@ public class OrderMapper
 
     public static void updateOrder(int orderId, int carportLength, int carportWidth, int shedLength, int shedWidth, RoofType carportRoof, ConnectionPool dbConnection) throws  DatabaseException
     {
-        String sql = "UPDATE carport_order SET carport_width = ?, carport_length = ?, shed_width = ?, shed_length = ?, carport_roof = ? WHERE order_id = ?";
+        String sql = "UPDATE carport_order SET carport_width = ?, carport_length = ?, shed_width = ?, shed_length = ?, carport_roof = ?, updated_at=now() WHERE order_id = ?";
 
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
