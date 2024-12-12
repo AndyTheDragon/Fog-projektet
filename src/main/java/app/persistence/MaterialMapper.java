@@ -64,7 +64,7 @@ public class MaterialMapper
         String sql = "SELECT m.material_id, m.material_name, m.width, m.height, m.length,m.unit,m.fog_price, f.description, f.material_type FROM carport_material AS m" +
                 " INNER JOIN carport_material_function ON m.material_id = carport_material_function.material_id" +
                 " INNER JOIN material_function AS f ON carport_material_function.function_id=f.function_id" +
-                " WHERE f.description = ? AND m.length >= ?"+
+                " WHERE f.description LIKE ? AND m.length >= ?"+
                 " ORDER BY m.length DESC";
 
         try (Connection connection = connectionPool.getConnection();

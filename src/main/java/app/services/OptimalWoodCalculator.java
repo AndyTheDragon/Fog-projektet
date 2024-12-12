@@ -416,7 +416,7 @@ public class OptimalWoodCalculator implements CarportCalculator
         try
         {
             List<IMaterials> roofList = new ArrayList<>();
-            List<IMaterials> allRoofList = MaterialMapper.getMaterialOfTypeAndLength("tagplader", (carportLength / 2), (dbConnection));
+            List<IMaterials> allRoofList = MaterialMapper.getMaterialOfTypeAndLength("tagplader%", 0, (dbConnection));
 
             int plateWidth = 109;
             int overlap = 20;
