@@ -39,7 +39,7 @@ public class OptimalWoodCalculator implements CarportCalculator
             wastePercentage = 1.0;
         }
         double totalLengthInclWaste = totalLength * wastePercentage;
-        int maxPieces = 10;     // Max pieces of each length
+        int maxPieces = 20;     // Max pieces of each length
 
         // Variables to store best result
         int bestX = 0, bestY = 0;
@@ -82,7 +82,7 @@ public class OptimalWoodCalculator implements CarportCalculator
             wastePercentage = 1.0;
         }
         double totalLengthInclWaste = totalLength * wastePercentage;
-        int maxPieces = 10;
+        int maxPieces = 20;
 
         int[] bestResult = new int[conWoodList.size()];
         double bestWaste = Double.MAX_VALUE;

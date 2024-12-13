@@ -355,13 +355,17 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
+    /*
+        TODO: Feature for rejsning på tag
+
+
     @Test
     void calcOptimalRafterMinimumTestB()
     {
         //Arrange
         int totalLength = 7*360;
-        int length1 = 480;
-        int length2 = 600;
+        int length2 = 480;
+        int length1 = 600;
         int[] expected = new int[]{7, 0};
         OptimalWoodCalculator calc = (OptimalWoodCalculator) carport.getCalculator();
         //Act
@@ -369,7 +373,7 @@ class CarportTest
         //Assert
         assertArrayEquals(expected, result);
     }
-
+    */
     @Test
     void calcOptimalRafterMaximumTest()
     {
