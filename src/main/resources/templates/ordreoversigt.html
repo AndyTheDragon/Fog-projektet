@@ -35,7 +35,7 @@
 
 
     <h3 th:if="${unassigned!=null}">Ikke tildelte ordrer</h3>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" th:if="${unassigned!=null}">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${unassigned!=null}">
         <div class="col" th:each="orderu : ${unassigned}">
             <div class="card">
                 <div class="card-body">
