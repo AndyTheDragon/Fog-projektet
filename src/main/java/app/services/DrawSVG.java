@@ -7,7 +7,7 @@ public class DrawSVG
     private static final String SVG_TEMPLATE = """
             <svg version="1.1"
                  x="%d" y="%d"
-                 viewBox="%s"  width="%s"\s
+                 viewBox="%s"  width="%s" class="img-fluid"\s
                  preserveAspectRatio="xMinYMin">""";
 
     private static final String SVG_ARROW_DEFS = """
