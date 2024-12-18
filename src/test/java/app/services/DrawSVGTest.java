@@ -20,7 +20,7 @@ class DrawSVGTest
         String expected = """
                 <svg version="1.1"
                      x="0" y="0"
-                     viewBox="0 0 255 210"  width="127"\s
+                     viewBox="0 0 255 210"  width="127" class="img-fluid"\s
                      preserveAspectRatio="xMinYMin">\
                 <defs>
                     <marker id="beginArrow" markerWidth="84" markerHeight="84" refX="0" refY="6" orient="auto">
@@ -53,7 +53,7 @@ class DrawSVGTest
         String expected = """
 <svg version="1.1"
      x="0" y="0"
-     viewBox="0 0 255 210"  width="127"\s
+     viewBox="0 0 255 210"  width="127" class="img-fluid"\s
      preserveAspectRatio="xMinYMin">\
 <defs>
     <marker id="beginArrow" markerWidth="84" markerHeight="84" refX="0" refY="6" orient="auto">

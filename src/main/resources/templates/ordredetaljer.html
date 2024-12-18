@@ -14,7 +14,7 @@
     <h1 th:if="${#ctx.h1message!=null}" th:text="${#ctx.h1message}">This is the header</h1>
 
     <div class="row">
-        <div class="col-6">
+        <div class="col col-sm-6">
             <div class="card m-3">
                 <h5 class="card-header" th:if="${#ctx.information!=null}" th:text="${#ctx.information}">Information relevant for card header</h5>
                 <div class="card-body">
@@ -31,7 +31,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col col-sm-6">
             <div class="card m-3">
                 <h5 class="card-header" th:if="${#ctx.persinfo!=null}" th:text="${#ctx.persinfo}">Personal card header info</h5>
                 <div class="card-body">
@@ -104,10 +104,10 @@
     </div>
     <div class="card m-3" th:if="${#ctx.session.currentUser!=null}">
         <div class="card-body">
-            <div class="row row-cols-3">
-                <div class="col"><div class="card-text" >Carport indkøbspris: <span th:text="${order.buyInPrice}">420</span> kr</div></div>
-                <div class="col"><div class="card-text col" >Carport foreslået salgspris: <input type="number" th:value="${order.sellPrice}"> kr</div></div>
-                <div class="col"><div class="card-text col">Avance procent <input type="number" th:value="${order.profitMargin}" /></div></div>
+            <div class="row row-cols-1 row-cols-md-3">
+                <div class="col mb-3"><p class="card-text">Carport indkøbspris: <span th:text="${order.buyInPrice}">420</span> kr</p></div>
+                <div class="col mb-3"><p class="card-text" >Carport foreslået salgspris: <input class="form.control form-control-sm w-auto" type="number" th:value="${order.sellPrice}"></p></div>
+                <div class="col mb-3"><p class="card-text">Avance procent <input class="form.control form-control-sm w-auto" type="number" th:value="${order.profitMargin}" /></p></div>
             </div>
         </div>
     </div>
