@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+skinparam handwritten true
+
+
+participant Carport as C
+participant WorkDrawing as W
+participant DrawSVG as D
+
+
+C -> W: new WorkDrawing(this, width)
+activate W
+W -> W: set member variables with \n values from carport object
+W -> D: topViewDrawing \n = new DrawSVG(0,0, viewPort, width)
+W -> D: sideViewDrawing \n = new DrawSVG(0,0, viewPort, width)
+W -> W: addArrows()
+W -> W: addText()
+W -> W: addBeams()
+W -> W: addPosts()
+alt hasShed
+  W -> W: addCladding()
+end
+W -> W: addFascia()
+W -> W: addJoists()
+W --> C
+
+deactivate W
+
+@enduml
