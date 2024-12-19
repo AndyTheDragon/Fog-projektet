@@ -14,7 +14,7 @@
     <h1>Rediger ordre</h1>
 
     <div class="row">
-        <div class="col-6">
+        <div class="col col-sm-6">
             <form method="post" th:action="@{/order/recalculate}">
             <div class="card m-3">
                 <h5 class="card-header" >Dimensioner</h5>
@@ -37,7 +37,7 @@
             </div>
             </form>
         </div>
-        <div class="col-6">
+        <div class="col col-sm-6">
             <div class="card m-3">
                 <h5 class="card-header">Kunde Information</h5>
                 <div class="card-body">
@@ -85,8 +85,14 @@
         SVG Skitse
     </div>
 
-    <div class="card m-3">
-        Pris
+    <div class="card m-3" th:if="${#ctx.session.currentUser!=null}">
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-3">
+                <div class="col mb-3"><p class="card-text">Carport indkøbspris: <span th:text="${order.buyInPrice}">420</span> kr</p></div>
+                <div class="col mb-3"><p class="card-text" >Carport foreslået salgspris: <input class="form.control form-control-sm w-auto" type="number" th:value="${order.sellPrice}"></p></div>
+                <div class="col mb-3"><p class="card-text">Avance procent <input class="form.control form-control-sm w-auto" type="number" th:value="${order.profitMargin}" /></p></div>
+            </div>
+        </div>
     </div>
 
     <form method="post" th:action="@{/order/update}">
