@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!pragma layout smetana
+skinparam handwritten true
+
+participant X
+participant Customer
+participant User
+participant Order as O
+participant Carport as Car
+participant Calculator as Calc
+
+
+X -> Customer: new Customer()
+X -> User: new User()
+X -> Calc: new Calculator()
+X-> O: new Order (customer, user, calculator)
+activate O
+O -> Car: new Carport
+activate Car
+Car -> Calc: calcFascia()
+activate Calc
+Calc --> Car: List<IMaterials>
+deactivate Calc
+Car -> Calc: calcBeam()
+activate Calc
+Calc --> Car: List<IMaterials>
+deactivate Calc
+Car -> Calc: calcPosts()
+activate Calc
+Calc --> Car: List<IMaterials>
+deactivate Calc
+Car -> WorkDrawing: new Workdrawing(this)
+WorkDrawing --> Car
+Car --> O
+deactivate Car
+O --> X
+deactivate O
+
+@enduml

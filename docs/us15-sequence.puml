@@ -19,7 +19,7 @@ activate V
 
 V -> C: Get request til /order/{order-id}
 activate C
-C -> C: Kontroller brugerrettigheder
+C -> C: Kontroller brugerrettigheder\n og input-data (form-param)
 C -> M: getOrder(order-id)
 activate M
 M -> DB: execute sql
@@ -27,8 +27,8 @@ DB --> M: ordre data
 M -> User : new User()
 M -> Customer: new Customer()
 M -> Order: new Order(user, customer, data)
-Order -> Carport: new Carport()
 activate Order
+Order -> Carport: new Carport()
 Order --> C: order objekt (eller Exception)
 deactivate Order
 deactivate M
